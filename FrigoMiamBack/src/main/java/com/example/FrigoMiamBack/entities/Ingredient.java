@@ -26,4 +26,7 @@ public class Ingredient {
 
     @OneToMany(mappedBy = "ingredient")
     private List<Account_Ingredient> accountIngredients;
+
+    @OneToMany(mappedBy = "ingredient")
+    private List<Recipe_Ingredient> recipeIngredients;
 }
