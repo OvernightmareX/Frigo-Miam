@@ -3,6 +3,8 @@ package com.example.FrigoMiamBack.entities;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,20 +13,24 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_account;
 
+    @NotBlank
     private String firstname;
+    @NotBlank
     private String lastname;
-    private LocalDate birthdate;
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
+    private LocalDate birthdate;
     private Allergy allergies;
     private Diet diets;
 

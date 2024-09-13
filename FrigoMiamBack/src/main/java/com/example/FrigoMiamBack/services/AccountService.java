@@ -1,16 +1,18 @@
 package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Ingredient;
-import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Service
 public class AccountService implements IAccountService {
 
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public boolean checkEmail(String email) {
@@ -19,6 +21,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean createAccount(Account accountToCreate) {
+        //TODO empecher la création d'un utilisateur existant
         try {
             Account createdAccount = this.accountRepository.save(accountToCreate);
             return true;
@@ -59,11 +62,13 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean addRecipeToFavorite(String accountId, String recipeId) {
-        return this.accountRepository.addRecipeToRecipeLikedList(recipeId, accountId);
+        //return this.accountRepository.addRecipeToRecipeLikedList(recipeId, accountId);
+        return false;
     }
 
     @Override
     public boolean addIngredientToFridge(String ingredientId, String accountId) {
-        return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
+        //return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
+        return false;
     }
 }
