@@ -5,19 +5,21 @@
   </p>
 
   <datalist id="ingredientOptions">
-    <option *ngFor="let possibility of filteredPossibilities" [value]="possibility"></option>
+    @for (possibility of filteredPossibilities; track possibility){
+      <option [value]="possibility"></option>
+    }
   </datalist>
 
   @if(ingredient_control.invalid && !ingredient_control.untouched) {
     @if(ingredient_control.hasError('required')) {
       <span class="error">Champs obligatoire !</span>
     } @else {
-      <span class="error">Format invalide !</span>
+      <span class="error">Ingédiant invalide !</span>
     }
   }
 
-
   <div>
-    <button >Add</button> <!-- type="submit" -->
+    <button >Ajouter</button> <!-- type="submit" -->
   </div>
 </form>
+<div></div>

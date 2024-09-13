@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-ingredient-search',
@@ -20,7 +21,8 @@ export class IngredientSearchComponent {
 
   constructor() {
     this.ingredient_control.valueChanges.subscribe(value => {
-      this.filterPossibilities(value);
+      console.log(`constructor: ${value}`);
+      this.filterPossibilities(value ?? '');
     });
   }
 
@@ -35,6 +37,7 @@ export class IngredientSearchComponent {
 
 
   filterPossibilities(value: string) {
+    console.log(`filterPossibilities: ${value}`);
     if (value) {
       this.filteredPossibilities = this.possibilityList.filter(item =>
         item.toLowerCase().startsWith(value.toLowerCase())
@@ -45,7 +48,8 @@ export class IngredientSearchComponent {
   }
 
   addIngredient(){
-    console.log(this.ingredient_control.value);
+    console.log(`addIngredient: ${this.ingredient_control.value}`);
   }
 
+  protected readonly of = of;
 }
