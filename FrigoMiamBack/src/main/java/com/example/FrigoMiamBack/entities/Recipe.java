@@ -32,7 +32,7 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private List<Recipe_Ingredient> recipeIngredientsList;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
 

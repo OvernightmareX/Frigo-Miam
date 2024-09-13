@@ -65,7 +65,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean addIngredientToFridge(String ingredientId, String accountId) {
-        return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
+      return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
     }
 
     @Override
