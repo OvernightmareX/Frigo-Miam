@@ -32,5 +32,11 @@ public class Account {
     private Role role;
 
     @OneToMany(mappedBy = "account")
-    private List<Account_Ingredient> accountIngredients;
+    private List<Account_Ingredient> accountIngredientsList;
+
+    @OneToMany(mappedBy = "account")
+    private List<Recipe> recipeList;
+
+    @OneToMany(mappedBy = "account")
+    private List<Account_Recipe> accountRecipeList;
 }
