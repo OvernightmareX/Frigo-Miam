@@ -16,9 +16,9 @@ public interface IRecipeService {
 
     int getAccountGrade(String recipeId, String accountId);
 
-    boolean addGradeToRecipe(String recipeId, int grade);
+    boolean addGradeToRecipe(String recipeId, String accountId, int grade);
 
-    boolean addRecipe(Recipe recipe, String accountId);
+    boolean addRecipe(Recipe recipe);
 
     boolean updateRecipe(Recipe recipe);
 
