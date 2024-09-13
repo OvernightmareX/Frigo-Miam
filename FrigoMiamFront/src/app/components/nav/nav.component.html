@@ -1,25 +1,23 @@
-<nav>
-  <ul>
+<nav class="fixed top-0 right-0 p-4">
+  <ul class="flex items-center space-x-4">
     <li>
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/" class="text-gray-800 hover:text-blue-500">Accueil</a>
+    </li>
+    <li class="relative">
+      <button (click)="toggleMenu()" class="text-gray-800 hover:text-blue-500">User</button>
+      @if (isUserMenuOpen ){
+        <ul  class="">
+
+          <li><a routerLink="/profile" class=" ">Profil</a></li>
+          <li><a routerLink="/frigo" class="">Frigo</a></li>
+          <li><a routerLink="/recette" class="">Recette</a></li>
+        </ul>
+      }
+
     </li>
     <li>
-      <a routerLink="/admin">Administration</a>
-    </li>
-    <li>
-      <a routerLink="/profile">Profile</a>
-    </li>
-    <li>
-      <a routerLink="/connexion">Connexion</a>
-    </li>
-    <li>
-      <a routerLink="/frigo">Frigo</a>
-    </li>
-    <li>
-      <a routerLink="/creation">Créer Compte</a>
-    </li>
-    <li>
-      <a routerLink="/recette">Recette</a>
+      <a routerLink="/admin" class="text-gray-800 hover:text-blue-500">Administration</a>
     </li>
   </ul>
 </nav>
+
