@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {of} from "rxjs";
 
@@ -14,19 +14,15 @@ import {of} from "rxjs";
 })
 export class IngredientSearchComponent {
 
-  ingredient_control = new FormControl(``, [
-    Validators.required,
-    Validators.pattern(/^[A-Za-z'].*/)
-  ]);
+  @Output() clickEvent = new EventEmitter<string>;
 
   constructor() {
     this.ingredient_control.valueChanges.subscribe(value => {
-      console.log(`constructor: ${value}`);
       this.filterPossibilities(value ?? '');
     });
   }
 
-  possibilityList = [
+  possibilityList = [ // TODO: will be replaced by values in service or localStorage
     'a',
     'aa',
     'aaa',
@@ -34,10 +30,18 @@ export class IngredientSearchComponent {
   ]
   filteredPossibilities: string[] = [];
 
+  ingredient_control = new FormControl(``, [
+    Validators.required,
+    Validators.pattern(/^[A-Za-z'].*/)
+  ]);
 
+  addIngredient(){
+    if(this.ingredient_control.valid){
+      this.clickEvent.emit(this.ingredient_control.value ?? '');
+    }
+  }
 
   filterPossibilities(value: string) {
-    console.log(`filterPossibilities: ${value}`);
     if (value) {
       this.filteredPossibilities = this.possibilityList.filter(item =>
         item.toLowerCase().startsWith(value.toLowerCase())
@@ -45,10 +49,6 @@ export class IngredientSearchComponent {
     } else {
       this.filteredPossibilities = [];
     }
-  }
-
-  addIngredient(){
-    console.log(`addIngredient: ${this.ingredient_control.value}`);
   }
 
   protected readonly of = of;

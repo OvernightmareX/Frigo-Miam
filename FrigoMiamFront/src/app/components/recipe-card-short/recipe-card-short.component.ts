@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {RecipeCard} from "../../utils/types";
 
 @Component({
   selector: 'app-recipe-card-short',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './recipe-card-short.component.css'
 })
 export class RecipeCardShortComponent {
-
+  @Input() recipeCardData ?: RecipeCard;
 }
