@@ -8,6 +8,6 @@ public class FrigoMiamBackApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FrigoMiamBackApplication.class, args);
+		System.out.println("test");
 	}
-
 }
