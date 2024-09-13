@@ -33,13 +33,13 @@ public class Account {
     private Role role;
 
     @OneToMany(mappedBy = "account")
-    private List<Account_Ingredient> accountIngredientsList;
+    private List<Fridge> accountIngredientsList;
 
     @OneToMany(mappedBy = "account")
     private List<Recipe> recipeCreatedList;
 
     @OneToMany(mappedBy = "account")
-    private List<Account_Recipe> accountRecipeList;
+    private List<Grade_Recipe> accountRecipeList;
 
     @ManyToMany
     @JoinTable(name = "account_likes_recipe",

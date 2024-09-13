@@ -6,7 +6,6 @@ import com.example.FrigoMiamBack.utils.enums.Validation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -20,6 +19,8 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_recipe;
+    private String title;
+    private String description;
     private String instructions;
     private int preparation_time;
     private int cooking_time;
@@ -36,7 +37,7 @@ public class Recipe {
     private Account account;
 
     @OneToMany(mappedBy = "recipe")
-    private List<Account_Recipe> accountRecipeList;
+    private List<Grade_Recipe> accountRecipeList;
 
     @ManyToMany(mappedBy = "recipeLikedList")
     private List<Account> accountList;

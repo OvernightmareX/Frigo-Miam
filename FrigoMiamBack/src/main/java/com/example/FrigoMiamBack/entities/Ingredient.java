@@ -25,7 +25,7 @@ public class Ingredient {
     private Allergy allergy;
 
     @OneToMany(mappedBy = "ingredient")
-    private List<Account_Ingredient> accountIngredientsList;
+    private List<Fridge> accountIngredientsList;
 
     @OneToMany(mappedBy = "ingredient")
     private List<Recipe_Ingredient> recipeIngredientsList;
