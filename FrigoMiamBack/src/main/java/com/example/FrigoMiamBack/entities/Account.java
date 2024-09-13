@@ -27,6 +27,7 @@ public class Account {
     private String password;
     private Allergy allergies;
     private Diet diets;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
