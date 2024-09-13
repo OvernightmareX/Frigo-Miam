@@ -7,6 +7,7 @@ import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 public class AccountService implements IAccountService {
 
@@ -65,5 +66,19 @@ public class AccountService implements IAccountService {
     @Override
     public boolean addIngredientToFridge(String ingredientId, String accountId) {
         return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
+    }
+
+    @Override
+    public List<Account> getAccounts() {
+        return this.accountRepository.findAll();
+    }
+
+    @Override
+    public Account getAccount(String accountId) {
+        UUID id = UUID.fromString(accountId);
+        if(this.accountRepository.findById(id).isPresent()) {
+            return this.accountRepository.findById(id).get();
+        }
+        return null;
     }
 }
