@@ -38,6 +38,6 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private List<Account_Recipe> accountRecipeList;
 
-    @ManyToMany(mappedBy = "recipe")
+    @ManyToMany(mappedBy = "recipeLikedList")
     private List<Account> accountList;
 }

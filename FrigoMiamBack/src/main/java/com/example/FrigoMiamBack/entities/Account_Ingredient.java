@@ -16,7 +16,7 @@ public class Account_Ingredient {
 
     @ManyToOne
     @MapsId("accountId")
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne
