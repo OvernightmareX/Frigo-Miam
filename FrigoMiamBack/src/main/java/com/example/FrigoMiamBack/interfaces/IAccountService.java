@@ -20,11 +20,5 @@ public interface IAccountService {
 
     boolean addRecipeToFavorite(String accountId, String recipeId);
 
-    List<Recipe> getFavoriteRecipes(String accountId);
-
-    List<Recipe> getRecipeCreated(String accountId);
-
-    List<Ingredient> getFridge(String accountId);
-
     boolean addIngredientToFridge(String ingredientId, String accountId);
 }

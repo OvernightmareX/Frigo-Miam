@@ -13,4 +13,6 @@ public interface IIngredientService {
     boolean deleteIngredient(Ingredient ingredient);
 
     boolean updateIngredient(Ingredient ingredient);
+
+    List<Ingredient> getFridge(String accountId);
 }

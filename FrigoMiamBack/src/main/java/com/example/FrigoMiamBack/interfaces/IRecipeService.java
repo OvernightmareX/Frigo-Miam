@@ -23,4 +23,8 @@ public interface IRecipeService {
     boolean updateRecipe(Recipe recipe);
 
     boolean deleteRecipe(String id);
+
+    List<Recipe> getFavoriteRecipes(String accountId);
+
+    List<Recipe> getRecipeCreated(String accountId);
 }

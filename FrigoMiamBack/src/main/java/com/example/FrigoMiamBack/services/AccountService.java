@@ -14,7 +14,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean checkEmail(String email) {
-        return this.accountRepository.findByEmail(email);
+        return this.accountRepository.findByEmail(email) != null;
     }
 
     @Override
@@ -31,45 +31,39 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean logIn(String email, String password) {
-        Account user = this.accountRepository.findByEmailAndPassword(email, password);
-
-        return false;
+        //TODO vérifier si boolean sur email/password
+        return this.accountRepository.findByEmailAndPassword(email, password) != null;
     }
 
     @Override
     public boolean updateAccount(Account accountToUpdate) {
-        return false;
+        try {
+            this.accountRepository.save(accountToUpdate);
+            return true;
+        } catch (Exception e) {
+            //TODO créer exception personnalisée
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public boolean deleteAccount(String email, String password) {
+        Account accountToDelete = this.accountRepository.findByEmailAndPassword(email, password);
+        if (accountToDelete != null) {
+            this.accountRepository.delete(accountToDelete);
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean addRecipeToFavorite(String accountId, String recipeId) {
-        return false;
-    }
-
-    @Override
-    public List<Recipe> getFavoriteRecipes(String accountId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Recipe> getRecipeCreated(String accountId) {
-        return List.of();
-    }
-
-    @Override
-    public List<Ingredient> getFridge(String accountId) {
-        return List.of();
+        return this.accountRepository.addRecipeToRecipeLikedList(recipeId, accountId);
     }
 
     @Override
     public boolean addIngredientToFridge(String ingredientId, String accountId) {
-        return false;
+        return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
     }
-
-
 }
