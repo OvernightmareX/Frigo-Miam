@@ -5,10 +5,12 @@ import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class AccountService implements IAccountService {
 
     private AccountRepository accountRepository;

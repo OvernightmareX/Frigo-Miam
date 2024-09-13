@@ -3,9 +3,11 @@ package com.example.FrigoMiamBack.services;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.interfaces.IIngredientService;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class IngredientService implements IIngredientService {
     private IngredientRepository ingredientRepository;
 
