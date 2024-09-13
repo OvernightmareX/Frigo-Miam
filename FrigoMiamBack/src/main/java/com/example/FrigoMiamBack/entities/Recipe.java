@@ -29,5 +29,15 @@ public class Recipe {
     private Diet diet;
 
     @OneToMany(mappedBy = "recipe")
-    private List<Recipe_Ingredient> recipeIngredients;
+    private List<Recipe_Ingredient> recipeIngredientsList;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @OneToMany(mappedBy = "recipe")
+    private List<Account_Recipe> accountRecipeList;
+
+    @ManyToMany(mappedBy = "recipeLikedList")
+    private List<Account> accountList;
 }

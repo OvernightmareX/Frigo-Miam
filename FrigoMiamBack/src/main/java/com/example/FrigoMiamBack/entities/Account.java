@@ -32,5 +32,17 @@ public class Account {
     private Role role;
 
     @OneToMany(mappedBy = "account")
-    private List<Account_Ingredient> accountIngredients;
+    private List<Account_Ingredient> accountIngredientsList;
+
+    @OneToMany(mappedBy = "account")
+    private List<Recipe> recipeCreatedList;
+
+    @OneToMany(mappedBy = "account")
+    private List<Account_Recipe> accountRecipeList;
+
+    @ManyToMany
+    @JoinTable(name = "account_likes_recipe",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id"))
+    private List<Recipe> recipeLikedList;
 }

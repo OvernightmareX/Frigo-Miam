@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account_Ingredient {
-
+public class Account_Recipe {
     @EmbeddedId
-    private Account_Ingredient_Id id = new Account_Ingredient_Id();
+    private Account_Recipe_Id id = new Account_Recipe_Id();
 
     @ManyToOne
     @MapsId("accountId")
@@ -20,9 +19,9 @@ public class Account_Ingredient {
     private Account account;
 
     @ManyToOne
-    @MapsId("ingredientId")
-    @JoinColumn(name = "ingredient_id")
-    private Ingredient ingredient;
+    @MapsId("recipeId")
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
 
-    private double quantity;
+    private int rate;
 }
