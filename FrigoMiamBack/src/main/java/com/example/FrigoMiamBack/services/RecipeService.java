@@ -1,16 +1,6 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Ingredient;
-import com.example.FrigoMiamBack.entities.Recipe;
-import com.example.FrigoMiamBack.interfaces.IRecipeService;
-import com.example.FrigoMiamBack.repositories.RecipeRepository;
-import com.example.FrigoMiamBack.utils.enums.Allergy;
-import com.example.FrigoMiamBack.utils.enums.Diet;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
-
+/*
 @Service
 public class RecipeService implements IRecipeService {
     private RecipeRepository recipeRepository;
@@ -103,4 +93,4 @@ public class RecipeService implements IRecipeService {
     public List<Recipe> getRecipeCreated(String accountId) {
         return this.recipeRepository.findrecipeCreatedList(UUID.fromString(accountId));
     }
-}
+}*/

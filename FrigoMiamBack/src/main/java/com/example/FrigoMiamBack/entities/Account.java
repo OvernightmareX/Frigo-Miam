@@ -4,7 +4,6 @@ import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,13 +19,13 @@ import java.util.UUID;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id_account;
-
+    private UUID id;
     @NotBlank
     private String firstname;
     @NotBlank
     private String lastname;
     @NotBlank
+    @Column(unique = true)
     private String email;
     @NotBlank
     private String password;

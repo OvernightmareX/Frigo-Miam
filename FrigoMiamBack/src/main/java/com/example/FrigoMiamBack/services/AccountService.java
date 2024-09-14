@@ -1,13 +1,18 @@
 package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class AccountService implements IAccountService {
 
@@ -19,20 +24,20 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean checkEmail(String email) {
+        log.info("checkMail::check email with email {}", email);
         return this.accountRepository.findByEmail(email) != null;
     }
 
     @Override
-    public boolean createAccount(Account accountToCreate) {
-        //TODO empecher la création d'un utilisateur existant
-        try {
-            Account createdAccount = this.accountRepository.save(accountToCreate);
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return false;
-            //TODO rajouter une exception personnalisée
-        }
+    public Account createAccount(Account accountToCreate) {
+        log.info("createAccount:: create account with id {}", accountToCreate.getId());
+        if(accountToCreate.getId() != null)
+            throw new ConflictException("createAccount::account already saved trying to be created.", HttpStatus.CONFLICT, LocalDateTime.now());
+
+        if(checkEmail(accountToCreate.getEmail()))
+            throw new ConflictException("Account with email " + accountToCreate.getEmail() + " already exists.", HttpStatus.CONFLICT, LocalDateTime.now());
+
+        return this.accountRepository.save(accountToCreate);
     }
 
     @Override
