@@ -4,6 +4,7 @@ import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,7 +66,7 @@ public class AccountServiceTest {
         Account newAccount = AccountFactory.createAccountWithEmail(emailTest);
         ConflictException thrown = assertThrows(ConflictException.class, () -> accountService.createAccount(newAccount));
 
-        assertEquals("Account with email " + emailTest + " already exists.", thrown.getMessage());
+        assertEquals(ExceptionsMessages.EMAIL_ALREADY_EXIST, thrown.getMessage());
     }
 
     @Test
@@ -75,6 +76,6 @@ public class AccountServiceTest {
 
         ConflictException thrown = assertThrows(ConflictException.class, () -> accountService.createAccount(accountWithId));
 
-        assertEquals("createAccount::account already saved trying to be created.", thrown.getMessage());
+        assertEquals(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, thrown.getMessage());
     }
 }
