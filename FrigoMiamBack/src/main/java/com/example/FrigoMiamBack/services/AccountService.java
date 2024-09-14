@@ -4,6 +4,7 @@ import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,10 @@ public class AccountService implements IAccountService {
     public Account createAccount(Account accountToCreate) {
         log.info("createAccount:: create account with id {}", accountToCreate.getId());
         if(accountToCreate.getId() != null)
-            throw new ConflictException("createAccount::account already saved trying to be created.", HttpStatus.CONFLICT, LocalDateTime.now());
+            throw new ConflictException(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, HttpStatus.CONFLICT, LocalDateTime.now());
 
         if(checkEmail(accountToCreate.getEmail()))
-            throw new ConflictException("Account with email " + accountToCreate.getEmail() + " already exists.", HttpStatus.CONFLICT, LocalDateTime.now());
+            throw new ConflictException(ExceptionsMessages.EMAIL_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
 
         return this.accountRepository.save(accountToCreate);
     }

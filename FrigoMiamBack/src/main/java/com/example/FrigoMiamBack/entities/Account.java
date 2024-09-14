@@ -3,8 +3,10 @@ package com.example.FrigoMiamBack.entities;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
@@ -24,6 +27,7 @@ public class Account {
     private String firstname;
     @NotBlank
     private String lastname;
+    @Email
     @NotBlank
     @Column(unique = true)
     private String email;
