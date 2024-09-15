@@ -2,6 +2,7 @@ package com.example.FrigoMiamBack.factories;
 
 import com.example.FrigoMiamBack.entities.Account;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class AccountFactory {
@@ -16,6 +17,10 @@ public class AccountFactory {
                 .lastname(DEFAULT_LASTNAME)
                 .password(DEFAULT_PASSWORD)
                 .email(DEFAULT_EMAIL)
+                .accountRecipeList(new ArrayList<>())
+                .accountIngredientsList(new ArrayList<>())
+                .recipeCreatedList(new ArrayList<>())
+                .recipeLikedList(new ArrayList<>())
                 .build();
     }
 

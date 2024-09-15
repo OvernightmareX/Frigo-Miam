@@ -1,9 +1,11 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
+import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.repositories.FridgeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,11 @@ import java.util.UUID;
 public class AccountService implements IAccountService {
 
     private final AccountRepository accountRepository;
+    private final FridgeRepository fridgeRepository;
 
-    public AccountService(AccountRepository accountRepository){
+    public AccountService(AccountRepository accountRepository, FridgeRepository fridgeRepository){
         this.accountRepository = accountRepository;
+        this.fridgeRepository = fridgeRepository;
     }
 
     @Override
@@ -48,20 +52,24 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public boolean updateAccount(Account accountToUpdate) {
+    public Account updateAccount(Account accountToUpdate) {
+        log.info("updateAccount:: update account with id {}", accountToUpdate.getId());
+
+        //TODO Ajouter une exceptions si accountToUpdate.Id est null
+
         try {
-            this.accountRepository.save(accountToUpdate);
-            return true;
+            return this.accountRepository.save(accountToUpdate);
         } catch (Exception e) {
             //TODO créer exception personnalisée
             System.err.println(e.getMessage());
-            return false;
+            return null;
         }
     }
 
     @Override
-    public boolean deleteAccount(String email, String password) {
-        Account accountToDelete = this.accountRepository.findByEmailAndPassword(email, password);
+    public boolean deleteAccount(Account accountToDelete) {
+        //TODO Ajouter une exceptions si accountToDelete.Id est null
+
         if (accountToDelete != null) {
             this.accountRepository.delete(accountToDelete);
             return true;
@@ -70,15 +78,30 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public boolean addRecipeToFavorite(String accountId, String recipeId) {
-        //return this.accountRepository.addRecipeToRecipeLikedList(recipeId, accountId);
-        return false;
+    public Account addRecipeToFavorite(Account account, Recipe recipe) {
+        account.getRecipeLikedList().add(recipe);
+        return this.accountRepository.save(account);
     }
 
     @Override
-    public boolean addIngredientToFridge(String ingredientId, String accountId) {
-        //return this.accountRepository.addIngredientToIngredientList(ingredientId, accountId);
-        return false;
+    public boolean addIngredientToFridge(Ingredient ingredient, Account account, int quantity) {
+
+        Fridge_Id fridgeId = new Fridge_Id(account.getId(), ingredient.getId());
+
+        Fridge fridge = Fridge.builder()
+                .id(fridgeId)
+                .account(account)
+                .ingredient(ingredient)
+                .quantity(quantity)
+                .build();
+
+        try {
+            this.fridgeRepository.save(fridge);
+            log.info("Ingredient {} added to fridge for account {}", ingredient.getName(), account.getEmail());
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
     @Override
@@ -87,11 +110,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account getAccount(String accountId) {
-        UUID id = UUID.fromString(accountId);
-        if(this.accountRepository.findById(id).isPresent()) {
-            return this.accountRepository.findById(id).get();
-        }
-        return null;
+    public Account getAccountById(String accountId) {
+        return this.accountRepository.findById(UUID.fromString(accountId)).orElse(null);
     }
 }

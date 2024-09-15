@@ -2,11 +2,13 @@ package com.example.FrigoMiamBack.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Fridge {

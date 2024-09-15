@@ -1,6 +1,8 @@
 package com.example.FrigoMiamBack.interfaces;
 
 import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.entities.Ingredient;
+import com.example.FrigoMiamBack.entities.Recipe;
 
 import java.util.List;
 
@@ -14,14 +16,14 @@ public interface IAccountService {
 
     List<Account> getAccounts();
 
-    Account getAccount(String accountId);
+    Account getAccountById(String accountId);
 
-    boolean updateAccount(Account accountToUpdate);
+    Account updateAccount(Account accountToUpdate);
 
-    boolean deleteAccount(String email, String password);
+    boolean deleteAccount(Account accountToDelete);
 
-    boolean addRecipeToFavorite(String accountId, String recipeId);
+    Account addRecipeToFavorite(Account account, Recipe recipe);
 
-    boolean addIngredientToFridge(String ingredientId, String accountId);
+    boolean addIngredientToFridge(Ingredient ingredient, Account account, int quantity);
 
 }
