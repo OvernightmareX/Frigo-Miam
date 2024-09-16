@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AuthService {
       })
     );
   }
+
 
   login(cred: Pick<User, 'email' | 'password'>): Observable<{ accessToken: string }> {
     return this.http.post<{ accessToken: string }>(`${this.apiUrl}/login`, cred).pipe(
