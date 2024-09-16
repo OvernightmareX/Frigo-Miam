@@ -12,7 +12,7 @@ public interface IIngredientService {
 
     Ingredient addIngredient(Ingredient ingredient);
 
-    boolean deleteIngredient(Ingredient ingredient);
+    boolean deleteIngredient(String id);
 
     Ingredient updateIngredient(Ingredient ingredient);
 

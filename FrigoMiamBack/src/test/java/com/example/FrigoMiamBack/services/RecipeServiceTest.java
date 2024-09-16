@@ -61,7 +61,7 @@ public class RecipeServiceTest {
         Recipe createdRecipe2 = recipeRepository.save(recipe2);
 
         List<Recipe> expected = List.of(createdRecipe, createdRecipe2);
-        List<Recipe> actual = recipeService.findAll();
+        List<Recipe> actual = this.recipeService.findAll();
 
         assertEquals(expected, actual);
     }
@@ -69,7 +69,7 @@ public class RecipeServiceTest {
     @Test
     public void testFindAllRecipes_WhenNoRecipesExist() {
         List<Recipe> expected = new ArrayList<>();
-        List<Recipe> actual = recipeService.findAll();
+        List<Recipe> actual = this.recipeService.findAll();
 
         assertEquals(expected, actual);
     }
