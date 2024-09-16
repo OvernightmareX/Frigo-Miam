@@ -24,24 +24,26 @@
     </div>
     <div class="diet">
       <label for="diet">Régime Alimentaire:</label>
-      @for (diet of dietList ; track dietList){
+
       <select id="diet" [(ngModel)]="user.diet" name="diet">
-        <option value="" disabled selected>Régime alimentaire</option>
-        <option>{{diet}}</option>
+        @for (diet of dietList ; track dietList){
+
+        <option>{{diet.value}}</option>
+          }
       </select>
-        }
+
 
     </div>
       <div class="allergen">
         <label for="allergen">Allergie:</label>
-        @for (allergen of allergenList; track allergenList){
+
         <select id="allergen" [(ngModel)]="user.allergen" name="allergen">
+          @for (allergen of allergenList; track allergenList){
 
-          <option value="" disabled selected>Allergie</option>
-          <option>{{allergen}}</option>
-
-        </select>
+          <option>{{allergen.value}}</option>
           }
+        </select>
+
 
       </div>
 

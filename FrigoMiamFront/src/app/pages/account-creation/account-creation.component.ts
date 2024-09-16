@@ -12,25 +12,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   styleUrl: './account-creation.component.css'
 })
 export class AccountCreationComponent {
-user ={
-  name:'',
-  firstName: '',
-  dateOfBirth:'',
-  phone: '',
-  email:'',
-  diet:'' ,
-  allergen:'',
-  password:'',
-  confirmPassword:'',
-}
-dietList=[
-  { value :'vegetarien' ,label:'vegetarien'},
-  { value : 'végétalien', label:' végétalien '},
-  { value: 'cétogène', label:'cétogène'},
-  { value :"flexitarien", label:'flexitarien'},
-  { value : 'paléolithique', label:'paléolithique'},
-  { value: 'hypocalorique',label:'hypocalorique'},
-]
+  dietList=[
+    { value :'vegetarien' ,label:'vegetarien'},
+    { value : 'végétalien', label:' végétalien '},
+    { value: 'cétogène', label:'cétogène'},
+    { value :"flexitarien", label:'flexitarien'},
+    { value : 'paléolithique', label:'paléolithique'},
+    { value: 'hypocalorique',label:'hypocalorique'},
+  ]
 
   allergenList=[
     { value :'sans lactose' ,label:'sans lactose'},
@@ -38,6 +27,19 @@ dietList=[
     { value:'sans gluten', label:'sans gluten'},
 
   ]
+
+user ={
+  name:'',
+  firstName: '',
+  dateOfBirth:'',
+  phone: '',
+  email:'',
+  diet:this.dietList ,
+  allergen:this.allergenList,
+  password:'',
+  confirmPassword:'',
+}
+
 isSubmitted = false;
 
 constructor() {}
