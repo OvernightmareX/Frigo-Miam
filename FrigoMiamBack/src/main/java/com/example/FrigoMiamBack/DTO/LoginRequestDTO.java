@@ -1,4 +1,4 @@
-package com.example.FrigoMiamBack.entities;
+package com.example.FrigoMiamBack.DTO;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
+public class LoginRequestDTO {
     @NotBlank(message = "email cannot be empty !")
     private String email;
     @NotBlank(message = "password cannot be empty !")
