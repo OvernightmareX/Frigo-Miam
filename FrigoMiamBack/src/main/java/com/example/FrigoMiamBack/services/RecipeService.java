@@ -46,7 +46,7 @@ public class RecipeService implements IRecipeService {
     @Override
     public Recipe addRecipe(Recipe recipe) {
         if(recipe.getId_recipe() != null){
-            throw new ConflictException(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, HttpStatus.CONFLICT, LocalDateTime.now());
+            throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
 
         try {
@@ -62,7 +62,7 @@ public class RecipeService implements IRecipeService {
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         if(!this.recipeRepository.existsById(recipe.getId_recipe())){
-            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {
@@ -74,11 +74,12 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public boolean deleteRecipe(String id) {
+        System.out.println("service" + id);
         if(id == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(this.recipeRepository.existsById(UUID.fromString(id))){
-            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        if(!this.recipeRepository.existsById(UUID.fromString(id))){
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {

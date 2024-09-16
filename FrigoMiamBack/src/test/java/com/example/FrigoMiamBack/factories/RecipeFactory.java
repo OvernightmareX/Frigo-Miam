@@ -26,7 +26,6 @@ public class RecipeFactory {
 
     public static Recipe createDefaultRecipe() {
         Recipe recipe = new Recipe();
-        recipe.setId_recipe(UUID.randomUUID());
         recipe.setTitle("Title");
         recipe.setDescription("Description");
         recipe.setInstructions("Instructions");
