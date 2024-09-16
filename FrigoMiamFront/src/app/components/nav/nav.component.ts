@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-nav',
@@ -11,8 +11,24 @@ import {RouterLink} from "@angular/router";
   styleUrl: './nav.component.css'
 })
 export class NavComponent {
-  isUserMenuOpen=false;
-  toggleMenu(){
-    this.isUserMenuOpen = !this.isUserMenuOpen;
+  isUserMenuOpen = false;
+  isAuthentified: string | null = null;
+
+  constructor(private router: Router) {
+
+  }
+
+  toggleMenu() {
+    if (this.isAuthentified){
+      this.isUserMenuOpen = !this.isUserMenuOpen;
+    }else {
+      this.router.navigate(['/connexion']);
+    }
+
+  }
+
+
+  get checkAuthentification() {
+    return this.isAuthentified = localStorage.getItem("isAuthentified");
   }
 }
