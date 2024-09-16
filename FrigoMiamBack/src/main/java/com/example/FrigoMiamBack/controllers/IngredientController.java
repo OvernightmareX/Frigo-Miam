@@ -50,6 +50,6 @@ public class IngredientController {
 
     @DeleteMapping
     public ResponseEntity<Boolean> deleteIngredient(@Valid @RequestBody Ingredient ingredient) {
-        return new ResponseEntity<>(this.iIngredientService.deleteIngredient(ingredient), HttpStatus.OK);
+        return new ResponseEntity<>(this.iIngredientService.deleteIngredient(ingredient.getId().toString()), HttpStatus.OK);
     }
 }

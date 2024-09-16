@@ -29,10 +29,6 @@ public class IngredientService implements IIngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public IngredientService(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
-    }
-
     @Override
     public List<Ingredient> getAllIngredients() {
         return this.ingredientRepository.findAll();
