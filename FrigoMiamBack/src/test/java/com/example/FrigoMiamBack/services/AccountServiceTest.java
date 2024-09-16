@@ -151,7 +151,7 @@ public class AccountServiceTest {
 
     @Test
     public void testAddRecipeToFavorite_WhenAccountDoesNotExist(){
-        Account accountDefault = AccountFactory.createDefaultAccount();
+        Account accountDefault = AccountFactory.createAccountWithId(UUID.randomUUID());
 
         Recipe recipeDefault = RecipeFactory.createDefaultRecipe();
         Recipe savedRecipe = this.recipeRepository.save(recipeDefault);
@@ -160,7 +160,7 @@ public class AccountServiceTest {
 
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
     }
-    //TODO Tests si la recette n'existe pas, si le compte n'existe pas
+
 
     @Test
     public void testAddIngredientToFridgeSuccess(){
