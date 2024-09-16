@@ -5,6 +5,8 @@ import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
+import com.example.FrigoMiamBack.exceptions.NotFoundException;
+import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.IngredientFactory;
 import com.example.FrigoMiamBack.factories.RecipeFactory;
@@ -41,12 +43,11 @@ public class AccountServiceTest {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-
     private AccountService accountService;
 
     @BeforeEach
     public void setup() {
-        accountService = new AccountService(accountRepository, fridgeRepository);
+        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository);
     }
 
     @Test
@@ -68,12 +69,14 @@ public class AccountServiceTest {
         Account account = AccountFactory.createDefaultAccount();
         Account createdAccount = accountService.createAccount(account);
 
-        //TODO add test for other attributes
         assertNotNull(createdAccount.getId());
         assertEquals(account.getFirstname(), createdAccount.getFirstname());
         assertEquals(account.getLastname(), createdAccount.getLastname());
         assertEquals(account.getPassword(), createdAccount.getPassword());
         assertEquals(account.getEmail(), createdAccount.getEmail());
+        assertEquals(account.getBirthdate(), createdAccount.getBirthdate());
+        assertEquals(account.getAllergies(), createdAccount.getAllergies());
+        assertEquals(account.getDiets(), createdAccount.getDiets());
     }
 
     @Test
@@ -112,7 +115,52 @@ public class AccountServiceTest {
         assertEquals(createdRecipe, accountUpdated.getRecipeLikedList().get(0));
     }
 
-    //TODO add test to AddRecipeToFavorite (when account.id is null, when recipe.id is null, etc
+    @Test
+    public void testAddRecipeToFavorite_WithoutAccountId(){
+        Account accountDefault = AccountFactory.createDefaultAccount();
+        Recipe recipeDefault = RecipeFactory.createDefaultRecipe();
+        Recipe createdRecipe = this.recipeRepository.save(recipeDefault);
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.accountService.addRecipeToFavorite(accountDefault, createdRecipe));
+
+        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddRecipeToFavorite_WithoutRecipeId(){
+        Account accountDefault = AccountFactory.createDefaultAccount();
+        Account savedAccount = this.accountService.createAccount(accountDefault);
+        Recipe recipeDefault = RecipeFactory.createDefaultRecipe();
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.accountService.addRecipeToFavorite(savedAccount, recipeDefault));
+
+        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddRecipeToFavorite_WhenRecipeDoesNotExist(){
+        Account accountDefault = AccountFactory.createDefaultAccount();
+        Account savedAccount = this.accountService.createAccount(accountDefault);
+
+        Recipe recipeDefault = RecipeFactory.createRecipeWithId(UUID.randomUUID());
+
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.accountService.addRecipeToFavorite(savedAccount, recipeDefault));
+
+        assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddRecipeToFavorite_WhenAccountDoesNotExist(){
+        Account accountDefault = AccountFactory.createDefaultAccount();
+
+        Recipe recipeDefault = RecipeFactory.createDefaultRecipe();
+        Recipe savedRecipe = this.recipeRepository.save(recipeDefault);
+
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.accountService.addRecipeToFavorite(accountDefault, savedRecipe));
+
+        assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
+    }
+    //TODO Tests si la recette n'existe pas, si le compte n'existe pas
 
     @Test
     public void testAddIngredientToFridgeSuccess(){

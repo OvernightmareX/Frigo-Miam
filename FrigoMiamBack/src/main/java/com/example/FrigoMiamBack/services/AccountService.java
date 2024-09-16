@@ -24,13 +24,12 @@ public class AccountService implements IAccountService {
 
     private final AccountRepository accountRepository;
     private final FridgeRepository fridgeRepository;
-//    private final RecipeRepository recipeRepository;
+    private final RecipeRepository recipeRepository;
 
-    public AccountService(AccountRepository accountRepository, FridgeRepository fridgeRepository) {
+    public AccountService(AccountRepository accountRepository, FridgeRepository fridgeRepository, RecipeRepository recipeRepository) {
         this.accountRepository = accountRepository;
         this.fridgeRepository = fridgeRepository;
-//        this.recipeRepository = recipeRepository();
-
+        this.recipeRepository = recipeRepository;
     }
 
     @Override
@@ -82,8 +81,6 @@ public class AccountService implements IAccountService {
         try {
             return this.accountRepository.save(accountToUpdate);
         } catch (Exception e) {
-            //TODO créer exception personnalisée
-            System.err.println(e.getMessage());
             return null;
         }
     }
@@ -113,10 +110,19 @@ public class AccountService implements IAccountService {
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
-        //TODO GERER LES EXCEPTIONS EN CAS DE PB AVEC RECIPE (NEED RECIPE REPO)
+        if(recipe.getId_recipe() == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!this.recipeRepository.existsById(recipe.getId_recipe())){
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
 
-        account.getRecipeLikedList().add(recipe);
-        return this.accountRepository.save(account);
+        try {
+            account.getRecipeLikedList().add(recipe);
+            return this.accountRepository.save(account);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -149,7 +155,6 @@ public class AccountService implements IAccountService {
             log.info("Ingredient {} added to fridge for account {}", ingredient.getName(), account.getEmail());
             return true;
         } catch (Exception e) {
-            //TODO FAIRE EXCEPTION PERSONNALISEE
             return false;
         }
     }
