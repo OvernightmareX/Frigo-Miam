@@ -11,5 +11,8 @@ import {RouterLink} from "@angular/router";
   styleUrl: './nav.component.css'
 })
 export class NavComponent {
-
+  isUserMenuOpen=false;
+  toggleMenu(){
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
 }

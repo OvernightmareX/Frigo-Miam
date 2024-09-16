@@ -2,16 +2,19 @@ package com.example.FrigoMiamBack.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account_Recipe {
+public class Fridge {
+
     @EmbeddedId
-    private Account_Recipe_Id id = new Account_Recipe_Id();
+    private Fridge_Id id = new Fridge_Id();
 
     @ManyToOne
     @MapsId("accountId")
@@ -19,9 +22,9 @@ public class Account_Recipe {
     private Account account;
 
     @ManyToOne
-    @MapsId("recipeId")
-    @JoinColumn(name = "recipe_id")
-    private Recipe recipe;
+    @MapsId("ingredientId")
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
-    private int rate;
+    private double quantity;
 }

@@ -10,9 +10,9 @@ import java.util.UUID;
 
 @Embeddable
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Account_Ingredient_Id implements Serializable {
+@AllArgsConstructor
+public class Grade_Recipe_Id implements Serializable {
     private UUID accountId;
-    private UUID ingredientId;
+    private UUID recipeId;
 }

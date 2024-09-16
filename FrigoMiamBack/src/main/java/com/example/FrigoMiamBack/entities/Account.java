@@ -3,7 +3,10 @@ package com.example.FrigoMiamBack.entities;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,20 +14,26 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id_account;
-
+    private UUID id;
+    @NotBlank
     private String firstname;
+    @NotBlank
     private String lastname;
-    private LocalDate birthdate;
+    @Email
+    @NotBlank
+    @Column(unique = true)
     private String email;
+    @NotBlank
     private String password;
+    private LocalDate birthdate;
     private Allergy allergies;
     private Diet diets;
 
@@ -33,13 +42,13 @@ public class Account {
     private Role role;
 
     @OneToMany(mappedBy = "account")
-    private List<Account_Ingredient> accountIngredientsList;
+    private List<Fridge> accountIngredientsList;
 
     @OneToMany(mappedBy = "account")
     private List<Recipe> recipeCreatedList;
 
     @OneToMany(mappedBy = "account")
-    private List<Account_Recipe> accountRecipeList;
+    private List<Grade_Recipe> accountRecipeList;
 
     @ManyToMany
     @JoinTable(name = "account_likes_recipe",
