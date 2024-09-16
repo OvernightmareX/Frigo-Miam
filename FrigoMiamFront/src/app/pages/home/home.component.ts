@@ -53,7 +53,7 @@ export class HomeComponent {
   ]
 
   addIngredient(addedIngredient: string): void {
-    this.allUserIngredients.push(addedIngredient)
+    this.allUserIngredients.push(addedIngredient);
     this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
@@ -63,23 +63,23 @@ export class HomeComponent {
   recipeIngredientMatching(): RecipeCard[]{
     let recipesFiltered: RecipeMatched[] = [];
 
-    this.recipes.forEach(baseRecepe => {   // pour toutes les recettes de base
+    this.recipes.forEach(baseRecepe => {                          // pour toutes les recettes de base
 
-      this.allUserIngredients.forEach(userIngredient => {   // on regarde pour chaque ingrédient ajouté par l'utilisateur
-        if (baseRecepe.ingredients.includes(userIngredient)) {   // s'il est contenu dans la liste des ingrédients de la recette
+      this.allUserIngredients.forEach(userIngredient => {         // on regarde pour chaque ingrédient ajouté par l'utilisateur
+        if (baseRecepe.ingredients.includes(userIngredient)) {    // s'il est contenu dans la liste des ingrédients de la recette
 
-          const foundRecipe = recipesFiltered.find(recepeFound => recepeFound.recepe === baseRecepe)   // alors on regarde dans notre liste de recette qui match si recep existe dedans
-          if(foundRecipe) {                                 // si la recette est déjà ajouté à la liste des recettes qui match
-            foundRecipe.commonIngredientCount += 1;         // on ajoute 1 à son nombre d'ingrédient qui match
-          } else {                                          // sinon on ajoute la recette à la liste des recettes qui match
+          const foundRecipe = recipesFiltered.find(recepeFound => recepeFound.recepe === baseRecepe);   // alors on regarde dans notre liste de recette qui match si recep existe dedans
+          if(foundRecipe) {                                       // si la recette est déjà ajouté à la liste des recettes qui match
+            foundRecipe.commonIngredientCount += 1;               // on ajoute 1 à son nombre d'ingrédient qui match
+          } else {                                                // sinon on ajoute la recette à la liste des recettes qui match
             recipesFiltered.push({
               "commonIngredientCount": 1,
               "recepe": baseRecepe
             });
           }
         }
-      })
-    })
+      });
+    });
     // on a donc récupérer toutes les recettes ayant au moins un ingrédient qui match
 
     recipesFiltered = recipesFiltered.sort((a, b) => b.commonIngredientCount - a.commonIngredientCount);   // on trie par nombre d'ingrédients qui match.
@@ -95,6 +95,8 @@ export class HomeComponent {
       description: recipeMatched.recepe.description
     }));
   }
+
+
 /*
   // find all recipe that have STRICTLY the ingredient list
   recipeIngredientMatchingStrict(): RecipeCard[]{
