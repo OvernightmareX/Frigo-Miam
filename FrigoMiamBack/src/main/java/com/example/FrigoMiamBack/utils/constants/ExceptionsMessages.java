@@ -9,4 +9,11 @@ public class ExceptionsMessages {
     public static final String TOKEN_NULL_CANNOT_VALIDATE_TOKEN = "validateToken:: Token is null.";
     public static final String ACCOUNT_DOES_NOT_EXIST = "updateAccount:: No account found.";
     public static final String WRONG_PARAMETERS = "update:: Wrong parameters.";
+
+    public static final String RECIPE_ALREADY_EXIST = "createRecipe:: Recipe already exists.";
+    public static final String RECIPE_DOES_NOT_EXIST = "updateRecipe:: No recipe found.";
+
+    public static final String INGREDIENT_ALREADY_EXIST = "createIngredient:: Ingredient already exists.";
+    public static final String INGREDIENT_DOES_NOT_EXIST = "updateIngredient:: No ingredient found.";
+
 }
