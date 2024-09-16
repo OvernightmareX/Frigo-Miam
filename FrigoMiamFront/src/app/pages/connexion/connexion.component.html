@@ -1,15 +1,18 @@
 <div class="connexionUser">
   <h1>Se connecter</h1>
-<form>
-  <div class="ID-User">
-    <label for="id-user">Identifiant utilisateur : </label>
-    <input type="text" id="id-user" placeholder="Veuillez entrez votre identifiant" required>
+<form [formGroup]="formConnect" (ngSubmit)="connectSubmit()" >
+  <div class="email">
+    <label for="email">Identifiant utilisateur : </label>
+    <input type="email" id="email" placeholder="Veuillez entrez votre identifiant"  formControlName="id-user" required>
 
   </div>
   <div class="pass-User">
     <label for="password">Mot de passe: </label>
-    <input type="password" id="password" placeholder="Veuillez entrez votre mot de passe" required>
+    <input type="password" id="password" placeholder="Veuillez entrez votre mot de passe" formControlName="password" required>
 
+  </div>
+  <div>
+    <button type="submit">Connexion</button>
   </div>
 </form>
 
