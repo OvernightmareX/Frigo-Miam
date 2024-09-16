@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.UUID;
+
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class RecipeServiceTest {
@@ -26,6 +28,10 @@ public class RecipeServiceTest {
 
     @Test
     public void testFindRecipe_WhenRecipeExists(){
+        UUID id = UUID.randomUUID();
+        Recipe recipe = RecipeFactory.createRecipeWithId(id);
+        recipeRepository.save(recipe);
 
+        assertTrue(recipeService.findByID(id));
     }
 }

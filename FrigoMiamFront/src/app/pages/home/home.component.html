@@ -1,6 +1,8 @@
-<div>Bannière</div>
-<header>
 
-</header>
-
-<app-ingredient-search></app-ingredient-search>
+<app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
+<app-ingredient-list [ingredientList]="allUserIngredients"></app-ingredient-list>
+<div>
+  @for(recipe of allRecipeCardsData; track recipe){
+    <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
+  }
+</div>
