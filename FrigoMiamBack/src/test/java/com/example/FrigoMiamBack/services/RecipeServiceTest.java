@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -18,7 +21,6 @@ public class RecipeServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @Autowired
     private RecipeService recipeService;
 
     @BeforeEach
@@ -28,10 +30,22 @@ public class RecipeServiceTest {
 
     @Test
     public void testFindRecipe_WhenRecipeExists(){
-        UUID id = UUID.randomUUID();
-        Recipe recipe = RecipeFactory.createRecipeWithId(id);
-        recipeRepository.save(recipe);
+        Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
+        Recipe createdRecipe = recipeRepository.save(recipe);
 
-        assertTrue(recipeService.findByID(id));
+        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId_recipe().toString());
+
+        assertEquals(foundRecipe, createdRecipe);
     }
+
+    @Test
+    public void testFindRecipe_WhenRecipeDoesNotExist(){
+        Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
+
+        Recipe foundRecipe = recipeService.findByID(UUID.randomUUID().toString());
+
+        assertNotEquals(foundRecipe, recipe);
+    }
+
+
 }
