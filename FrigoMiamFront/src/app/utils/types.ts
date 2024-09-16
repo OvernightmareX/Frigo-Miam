@@ -8,3 +8,8 @@ export type RecipeCard = {
   nom: string,
   description: string
 }
+
+export type RecipeMatched = {
+  "commonIngredientCount": number,
+  "recepe": Recipe
+}
