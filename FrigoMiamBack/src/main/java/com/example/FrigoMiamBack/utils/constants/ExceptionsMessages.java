@@ -11,5 +11,4 @@ public class ExceptionsMessages {
 
     public static final String INGREDIENT_ALREADY_EXIST = "createIngredient:: Ingredient already exists.";
     public static final String INGREDIENT_DOES_NOT_EXIST = "updateIngredient:: No ingredient found.";
-
 }
