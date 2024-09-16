@@ -1,11 +1,18 @@
 package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Ingredient;
+import com.example.FrigoMiamBack.exceptions.ConflictException;
+import com.example.FrigoMiamBack.exceptions.NotFoundException;
+import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IIngredientService;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
+import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class IngredientService implements IIngredientService {
@@ -17,36 +24,56 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public boolean addIngredient(Ingredient ingredient) {
+    public Ingredient getIngredientById(String id) {
+        if(id == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        return this.ingredientRepository.findById(UUID.fromString(id)).orElse(null);
+    }
+
+    @Override
+    public Ingredient addIngredient(Ingredient ingredient) {
+        if(ingredient.getId() != null){
+            throw new ConflictException(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, HttpStatus.CONFLICT, LocalDateTime.now());
+        }
+
         try {
-            this.ingredientRepository.save(ingredient);
-            return true;
+            return this.ingredientRepository.save(ingredient);
         } catch (Exception e) {
-            //TODO faire exception personnalisée
-            return false;
+            return null;
         }
     }
 
     @Override
     public boolean deleteIngredient(Ingredient ingredient) {
+        if(ingredient.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!ingredientRepository.existsById(ingredient.getId())){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+
         try {
             this.ingredientRepository.delete(ingredient);
             return true;
         } catch (Exception e) {
-            //TODO faire exception personnalisée
             return false;
         }
     }
 
     @Override
-    public boolean updateIngredient(Ingredient ingredient) {
+    public Ingredient updateIngredient(Ingredient ingredient) {
+        if(ingredient.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!ingredientRepository.existsById(ingredient.getId())){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+
         try {
-            this.ingredientRepository.save(ingredient);
-            return true;
+            return this.ingredientRepository.save(ingredient);
         } catch (Exception e) {
-            //TODO faire exception personnalisée
-            System.err.println(e.getMessage());
-            return false;
+            return null;
         }
     }
 

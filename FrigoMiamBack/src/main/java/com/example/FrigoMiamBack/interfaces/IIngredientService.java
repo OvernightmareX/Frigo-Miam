@@ -8,11 +8,13 @@ public interface IIngredientService {
 
     List<Ingredient> getAllIngredients();
 
-    boolean addIngredient(Ingredient ingredient);
+    Ingredient getIngredientById(String id);
+
+    Ingredient addIngredient(Ingredient ingredient);
 
     boolean deleteIngredient(Ingredient ingredient);
 
-    boolean updateIngredient(Ingredient ingredient);
+    Ingredient updateIngredient(Ingredient ingredient);
 
     List<Ingredient> getFridge(String accountId);
 }
