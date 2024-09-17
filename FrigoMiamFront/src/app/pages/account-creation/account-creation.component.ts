@@ -53,10 +53,22 @@ return this.isSubmitted && this.user.password.length <5;
 
   }
   submitAccount(){
+
     this.isSubmitted = true;
     if (!this.passwordHasError && !this.confirmPasswordHasError){
-      this.userService.setUser(this.user);
-      console.log(this.user)
+      console.log(`user from formular: ${this.user}`);
+
+      // todo modifier le user pour que ça fit
+
+      this.userService.createUser().subscribe({
+        next: userFromBack => {
+          console.log(`userFromBack: ${userFromBack}`)
+          // localStorage.setItem('allIngredients', JSON.stringify(ingredients));
+        },
+        error: err => {
+          console.error('Erreur lors de la récupération des ingrédients', err);
+        }
+      })
     }
 
 }

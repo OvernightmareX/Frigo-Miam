@@ -1,13 +1,36 @@
 import { Injectable } from '@angular/core';
-import {User} from "../utils/types";
+import {IngredientBack, User} from "../utils/types";
+import {HttpClient} from "@angular/common/http";
+import {catchError, Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
- private user: User;
+ private user?: User;
+  apiUrl = 'http://localhost:8080/account';
 
-  constructor() { }
+  createUserBody = {
+    "firstname": "string",
+    "lastname": "string",
+    "email": "string@est.com",
+    "password": "string",
+    "birthdate": "2024-09-17",
+    "allergies": "DAIRY",
+    "diets": "VEGETARIAN"
+  }
+
+
+  constructor(private http: HttpClient) { }
+
+  createUser(): Observable<User>{
+    return this.http.post<User>(this.apiUrl, { "query_string": this.createUserBody}).pipe(
+      catchError(error => {
+        alert(error.message);
+        return of({} as User);
+      })
+    );
+  }
 
   getUser(){
     return this.user;

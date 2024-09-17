@@ -11,10 +11,18 @@ import {User} from "../../utils/types";
 })
 export class ProfilComponent {
 
-  user: User;
+  user: User = {
+    "lastname": "",
+    "firstName": "",
+    "birthdate": new Date(),
+    "email": "",
+    "diets": [],
+    "allergies": [],
+    "password": "",
+  };
 
   constructor(private userService: UserService) {
-    this.user = userService.getUser();
+   // this.user = userService.getUser();
   }
 //todo: ngoninit appeler une methode sur service user, getUser devient getuserdata
   updateBtn(){
