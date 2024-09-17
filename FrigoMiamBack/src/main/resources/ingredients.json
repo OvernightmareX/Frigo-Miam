@@ -1,0 +1,482 @@
+[
+  {
+    "name": "Chicken Breast",
+    "unit": "KG",
+    "typeIngredient": "MEAT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Salmon",
+    "unit": "KG",
+    "typeIngredient": "FISH",
+    "allergy": "FISH",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Carrot",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Apple",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Black Pepper",
+    "unit": "PINCH",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Basil",
+    "unit": "GR",
+    "typeIngredient": "HERB",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Shrimp",
+    "unit": "KG",
+    "typeIngredient": "SEAFOOD",
+    "allergy": "SEAFOOD",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Spaghetti",
+    "unit": "GR",
+    "typeIngredient": "PASTA",
+    "allergy": "GLUTEN",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Rice",
+    "unit": "GR",
+    "typeIngredient": "RICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Parmesan Cheese",
+    "unit": "GR",
+    "typeIngredient": "CHEESE",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Tomato",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Garlic",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Olive Oil",
+    "unit": "ML",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Milk",
+    "unit": "L",
+    "typeIngredient": "DAIRY",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Butter",
+    "unit": "GR",
+    "typeIngredient": "DAIRY",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cashews",
+    "unit": "GR",
+    "typeIngredient": "CEREALS",
+    "allergy": "NUTS",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Egg",
+    "unit": "UNIT",
+    "typeIngredient": "DAIRY",
+    "allergy": "EGGS",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Soy Sauce",
+    "unit": "ML",
+    "typeIngredient": "SPICE",
+    "allergy": "SOY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Tuna",
+    "unit": "KG",
+    "typeIngredient": "FISH",
+    "allergy": "FISH",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Chili Powder",
+    "unit": "PINCH",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Oregano",
+    "unit": "GR",
+    "typeIngredient": "HERB",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Rice Noodles",
+    "unit": "GR",
+    "typeIngredient": "PASTA",
+    "allergy": "GLUTEN",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Avocado",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Quinoa",
+    "unit": "GR",
+    "typeIngredient": "CEREALS",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Pineapple",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Beef",
+    "unit": "KG",
+    "typeIngredient": "MEAT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Coconut Milk",
+    "unit": "ML",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Mushrooms",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Broccoli",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Honey",
+    "unit": "ML",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Ground Beef",
+    "unit": "KG",
+    "typeIngredient": "MEAT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Pork Loin",
+    "unit": "KG",
+    "typeIngredient": "MEAT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Turkey Breast",
+    "unit": "KG",
+    "typeIngredient": "MEAT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Lamb Chops",
+    "unit": "KG",
+    "typeIngredient": "MEAT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Tilapia",
+    "unit": "KG",
+    "typeIngredient": "FISH",
+    "allergy": "FISH",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cod",
+    "unit": "KG",
+    "typeIngredient": "FISH",
+    "allergy": "FISH",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Eggplant",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Zucchini",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Lettuce",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cucumber",
+    "unit": "GR",
+    "typeIngredient": "VEGETABLE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Blueberries",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Strawberries",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Lime",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Lemon",
+    "unit": "GR",
+    "typeIngredient": "FRUIT",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cayenne Pepper",
+    "unit": "PINCH",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cumin",
+    "unit": "PINCH",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Turmeric",
+    "unit": "PINCH",
+    "typeIngredient": "SPICE",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Parsley",
+    "unit": "GR",
+    "typeIngredient": "HERB",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Rosemary",
+    "unit": "GR",
+    "typeIngredient": "HERB",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Thyme",
+    "unit": "GR",
+    "typeIngredient": "HERB",
+    "allergy": null,
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Crab",
+    "unit": "KG",
+    "typeIngredient": "SEAFOOD",
+    "allergy": "SEAFOOD",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Clams",
+    "unit": "KG",
+    "typeIngredient": "SEAFOOD",
+    "allergy": "SEAFOOD",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Linguine",
+    "unit": "GR",
+    "typeIngredient": "PASTA",
+    "allergy": "GLUTEN",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Fusilli",
+    "unit": "GR",
+    "typeIngredient": "PASTA",
+    "allergy": "GLUTEN",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Oats",
+    "unit": "GR",
+    "typeIngredient": "CEREALS",
+    "allergy": "GLUTEN",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Almonds",
+    "unit": "GR",
+    "typeIngredient": "CEREALS",
+    "allergy": "NUTS",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cheddar Cheese",
+    "unit": "GR",
+    "typeIngredient": "CHEESE",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Goat Cheese",
+    "unit": "GR",
+    "typeIngredient": "CHEESE",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Cottage Cheese",
+    "unit": "GR",
+    "typeIngredient": "CHEESE",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  },
+  {
+    "name": "Mozzarella",
+    "unit": "GR",
+    "typeIngredient": "CHEESE",
+    "allergy": "DAIRY",
+    "accountIngredientsList": [],
+    "recipeIngredientsList": []
+  }
+]

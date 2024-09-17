@@ -4,8 +4,18 @@
       <a routerLink="/" class="text-gray-800 hover:text-blue-500">Accueil</a>
     </li>
     <li class="relative">
-      <button (click)="toggleMenu()" class="text-gray-800 hover:text-blue-500">User</button>
-      @if (isUserMenuOpen ){
+      @if (!isAuthentified) {
+
+
+        <li>
+          <a routerLink="/connexion">Se connecter</a>
+        </li>
+      } @else {
+        <button (click)="toggleMenu()" class="text-gray-800 hover:text-blue-500"  >User</button>
+      }
+
+
+      @if (isUserMenuOpen && isAuthentified ){
         <ul  class="">
 
           <li><a routerLink="/profile" class=" ">Profil</a></li>
@@ -13,6 +23,7 @@
           <li><a routerLink="/recette" class="">Recette</a></li>
         </ul>
       }
+
 
     </li>
     <li>
