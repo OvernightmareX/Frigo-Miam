@@ -14,7 +14,6 @@ public interface IRecipeService {
     Recipe updateRecipe(Recipe recipe);
     boolean deleteRecipe(String id);
 
-
 //    List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets);
 //
 //    int getAverageGrade(String recipeId);

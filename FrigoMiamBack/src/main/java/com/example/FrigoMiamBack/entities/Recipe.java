@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id_recipe;
+    private UUID id;
     private String title;
     private String description;
     private String instructions;

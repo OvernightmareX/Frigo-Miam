@@ -32,12 +32,6 @@ public class IngredientController {
         return new ResponseEntity<>(this.iIngredientService.getIngredientById(id), HttpStatus.OK);
     }
 
-//    @GetMapping(ApiUrls.FRIDGE)
-//    public ResponseEntity<List<Ingredient>> getFridge(@Valid @RequestBody Account account) {
-//        //TODO A tester !!!
-//        return new ResponseEntity<>(this.iIngredientService.getFridge(account.getId().toString()), HttpStatus.CREATED);
-//    }
-
     @PostMapping
     public ResponseEntity<Ingredient> addIngredient(@Valid @RequestBody Ingredient ingredient) {
         return new ResponseEntity<>(this.iIngredientService.addIngredient(ingredient), HttpStatus.CREATED);
