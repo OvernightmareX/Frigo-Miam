@@ -1,1 +1,15 @@
-<p>recette works!</p>
+<div>
+  <img>
+  <hr>
+  <div>
+    <label for="peapleNbr">Nombre de personne:</label>
+    <input type="number" id="peapleNbr" name="peapleNbr" value="{{inputValue}}">
+  </div>
+  <app-ingredient-list-home [ingredientList]="ingredientRecipeList"></app-ingredient-list-home>
+  <div>{{ recipeDescription }}</div>
+  <div>
+    <label for="userNote">Votre note:</label>
+    <input type="number" id="userNote" name="userNote" value="{{userNote}}">
+  </div>
+  <div>La note de tout le monde: {{ averageNote }}</div>
+</div>

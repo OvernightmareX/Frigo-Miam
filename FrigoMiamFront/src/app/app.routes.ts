@@ -16,7 +16,7 @@ export const routes: Routes = [
   {path: 'connexion', component: ConnexionComponent},
   {path: 'frigo', component: FrigoComponent},
   {path: 'inscription', component: AccountCreationComponent},
-  {path: 'recette', component: RecetteComponent},
+  {path: 'recette/:name', component: RecetteComponent}, //
   {path: '**' , component:NotFound404Component},
 ];
 
