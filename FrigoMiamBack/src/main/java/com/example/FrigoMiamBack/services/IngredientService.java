@@ -95,20 +95,4 @@ public class IngredientService implements IIngredientService {
             return null;
         }
     }
-
-    @PostConstruct
-    private void loadJSONIngredient() throws IOException {
-        // Use InputStream to load the resource inside the JAR
-        InputStream inputStream = getClass().getResourceAsStream("/ingredients.json");
-
-        if (inputStream == null) {
-            throw new IOException("File not found: ingredients.json");
-        }
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Ingredient> ingredients = objectMapper.readValue(reader, new TypeReference<List<Ingredient>>() {});
-            ingredientRepository.saveAll(ingredients);
-        }
-    }
 }

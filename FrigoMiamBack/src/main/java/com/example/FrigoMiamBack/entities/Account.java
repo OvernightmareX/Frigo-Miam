@@ -35,14 +35,14 @@ public class Account {
     private Allergy allergies;
     private Diet diets;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
     private Role role;
 
     @OneToMany(mappedBy = "account",  cascade = CascadeType.ALL)
     private List<Fridge> accountIngredientsList;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Recipe> recipeCreatedList;
 
     @OneToMany(mappedBy = "account")
@@ -53,4 +53,23 @@ public class Account {
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id"))
     private List<Recipe> recipeLikedList;
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", birthdate=" + birthdate +
+                ", allergies=" + (allergies != null ? allergies : "none") +
+                ", diets=" + (diets != null ? diets : "none") +
+                ", role=" + (role != null ? role.getName() : "none") +
+                ", accountIngredientsListSize=" + (accountIngredientsList != null ? accountIngredientsList.size() : 0) +
+                ", recipeCreatedListSize=" + (recipeCreatedList != null ? recipeCreatedList.size() : 0) +
+                ", accountRecipeListSize=" + (accountRecipeList != null ? accountRecipeList.size() : 0) +
+                ", recipeLikedListSize=" + (recipeLikedList != null ? recipeLikedList.size() : 0) +
+                '}';
+    }
+
 }
