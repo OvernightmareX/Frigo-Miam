@@ -1,14 +1,10 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IIngredientService;
-import com.example.FrigoMiamBack.repositories.AccountRepository;
-import com.example.FrigoMiamBack.repositories.FridgeRepository;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -27,14 +23,10 @@ import java.util.UUID;
 
 @Service
 public class IngredientService implements IIngredientService {
-    private final AccountRepository accountRepository;
     private final IngredientRepository ingredientRepository;
 
-
-    public IngredientService(IngredientRepository ingredientRepository, AccountRepository accountRepository) {
+    public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
-        this.accountRepository = accountRepository;
-
     }
 
     @Override
@@ -45,7 +37,7 @@ public class IngredientService implements IIngredientService {
     @Override
     public Ingredient getIngredientById(String id) {
         if(id == null){
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         return this.ingredientRepository.findById(UUID.fromString(id)).orElse(null);
     }
@@ -66,10 +58,10 @@ public class IngredientService implements IIngredientService {
     @Override
     public boolean deleteIngredient(String id) {
         if(id == null){
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         if(!ingredientRepository.existsById(UUID.fromString(id))){
-            throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            throw new NotFoundException(ExceptionsMessages.NO_INGREDIENT_FOUND_CANNOT_DELETE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {

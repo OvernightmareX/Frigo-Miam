@@ -1,17 +1,11 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
-import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.IngredientFactory;
-import com.example.FrigoMiamBack.repositories.AccountRepository;
-import com.example.FrigoMiamBack.repositories.FridgeRepository;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
-import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,25 +28,9 @@ public class IngredientServiceTest {
 
     private IngredientService ingredientService;
 
-    @Autowired
-    private FridgeRepository fridgeRepository;
-
-    @Autowired
-    private RecipeRepository recipeRepository;
-
-    private RecipeService recipeService;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    private AccountService accountService;
-
-
     @BeforeEach
     public void setup() {
-        ingredientService = new IngredientService(ingredientRepository, accountRepository);
-        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
-
+        ingredientService = new IngredientService(ingredientRepository);
     }
 
     @Test
@@ -101,7 +79,7 @@ public class IngredientServiceTest {
     public void testFindIngredient_WithoutIngredientId(){
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.getIngredientById(null));
 
-        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_INGREDIENT, thrown.getMessage());
     }
 
     @Test
@@ -139,14 +117,14 @@ public class IngredientServiceTest {
     public void testDeleteIngredient_WhenIngredientDoesNotExist(){
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.ingredientService.deleteIngredient(UUID.randomUUID().toString()));
 
-        assertEquals(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, thrown.getMessage());
+        assertEquals(ExceptionsMessages.NO_INGREDIENT_FOUND_CANNOT_DELETE, thrown.getMessage());
     }
 
     @Test
     public void testDeleteIngredient_WithoutIngredientId(){
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.deleteIngredient(null));
 
-        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_INGREDIENT, thrown.getMessage());
     }
 
     @Test

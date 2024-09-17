@@ -9,7 +9,7 @@ public class ExceptionsMessages {
     public static final String ACCOUNT_NULL_CANNOT_VALIDATE_TOKEN = "validateToken:: Account is null.";
     public static final String TOKEN_NULL_CANNOT_VALIDATE_TOKEN = "validateToken:: Token is null.";
 
-    // CORRECTION DES MESSAGES D'EXCEPTION
+    // ACCOUNT EXCEPTIONS
     public static final String EMPTY_ID_CANNOT_FIND_ACCOUNT = "findAccount:: Account id is empty.";
     public static final String EMPTY_ID_CANNOT_UPDATE_ACCOUNT = "updateAccount:: Account id is empty.";
     public static final String NO_ACCOUNT_FOUND_CANNOT_UPDATE = "updateAccount:: Account not found.";
@@ -31,6 +31,12 @@ public class ExceptionsMessages {
     public static final String EMPTY_ACCOUNT_ID_CANNOT_FIND_FRIDGE = "findFridge:: Account id is empty.";
     public static final String NO_ACCOUNT_FOUND_CANNOT_FIND_FRIDGE = "findFridge:: Account not found.";
     // ACCOUNT MESSAGES EXCEPTION OK
+
+    // INGREDIENTS EXCEPTIONS
+    public static final String EMPTY_ID_CANNOT_FIND_INGREDIENT = "findIngredient:: Ingredient id is empty.";
+    public static final String EMPTY_ID_CANNOT_DELETE_INGREDIENT = "deleteIngredient:: Ingredient id is empty.";
+    public static final String NO_INGREDIENT_FOUND_CANNOT_DELETE = "deleteIngredient:: Ingredient not found.";
+    // CONTINUER A UPDATE INGREDIENT
 
 
     public static final String ACCOUNT_DOES_NOT_EXIST = "updateAccount:: No account found.";
