@@ -16,13 +16,12 @@ export type RecipeMatched = {
 }
 
 export type User = {
-  name?: string,
+  lastname?: string,
   firstName?: string,
-  dateOfBirth?: Date,
-  phone?: string,
+  birthdate?: Date,
   email: string,
-  diet?: string[],
-  allergen?: string[],
+  diets?: string[],
+  allergies?: string[],
   password: string,
 
 }

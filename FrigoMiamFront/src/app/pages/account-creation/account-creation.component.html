@@ -2,30 +2,27 @@
   <h1>Création de compte</h1>
   <div class="register">
     <form  (ngSubmit)="submitAccount()">
-    <div class="name">
-      <label for="name">Nom:</label>
-      <input type="text" id="name" [(ngModel)]="user.name" name="name" required>
+    <div class="lastname">
+      <label for="lastname">Nom:</label>
+      <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
     </div>
     <div class="firstName">
       <label for="firstName">Prénom:</label>
       <input type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" required>
     </div>
-    <div class="dateOfBirth">
-      <label for="dateOfBirth">Date de naissance:</label>
-      <input type="date" id="dateOfBirth" [(ngModel)]="user.dateOfBirth" name="dateOfBirth">
+    <div class="birthdate">
+      <label for="birthdate">Date de naissance:</label>
+      <input type="date" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate">
     </div>
-    <div class="phone">
-      <label for="phone">Télephone:</label>
-      <input type="tel" id="phone" [(ngModel)]="user.phone" name="phone">
-    </div>
+
     <div class="email">
       <label for="email">Email:</label>
       <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
     </div>
     <div class="diet">
-      <label for="diet">Régime Alimentaire:</label>
+      <label for="diets">Régime Alimentaire:</label>
 
-      <select id="diet" [(ngModel)]="user.diet" name="diet">
+      <select id="diets" [(ngModel)]="user.diets" name="diets">
         @for (diet of dietList ; track dietList){
 
         <option>{{diet.value}}</option>
@@ -35,9 +32,9 @@
 
     </div>
       <div class="allergen">
-        <label for="allergen">Allergie:</label>
+        <label for="allergies">Allergie:</label>
 
-        <select id="allergen" [(ngModel)]="user.allergen" name="allergen">
+        <select id="allergies" [(ngModel)]="user.allergies" name="allergies">
           @for (allergen of allergenList; track allergenList){
 
           <option>{{allergen.value}}</option>

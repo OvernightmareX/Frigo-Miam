@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-account-creation',
@@ -29,21 +30,21 @@ export class AccountCreationComponent {
   ]
 
 user ={
-  name:'',
+  lastname:'',
   firstName: '',
-  dateOfBirth:'',
-  phone: '',
+  birthdate:'',
   email:'',
-  diet:this.dietList ,
-  allergen:this.allergenList,
+  diets:this.dietList ,
+  allergies:this.allergenList,
   password:'',
   confirmPassword:'',
 }
 
 isSubmitted = false;
 
-constructor() {}
-get passwordHasError(){
+constructor(private userService: UserService) {}
+
+  get passwordHasError(){
 return this.isSubmitted && this.user.password.length <5;
 }
 
@@ -54,9 +55,10 @@ return this.isSubmitted && this.user.password.length <5;
   submitAccount(){
     this.isSubmitted = true;
     if (!this.passwordHasError && !this.confirmPasswordHasError){
+      this.userService.setUser(this.user);
       console.log(this.user)
     }
-console.log(this.submitAccount());
+
 }
 
 }
