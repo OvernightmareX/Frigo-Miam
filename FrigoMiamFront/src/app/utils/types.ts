@@ -13,3 +13,7 @@ export type RecipeMatched = {
   "commonIngredientCount": number,
   "recepe": Recipe
 }
+export type User = {
+  email: string,
+  password: string
+}
