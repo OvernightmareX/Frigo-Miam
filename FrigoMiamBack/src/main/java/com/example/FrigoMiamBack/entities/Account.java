@@ -5,16 +5,14 @@ import com.example.FrigoMiamBack.utils.enums.Diet;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -41,7 +39,7 @@ public class Account {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",  cascade = CascadeType.ALL)
     private List<Fridge> accountIngredientsList;
 
     @OneToMany(mappedBy = "account")

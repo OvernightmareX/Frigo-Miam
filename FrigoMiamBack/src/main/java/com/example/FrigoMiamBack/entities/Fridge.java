@@ -1,28 +1,27 @@
 package com.example.FrigoMiamBack.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.UUID;
+
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Fridge {
 
-    @EmbeddedId
-    private Fridge_Id id = new Fridge_Id();
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID fridge_id;
 
     @ManyToOne
-    @MapsId("accountId")
     @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne
-    @MapsId("ingredientId")
     @JoinColumn(name = "ingredient_id")
     private Ingredient ingredient;
 
