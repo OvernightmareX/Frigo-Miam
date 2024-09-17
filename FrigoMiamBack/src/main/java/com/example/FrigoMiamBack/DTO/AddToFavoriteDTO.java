@@ -1,7 +1,6 @@
 package com.example.FrigoMiamBack.DTO;
 
 import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

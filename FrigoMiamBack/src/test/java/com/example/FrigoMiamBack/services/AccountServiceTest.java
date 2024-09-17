@@ -16,11 +16,11 @@ import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void setup() {
-        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository);
+        accountService = new AccountService(accountRepository, recipeRepository);
     }
 
     @Test
@@ -91,15 +91,20 @@ public class AccountServiceTest {
         assertEquals(ExceptionsMessages.EMAIL_ALREADY_EXIST, thrown.getMessage());
     }
 
-    @Test
-    public void testCreateAccountWithId() {
-        UUID accountId = UUID.randomUUID();
-        Account accountWithId = AccountFactory.createAccountWithId(accountId);
+    @Nested
+    class CreateAccountTest{
+        @Test
+        public void Should_Throw_ConflictException_When_Account_Already_Exist() {
+            UUID accountId = UUID.randomUUID();
+            Account accountWithId = AccountFactory.createAccountWithId(accountId);
 
-        ConflictException thrown = assertThrows(ConflictException.class, () -> accountService.createAccount(accountWithId));
+            ConflictException thrown = assertThrows(ConflictException.class, () -> accountService.createAccount(accountWithId));
 
-        assertEquals(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, thrown.getMessage());
+            assertEquals(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, thrown.getMessage());
+        }
     }
+
+
 
     @Test
     public void testAddRecipeToFavoriteSuccess() {

@@ -1,40 +1,25 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IIngredientService;
-import com.example.FrigoMiamBack.repositories.AccountRepository;
-import com.example.FrigoMiamBack.repositories.FridgeRepository;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class IngredientService implements IIngredientService {
-    private final AccountRepository accountRepository;
     private final IngredientRepository ingredientRepository;
 
-
-    public IngredientService(IngredientRepository ingredientRepository, AccountRepository accountRepository) {
+    public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
-        this.accountRepository = accountRepository;
-
     }
 
     @Override
@@ -43,18 +28,17 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public Ingredient getIngredientById(String id) {
-        if(id == null){
+    public Ingredient getIngredientById(UUID id) {
+        if(id == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        return this.ingredientRepository.findById(UUID.fromString(id)).orElse(null);
+
+        return this.ingredientRepository.findById(id).orElse(null);
     }
 
     @Override
     public Ingredient addIngredient(Ingredient ingredient) {
-        if(ingredient.getId() != null){
+        if(ingredient.getId() != null)
             throw new ConflictException(ExceptionsMessages.INGREDIENT_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
-        }
 
         try {
             return this.ingredientRepository.save(ingredient);
@@ -64,16 +48,15 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public boolean deleteIngredient(String id) {
-        if(id == null){
+    public boolean deleteIngredient(UUID id) {
+        if(id == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if(!ingredientRepository.existsById(UUID.fromString(id))){
+
+        if(!ingredientRepository.existsById(id))
             throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
 
         try {
-            this.ingredientRepository.deleteById(UUID.fromString(id));
+            this.ingredientRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             return false;
@@ -82,12 +65,12 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public Ingredient updateIngredient(Ingredient ingredient) {
-        if(ingredient.getId() == null){
+        if(ingredient.getId() == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if(!ingredientRepository.existsById(ingredient.getId())){
+
+        if(!ingredientRepository.existsById(ingredient.getId()))
             throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
+
 
         try {
             return this.ingredientRepository.save(ingredient);

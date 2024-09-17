@@ -1,7 +1,6 @@
 package com.example.FrigoMiamBack.services;
 
 
-import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
@@ -9,10 +8,7 @@ import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
-import com.example.FrigoMiamBack.utils.enums.Allergy;
-import com.example.FrigoMiamBack.utils.enums.Diet;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +26,21 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public Recipe findByID(String id) {
-        if(id == null || id.isEmpty()) {
+    public Recipe findByID(UUID id) {
+        if(id == null) {
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
 
-        return this.recipeRepository.findById(UUID.fromString(id)).orElse(null);
+        return this.recipeRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public boolean existsById(UUID id) {
+        if(id == null) {
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+
+        return this.recipeRepository.existsById(id);
     }
 
     @Override
@@ -73,17 +78,17 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public boolean deleteRecipe(String id) {
+    public boolean deleteRecipe(UUID id) {
         System.out.println("service" + id);
         if(id == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(!this.recipeRepository.existsById(UUID.fromString(id))){
+        if(!this.recipeRepository.existsById(id)){
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {
-            this.recipeRepository.deleteById(UUID.fromString(id));
+            this.recipeRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             return false;

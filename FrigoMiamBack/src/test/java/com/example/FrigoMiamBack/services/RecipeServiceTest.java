@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +38,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
         Recipe createdRecipe = recipeRepository.save(recipe);
 
-        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId().toString());
+        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId());
 
         assertEquals(foundRecipe, createdRecipe);
     }
@@ -48,7 +47,7 @@ public class RecipeServiceTest {
     public void testFindRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
 
-        Recipe foundRecipe = recipeService.findByID(UUID.randomUUID().toString());
+        Recipe foundRecipe = recipeService.findByID(UUID.randomUUID());
 
         assertNotEquals(foundRecipe, recipe);
     }
@@ -139,7 +138,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createDefaultRecipe();
         Recipe savedRecipe = this.recipeService.addRecipe(recipe);
 
-        boolean result = this.recipeService.deleteRecipe(savedRecipe.getId().toString());
+        boolean result = this.recipeService.deleteRecipe(savedRecipe.getId());
 
         assertTrue(result);
     }
@@ -148,7 +147,7 @@ public class RecipeServiceTest {
     public void testDeleteRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
 
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.deleteRecipe(recipe.getId().toString()));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.deleteRecipe(recipe.getId()));
 
         assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, thrown.getMessage());
     }

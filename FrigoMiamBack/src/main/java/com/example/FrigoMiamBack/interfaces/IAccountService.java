@@ -6,6 +6,7 @@ import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IAccountService {
 
@@ -17,7 +18,7 @@ public interface IAccountService {
 
     List<Account> getAccounts();
 
-    Account getAccountById(String accountId);
+    Account getAccountById(UUID accountId);
 
     Account updateAccount(Account accountToUpdate);
 
@@ -27,6 +28,6 @@ public interface IAccountService {
 
     boolean addIngredientToFridge(Ingredient ingredient, Account account, int quantity);
 
-    List<Fridge> getFridges(String accountId);
+    List<Fridge> getFridges(UUID accountId);
 
 }

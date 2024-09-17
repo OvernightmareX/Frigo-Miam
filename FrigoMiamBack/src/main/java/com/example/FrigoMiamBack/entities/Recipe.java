@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,15 +33,18 @@ public class Recipe {
     private Diet diet;
 
     @OneToMany(mappedBy = "recipe")
-    private List<Recipe_Ingredient> recipeIngredientsList;
+    @Builder.Default
+    private List<Recipe_Ingredient> recipeIngredientsList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
 
     @OneToMany(mappedBy = "recipe")
-    private List<Grade_Recipe> accountRecipeList;
+    @Builder.Default
+    private List<Grade_Recipe> accountRecipeList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "recipeLikedList")
-    private List<Account> accountList;
+    @Builder.Default
+    private List<Account> accountList = new ArrayList<>();
 }
