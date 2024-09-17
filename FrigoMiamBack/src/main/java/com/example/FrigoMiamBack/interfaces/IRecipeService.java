@@ -14,15 +14,16 @@ public interface IRecipeService {
     Recipe updateRecipe(Recipe recipe);
     boolean deleteRecipe(String id);
 
-//    List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets);
+    List<Recipe> getFavoriteRecipes(String accountId);
+
+    List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets);
 //
+//    boolean addGradeToRecipe(String recipeId, String accountId, int grade);
 //    int getAverageGrade(String recipeId);
 //
 //    int getAccountGrade(String recipeId, String accountId);
 //
-//    boolean addGradeToRecipe(String recipeId, String accountId, int grade);
-//
-//    List<Recipe> getFavoriteRecipes(String accountId);
+
 //
 //    List<Recipe> getRecipeCreated(String accountId);
 }

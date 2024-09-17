@@ -1,8 +1,8 @@
 package com.example.FrigoMiamBack.interfaces;
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Fridge;
+
 import com.example.FrigoMiamBack.entities.Ingredient;
+import com.example.FrigoMiamBack.entities.Recipe;
 
 import java.util.List;
 
@@ -17,4 +17,6 @@ public interface IIngredientService {
     boolean deleteIngredient(String id);
 
     Ingredient updateIngredient(Ingredient ingredient);
+
+//    boolean addIngredientToRecipe(Recipe recipe, Ingredient ingredient);
 }

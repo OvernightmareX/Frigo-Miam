@@ -40,6 +40,8 @@ public class IngredientServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
+    private RecipeService recipeService;
+
     @Autowired
     private AccountRepository accountRepository;
 
@@ -49,7 +51,7 @@ public class IngredientServiceTest {
     @BeforeEach
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository, accountRepository);
-        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
 
     }
 
@@ -171,22 +173,5 @@ public class IngredientServiceTest {
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.updateIngredient(ingredient));
         assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
-    }
-
-    @Test
-    public void testGetFridge_WhenFridgeExists() {
-        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
-        Ingredient savedIngredient = ingredientRepository.save(ingredient);
-        Ingredient ingredient2 = IngredientFactory.createDefaultIngredient();
-        Ingredient savedIngredient2 = ingredientRepository.save(ingredient2);
-        Account account = AccountFactory.createAccountWithId(UUID.fromString("1083349f-d171-4e59-9769-e073222f96d9"));
-        Account savedAccount = accountRepository.save(account);
-        int quantity = 5;
-
-        accountService.addIngredientToFridge(savedIngredient, savedAccount, quantity);
-        accountService.addIngredientToFridge(savedIngredient2, savedAccount, quantity);
-
-        List<Fridge> fridge = accountService.getFridges(savedAccount.getId().toString());
-        assertEquals(2, fridge.size());
     }
 }
