@@ -3,7 +3,6 @@ package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
-import com.example.FrigoMiamBack.entities.Recipe_Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
@@ -13,12 +12,10 @@ import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,9 +23,11 @@ import java.util.UUID;
 @Service
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
+    private final AccountService accountService;
 
-    public RecipeService(RecipeRepository recipeRepository) {
+    public RecipeService(RecipeRepository recipeRepository, AccountService accountService) {
         this.recipeRepository = recipeRepository;
+        this.accountService = accountService;
     }
 
     @Override
@@ -92,7 +91,12 @@ public class RecipeService implements IRecipeService {
         }
     }
 
-   @Override
+    @Override
+    public List<Recipe> getFavoriteRecipes(String accountId) {
+        return accountService.getAccountById(accountId).getRecipeLikedList();
+    }
+
+    @Override
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
         List<Recipe> finalRecipes = this.recipeRepository.findAll();
 
@@ -115,10 +119,6 @@ public class RecipeService implements IRecipeService {
         return finalRecipes;
     }
 
-//    @Override
-//    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets) {
-//        return List.of();
-//    }
 //
 //    @Override
 //    public int getAverageGrade(String recipeId) {
@@ -158,7 +158,7 @@ public class RecipeService implements IRecipeService {
 //    @Override
 //    public List<Recipe> getFavoriteRecipes(String accountId) {
 //        try {
-//            return this.recipeRepository.findRecipeLikedList(UUID.fromString(accountId));
+//            return this.recipeRepository.findRecipeLikedListByAccountId(UUID.fromString(accountId));
 //        } catch (Exception e) {
 //            //TODO exception
 //            return null;

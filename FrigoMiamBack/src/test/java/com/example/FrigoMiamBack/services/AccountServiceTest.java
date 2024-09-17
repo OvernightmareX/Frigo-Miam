@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AccountServiceTest {
     @Autowired
     private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
     private FridgeRepository fridgeRepository;
@@ -43,13 +44,10 @@ public class AccountServiceTest {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    private AccountService accountService;
-
-    private IngredientService ingredientService;
 
     @BeforeEach
     public void setup() {
-        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository, ingredientService, ingredientRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
     }
 
     @Test
@@ -324,4 +322,5 @@ public class AccountServiceTest {
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.getFridges(UUID.randomUUID().toString()));
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
     }
+
 }

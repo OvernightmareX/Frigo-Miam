@@ -26,21 +26,15 @@ import static com.example.FrigoMiamBack.utils.constants.ExceptionsMessages.INGRE
 public class AccountService implements IAccountService {
 
     private final AccountRepository accountRepository;
-    private final FridgeRepository fridgeRepository;
     private final RecipeRepository recipeRepository;
-    private final IngredientService ingredientService;
     private final IngredientRepository ingredientRepository;
 
     public AccountService(
             AccountRepository accountRepository,
-            FridgeRepository fridgeRepository,
             RecipeRepository recipeRepository,
-            IngredientService ingredientService,
             IngredientRepository ingredientRepository) {
         this.accountRepository = accountRepository;
-        this.fridgeRepository = fridgeRepository;
         this.recipeRepository = recipeRepository;
-        this.ingredientService = ingredientService;
         this.ingredientRepository = ingredientRepository;
     }
 

@@ -51,7 +51,7 @@ public class IngredientServiceTest {
     @BeforeEach
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository, accountRepository);
-        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository, ingredientService, ingredientRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
 
     }
 

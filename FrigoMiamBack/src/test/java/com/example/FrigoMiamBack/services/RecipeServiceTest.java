@@ -1,10 +1,14 @@
 package com.example.FrigoMiamBack.services;
 
+import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
+import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.RecipeFactory;
+import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Diet;
@@ -27,12 +31,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RecipeServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
-
     private RecipeService recipeService;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
-        recipeService = new RecipeService(recipeRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
+        recipeService = new RecipeService(recipeRepository, accountService);
     }
 
     @Test
@@ -170,5 +181,16 @@ public class RecipeServiceTest {
         List<Recipe> found = this.recipeService.getRecipesByFilters(null, null, Diet.VEGETARIAN);
 
         assertEquals(recipe, found.get(0));
+    }
+
+    @Test
+    public void testGetFavoriteRecipesSuccess(){
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
+        account.getRecipeLikedList().add(recipe);
+        accountRepository.save(account);
+
+        List<Recipe> likedRecipes = this.recipeService.getFavoriteRecipes(account.getId().toString());
+        assertEquals(recipe, likedRecipes.get(0));
     }
 }
