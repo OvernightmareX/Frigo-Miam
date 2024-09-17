@@ -37,7 +37,6 @@ public class IngredientServiceTest {
     @Autowired
     private FridgeRepository fridgeRepository;
 
-    @Autowired
     private RecipeRepository recipeRepository;
 
     @Autowired
@@ -49,7 +48,7 @@ public class IngredientServiceTest {
     @BeforeEach
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository);
-        accountService = new AccountService(accountRepository, recipeRepository);
+        accountService = new AccountService(accountRepository, new RecipeService(recipeRepository));
 
     }
 

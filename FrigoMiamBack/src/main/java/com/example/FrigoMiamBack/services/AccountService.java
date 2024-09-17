@@ -23,11 +23,11 @@ import java.util.UUID;
 @Service
 public class AccountService implements IAccountService {
     private final AccountRepository accountRepository;
-    private final RecipeRepository recipeRepository;
+    private final RecipeService recipeService;
 
-    public AccountService(AccountRepository accountRepository, RecipeRepository recipeRepository) {
+    public AccountService(AccountRepository accountRepository, RecipeService recipeService) {
         this.accountRepository = accountRepository;
-        this.recipeRepository = recipeRepository;
+        this.recipeService = recipeService;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class AccountService implements IAccountService {
         if(recipe.getId() == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
-        if(!this.recipeRepository.existsById(recipe.getId()))
+        if(!this.recipeService.existsById(recipe.getId()))
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
 
         try {
