@@ -1,5 +1,6 @@
 package com.example.FrigoMiamBack.interfaces;
 
+import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Ingredient;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface IIngredientService {
 
     Ingredient updateIngredient(Ingredient ingredient);
 
-    List<Ingredient> getFridge(String accountId);
+    List<Ingredient> getFridge(Account account);
 }

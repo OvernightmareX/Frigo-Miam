@@ -1,10 +1,12 @@
 package com.example.FrigoMiamBack.services;
 
+import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IIngredientService;
+import com.example.FrigoMiamBack.repositories.AccountRepository;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,10 +25,12 @@ import java.util.UUID;
 
 @Service
 public class IngredientService implements IIngredientService {
+    private final AccountRepository accountRepository;
     private final IngredientRepository ingredientRepository;
 
-    public IngredientService(IngredientRepository ingredientRepository){
+    public IngredientService(IngredientRepository ingredientRepository, AccountRepository accountRepository) {
         this.ingredientRepository = ingredientRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -89,8 +93,20 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public List<Ingredient> getFridge(String accountId) {
-        return this.ingredientRepository.findAll();
+    public List<Ingredient> getFridge(Account account) {
+        if(account.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!accountRepository.existsById(account.getId())){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+
+        try {
+
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @PostConstruct
