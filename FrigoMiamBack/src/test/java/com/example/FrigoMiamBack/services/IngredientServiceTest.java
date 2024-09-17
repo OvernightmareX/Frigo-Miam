@@ -40,6 +40,8 @@ public class IngredientServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
+    private RecipeService recipeService;
+
     @Autowired
     private AccountRepository accountRepository;
 
@@ -49,7 +51,7 @@ public class IngredientServiceTest {
     @BeforeEach
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository, accountRepository);
-        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository);
+        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository, ingredientService, ingredientRepository);
 
     }
 
@@ -188,5 +190,17 @@ public class IngredientServiceTest {
 
         List<Fridge> fridge = accountService.getFridges(savedAccount.getId().toString());
         assertEquals(2, fridge.size());
+    }
+
+    @Test
+    public void testGetFridge_WithoutAccountId() {
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> accountService.getFridges(null));
+        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+    }
+
+    @Test
+    public void testGetFridge_WhenAccountDoesNotExist() {
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.getFridges(UUID.randomUUID().toString()));
+        assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
     }
 }
