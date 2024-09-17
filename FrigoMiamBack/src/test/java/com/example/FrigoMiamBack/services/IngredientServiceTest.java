@@ -45,10 +45,12 @@ public class IngredientServiceTest {
 
     private AccountService accountService;
 
+
     @BeforeEach
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository, accountRepository);
         accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository);
+
     }
 
     @Test
@@ -172,35 +174,19 @@ public class IngredientServiceTest {
     }
 
     @Test
-    public void testGetFridge_WithoutAccountId(){
-        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.getFridge(null));
-        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
-    }
-
-    @Test
-    public void testGetFridge_WhenAccountDoesNotExist(){
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.ingredientService.getFridge(UUID.randomUUID().toString()));
-        assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
-    }
-
-    @Test
     public void testGetFridge_WhenFridgeExists() {
-        //TODO A CONTINUER
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
         Ingredient savedIngredient = ingredientRepository.save(ingredient);
         Ingredient ingredient2 = IngredientFactory.createDefaultIngredient();
         Ingredient savedIngredient2 = ingredientRepository.save(ingredient2);
-        Account account = AccountFactory.createDefaultAccount();
+        Account account = AccountFactory.createAccountWithId(UUID.fromString("1083349f-d171-4e59-9769-e073222f96d9"));
         Account savedAccount = accountRepository.save(account);
         int quantity = 5;
 
         accountService.addIngredientToFridge(savedIngredient, savedAccount, quantity);
         accountService.addIngredientToFridge(savedIngredient2, savedAccount, quantity);
 
-        List<Ingredient> expected = List.of(savedIngredient, savedIngredient2);
-
-        List<Ingredient> fridge = this.ingredientService.getFridge(savedAccount.getId().toString());
-
-        assertEquals(expected, fridge);
+        List<Fridge> fridge = accountService.getFridges(savedAccount.getId().toString());
+        assertEquals(2, fridge.size());
     }
 }

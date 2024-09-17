@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -140,18 +141,25 @@ public class AccountService implements IAccountService {
         }
 
         //TODO GERER EXCEPTIONS POUR INGREDIENTS
+        //TODO GERER POUR PAS AJOUTER DEUX FOIS LE MEME INGREDIENT
 
-        Fridge_Id fridgeId = new Fridge_Id(account.getId(), ingredient.getId());
-
-        Fridge fridge = Fridge.builder()
-                .id(fridgeId)
+                Fridge fridge = Fridge.builder()
                 .account(account)
                 .ingredient(ingredient)
                 .quantity(quantity)
                 .build();
 
+        List<Fridge> fridgeAccount = account.getAccountIngredientsList();
+        if(fridgeAccount == null){
+            fridgeAccount = new ArrayList<>();
+            fridgeAccount.add(fridge);
+            account.setAccountIngredientsList(fridgeAccount);
+        } else {
+            account.getAccountIngredientsList().add(fridge);
+        }
+
         try {
-            this.fridgeRepository.save(fridge);
+            this.accountRepository.save(account);
             log.info("Ingredient {} added to fridge for account {}", ingredient.getName(), account.getEmail());
             return true;
         } catch (Exception e) {
@@ -159,4 +167,9 @@ public class AccountService implements IAccountService {
         }
     }
 
+    @Override
+    public List<Fridge> getFridges(String accountId) {
+        //TODO GERER LES EXCEPTIONS POUR ACCOUNT ID
+        return this.getAccountById(accountId).getAccountIngredientsList();
+    }
 }
