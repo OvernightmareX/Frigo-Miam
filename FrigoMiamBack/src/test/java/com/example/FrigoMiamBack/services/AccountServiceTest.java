@@ -71,12 +71,13 @@ public class AccountServiceTest {
         @Test
         public void ShouldHaveCreatedAccount_WithCorrectValues() {
             Account account = AccountFactory.createDefaultAccount();
+            String password = account.getPassword();
             Account createdAccount = accountService.createAccount(account);
 
             assertNotNull(createdAccount.getId());
             assertEquals(account.getFirstname(), createdAccount.getFirstname());
             assertEquals(account.getLastname(), createdAccount.getLastname());
-            assertEquals(account.getPassword(), createdAccount.getPassword());
+            assertTrue(HashingUtils.verifyPassword(password, createdAccount.getPassword()));
             assertEquals(account.getEmail(), createdAccount.getEmail());
             assertEquals(account.getBirthdate(), createdAccount.getBirthdate());
             assertEquals(account.getAllergies(), createdAccount.getAllergies());

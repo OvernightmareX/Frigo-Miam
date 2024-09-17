@@ -12,7 +12,7 @@ public interface IAccountService {
 
     boolean checkEmail(String email);
 
-    boolean logIn(String email, String password);
+    String logIn(String email, String password);
 
     Account createAccount(Account accountToCreate);
 

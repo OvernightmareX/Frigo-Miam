@@ -54,7 +54,7 @@ public class AccountController {
     }
 
     @PostMapping(ApiUrls.LOGIN)
-    public ResponseEntity<Boolean> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<String> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         String email = loginRequestDTO.getEmail();
         String password = loginRequestDTO.getPassword();
         return new ResponseEntity<>(this.iAccountService.logIn(email, password), HttpStatus.OK);

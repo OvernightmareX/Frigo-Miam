@@ -1,9 +1,6 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Fridge;
-import com.example.FrigoMiamBack.entities.Ingredient;
-import com.example.FrigoMiamBack.entities.Recipe;
+import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
@@ -45,6 +42,7 @@ public class AccountService implements IAccountService {
         if (checkEmail(accountToCreate.getEmail()))
             throw new ConflictException(ExceptionsMessages.EMAIL_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
 
+        accountToCreate.setPassword(HashingUtils.hashPassword(accountToCreate.getPassword()));
         return this.accountRepository.save(accountToCreate);
     }
 
@@ -59,9 +57,17 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public boolean logIn(String email, String password) {
-        //TODO vérifier si boolean sur email/password ++ NE PAS TOUCHER
-        return this.accountRepository.findByEmailAndPassword(email, password) != null;
+    public String logIn(String email, String password) {
+        Account accountFound = this.accountRepository.findByEmail(email);
+
+        if(accountFound == null)
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+
+        /*
+        if(HashingUtils.verifyPassword(password, accountFound.getPassword()))
+            return JwtUtils.generateToken(accountFound, new Role());
+        else*/
+            return null;
     }
 
     @Override
