@@ -1,0 +1,29 @@
+<table>
+  <caption>
+    Liste des ingrédients dans votre Frigo.
+  </caption>
+  <thead>
+  <tr>
+    <th scope="col">Retirer</th>
+    <th scope="col">Ingrédient</th>
+    <th scope="col">Quantite</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for(ingredient of ingredientsInFrigo; track ingredient){
+      <tr>
+        <td>
+          <button type="button" (click)="deleteIngredient(ingredient)">Retirer</button>
+        </td>
+        <td>{{ ingredient.name }}</td>
+        <td>
+          <input
+            type="number"
+            placeholder="Entrer une valeur"
+            value="{{ingredient.quantity}}"
+            (input)="onQuantityChange($event, ingredient)">
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
