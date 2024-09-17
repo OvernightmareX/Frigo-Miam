@@ -14,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -95,19 +95,17 @@ public class IngredientService implements IIngredientService {
 
     @PostConstruct
     private void loadJSONIngredient() throws IOException {
-        //TODO remove this function when we will be in production.
-        ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<Ingredient>> typeReference = new TypeReference<>(){};
-        Path filePath = new ClassPathResource("ingredients.json").getFile().toPath();
-        String json = Files.readString(filePath);
+        // Use InputStream to load the resource inside the JAR
+        InputStream inputStream = getClass().getResourceAsStream("/ingredients.json");
 
-        try {
-            List<Ingredient> ingredients = objectMapper.readValue(json, typeReference);
-            this.ingredientRepository.saveAll(ingredients);
-            System.out.println(ingredients);
-            System.out.println("Ingredients saved!");
-        } catch (IOException e) {
-            System.out.println("Unable to save questions: " + e.getMessage());
+        if (inputStream == null) {
+            throw new IOException("File not found: ingredients.json");
+        }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Ingredient> ingredients = objectMapper.readValue(reader, new TypeReference<List<Ingredient>>() {});
+            ingredientRepository.saveAll(ingredients);
         }
     }
 }
