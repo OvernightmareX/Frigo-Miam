@@ -1,6 +1,6 @@
 
 <app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
-<app-ingredient-list [ingredientList]="allUserIngredients"></app-ingredient-list>
+<app-ingredient-list-home [ingredientList]="allUserIngredients"></app-ingredient-list-home>
 <div>
   @for(recipe of allRecipeCardsData; track recipe){
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>

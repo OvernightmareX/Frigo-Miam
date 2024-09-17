@@ -14,7 +14,7 @@ import {of} from "rxjs";
 })
 export class IngredientSearchComponent {
 
-  @Output() clickEvent = new EventEmitter<string>;
+  @Output() clickEvent = new EventEmitter<string>;  // a renommer
 
   constructor() {
     this.ingredient_control.valueChanges.subscribe(value => {

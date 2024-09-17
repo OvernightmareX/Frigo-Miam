@@ -6,14 +6,21 @@ export type Recipe = {
 
 export type RecipeCard = {
   nom: string,
-  description: string
+  description: string,
+  enoughQuantity: boolean
 }
 
 export type RecipeMatched = {
   "commonIngredientCount": number,
   "recepe": Recipe
 }
+
 export type User = {
   email: string,
   password: string
+}
+
+export type IngredientFrigo = {
+  "name": string,
+  "quantity": number
 }

@@ -1,1 +1,17 @@
-<p>frigo works!</p>
+
+<app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
+
+
+<app-ingredient-tab-frigo
+  [ingredientsInFrigo]="allFrigoIngredients"
+  (deleteIngredientEvent)="deleteIngredientFromFrigo($event)"
+  (quantityChange)="changeQuantity($event)">
+</app-ingredient-tab-frigo>
+
+<div>
+  @for(recipe of allRecipeCardsData; track recipe){
+    <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
+  }
+</div>
+
+
