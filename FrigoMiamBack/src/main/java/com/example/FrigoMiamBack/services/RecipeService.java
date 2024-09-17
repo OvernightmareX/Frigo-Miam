@@ -3,6 +3,7 @@ package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
+import com.example.FrigoMiamBack.entities.Recipe_Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -89,12 +91,30 @@ public class RecipeService implements IRecipeService {
             return false;
         }
     }
-//
-//    @Override
-//    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets) {
-//        return this.recipeRepository.findRecipesByIngredientAndAllergyAndDiet(ingredients, allergies, diets);
-//    }
-//
+
+   @Override
+    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
+        List<Recipe> finalRecipes = this.recipeRepository.findAll();
+
+        finalRecipes.forEach(recipe -> {
+
+        });
+        if(diets != null){
+            finalRecipes = finalRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
+        }
+        //TODO AJOUTER UN INGREDIENT A UNE RECETTE POUR POUVOIR FILTRER/INGREDIENt et /ALLERGEN
+//        if(ingredients != null){
+//            for(Ingredient ingredient : ingredients){
+//                for(Recipe recipe : finalRecipes){
+//                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+//                    System.out.println(recipeIngredients);
+//                }
+//                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
+//            }
+//        }
+        return finalRecipes;
+    }
+
 //    @Override
 //    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets) {
 //        return List.of();

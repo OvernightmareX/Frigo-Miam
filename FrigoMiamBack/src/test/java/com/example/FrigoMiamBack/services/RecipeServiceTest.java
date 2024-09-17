@@ -7,6 +7,7 @@ import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.factories.RecipeFactory;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
+import com.example.FrigoMiamBack.utils.enums.Diet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -159,5 +160,15 @@ public class RecipeServiceTest {
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.deleteRecipe(null));
 
         assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+    }
+
+    @Test
+    public void testGetRecipeByDiet(){
+        Recipe recipe = RecipeFactory.createDefaultRecipe();
+        this.recipeService.addRecipe(recipe);
+
+        List<Recipe> found = this.recipeService.getRecipesByFilters(null, null, Diet.VEGETARIAN);
+
+        assertEquals(recipe, found.get(0));
     }
 }
