@@ -1,11 +1,17 @@
 package com.example.FrigoMiamBack.services;
 
+import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
+import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.IngredientFactory;
+import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.repositories.FridgeRepository;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
+import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,9 +34,23 @@ public class IngredientServiceTest {
 
     private IngredientService ingredientService;
 
+    @Autowired
+    private FridgeRepository fridgeRepository;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    private AccountService accountService;
+
+
     @BeforeEach
     public void setup() {
-        ingredientService = new IngredientService(ingredientRepository);
+        ingredientService = new IngredientService(ingredientRepository, accountRepository);
+        accountService = new AccountService(accountRepository, fridgeRepository, recipeRepository);
+
     }
 
     @Test
@@ -151,7 +171,22 @@ public class IngredientServiceTest {
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.updateIngredient(ingredient));
         assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
-
     }
 
+    @Test
+    public void testGetFridge_WhenFridgeExists() {
+        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+        Ingredient ingredient2 = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient2 = ingredientRepository.save(ingredient2);
+        Account account = AccountFactory.createAccountWithId(UUID.fromString("1083349f-d171-4e59-9769-e073222f96d9"));
+        Account savedAccount = accountRepository.save(account);
+        int quantity = 5;
+
+        accountService.addIngredientToFridge(savedIngredient, savedAccount, quantity);
+        accountService.addIngredientToFridge(savedIngredient2, savedAccount, quantity);
+
+        List<Fridge> fridge = accountService.getFridges(savedAccount.getId().toString());
+        assertEquals(2, fridge.size());
+    }
 }

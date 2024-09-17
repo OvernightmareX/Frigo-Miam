@@ -34,7 +34,7 @@ services:
     depends_on:
       - postgres-db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5433/${DB_NAME}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
 

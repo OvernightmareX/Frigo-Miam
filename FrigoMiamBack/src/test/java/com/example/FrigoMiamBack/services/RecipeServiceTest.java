@@ -39,7 +39,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
         Recipe createdRecipe = recipeRepository.save(recipe);
 
-        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId_recipe().toString());
+        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId().toString());
 
         assertEquals(foundRecipe, createdRecipe);
     }
@@ -92,7 +92,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createDefaultRecipe();
         Recipe result = this.recipeService.addRecipe(recipe);
 
-        assertNotNull(result.getId_recipe());
+        assertNotNull(result.getId());
         assertEquals(recipe.getTitle(), result.getTitle());
         assertEquals(recipe.getDescription(), result.getDescription());
         assertEquals(recipe.getInstructions(), result.getInstructions());
@@ -118,7 +118,7 @@ public class RecipeServiceTest {
     @Test
     public void testUpdateRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        recipe.setId_recipe(UUID.randomUUID());
+        recipe.setId(UUID.randomUUID());
 
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.updateRecipe(recipe));
 
@@ -139,7 +139,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createDefaultRecipe();
         Recipe savedRecipe = this.recipeService.addRecipe(recipe);
 
-        boolean result = this.recipeService.deleteRecipe(savedRecipe.getId_recipe().toString());
+        boolean result = this.recipeService.deleteRecipe(savedRecipe.getId().toString());
 
         assertTrue(result);
     }
@@ -148,7 +148,7 @@ public class RecipeServiceTest {
     public void testDeleteRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
 
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.deleteRecipe(recipe.getId_recipe().toString()));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.deleteRecipe(recipe.getId().toString()));
 
         assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, thrown.getMessage());
     }

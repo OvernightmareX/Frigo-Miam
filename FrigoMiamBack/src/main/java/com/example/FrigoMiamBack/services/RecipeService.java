@@ -45,7 +45,7 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe addRecipe(Recipe recipe) {
-        if(recipe.getId_recipe() != null){
+        if(recipe.getId() != null){
             throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
 
@@ -58,10 +58,10 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe updateRecipe(Recipe recipe) {
-        if(recipe.getId_recipe() == null){
+        if(recipe.getId() == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(!this.recipeRepository.existsById(recipe.getId_recipe())){
+        if(!this.recipeRepository.existsById(recipe.getId())){
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 

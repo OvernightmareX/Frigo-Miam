@@ -16,8 +16,15 @@ export type RecipeMatched = {
 }
 
 export type User = {
+  name?: string,
+  firstName?: string,
+  dateOfBirth?: Date,
+  phone?: string,
   email: string,
-  password: string
+  diet?: string[],
+  allergen?: string[],
+  password: string,
+
 }
 
 export type IngredientFrigo = {

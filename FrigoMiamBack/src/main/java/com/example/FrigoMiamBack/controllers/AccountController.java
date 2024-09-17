@@ -4,6 +4,7 @@ import com.example.FrigoMiamBack.DTO.AddToFavoriteDTO;
 import com.example.FrigoMiamBack.DTO.AddToFridgeDTO;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.DTO.LoginRequestDTO;
+import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(ApiUrls.ACCOUNT)
@@ -39,6 +41,11 @@ public class AccountController {
     @GetMapping(ApiUrls.EMAIL)
     public ResponseEntity<Boolean> checkEmail(@RequestParam @NotBlank String email) {
         return new ResponseEntity<>(this.iAccountService.checkEmail(email.toLowerCase().trim()), HttpStatus.OK);
+    }
+
+    @GetMapping(ApiUrls.FRIDGE)
+    public ResponseEntity<List<Fridge>> getFridge(@Valid @RequestBody Account account) {
+        return new ResponseEntity<>(this.iAccountService.getFridges(account.getId().toString()), HttpStatus.CREATED);
     }
 
     @PostMapping

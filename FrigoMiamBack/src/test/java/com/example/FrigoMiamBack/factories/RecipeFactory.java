@@ -43,7 +43,7 @@ public class RecipeFactory {
 
     public static Recipe createCustomRecipe(String title, String description, String instructions, int prepTime, int cookTime, int calories, TypeRecipe typeRecipe, Validation validation, Diet diet, Account account) {
         Recipe recipe = new Recipe();
-        recipe.setId_recipe(UUID.randomUUID());
+        recipe.setId(UUID.randomUUID());
         recipe.setTitle(title);
         recipe.setDescription(description);
         recipe.setInstructions(instructions);
@@ -62,7 +62,7 @@ public class RecipeFactory {
 
     public static Recipe createRecipeWithId(UUID id){
         return Recipe.builder()
-                .id_recipe(id)
+                .id(id)
                 .title(DEFAULT_TITLE)
                 .description(DEFAULT_DESCRIPTION)
                 .instructions(DEFAULT_INSTRUCTIONS)

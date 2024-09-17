@@ -1,6 +1,7 @@
 package com.example.FrigoMiamBack.interfaces;
 
 import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 
@@ -25,5 +26,7 @@ public interface IAccountService {
     Account addRecipeToFavorite(Account account, Recipe recipe);
 
     boolean addIngredientToFridge(Ingredient ingredient, Account account, int quantity);
+
+    List<Fridge> getFridges(String accountId);
 
 }
