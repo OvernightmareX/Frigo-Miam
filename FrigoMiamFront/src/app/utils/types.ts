@@ -24,3 +24,13 @@ export type IngredientFrigo = {
   "name": string,
   "quantity": number
 }
+
+export type IngredientBack = {
+  "id": string,
+  "name": string,
+  "unit": string,
+  "typeIngredient":string,
+  "allergy": string | null,
+  "accountIngredientsList": string[],  // may be blocking at a moment or another
+  "recipeIngredientsList": string[]  // may be blocking at a moment or another
+}

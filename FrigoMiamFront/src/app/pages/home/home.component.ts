@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import {IngredientSearchComponent} from "../../components/ingredient-search/ingredient-search.component";
 import {IngredientListComponent} from "../../components/ingredient-list-home/ingredient-list.component";
 import {RecipeCardShortComponent} from "../../components/recipe-card-short/recipe-card-short.component";
-import {Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
+import {IngredientBack, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
+import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,12 @@ import {Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+
+  ingr: IngredientBack[] = []
+
+  constructor(private ingredientService: IngredientClientService) {
+    this.getAllIngredients()
+  }
 
   allRecipeCardsData: RecipeCard[] = [];
   allUserIngredients: string[] = [];
@@ -95,6 +102,18 @@ export class HomeComponent {
       description: recipeMatched.recepe.description,
       enoughQuantity: true  // field not used in home but in frigo
     }));
+  }
+
+  getAllIngredients(): void{
+    this.ingredientService.getAllIngredients().subscribe({
+      next: ingredients => {
+        localStorage.setItem('allIngredients', JSON.stringify(ingredients));
+      },
+      error: err => {
+        console.error('Erreur lors de la récupération des ingrédients', err);
+      }
+
+    })
   }
 
 
