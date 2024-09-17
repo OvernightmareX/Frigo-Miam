@@ -93,6 +93,12 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<Recipe> getFavoriteRecipes(String accountId) {
+        if(accountId == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(this.accountService.getAccountById(accountId) == null){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
         return accountService.getAccountById(accountId).getRecipeLikedList();
     }
 
