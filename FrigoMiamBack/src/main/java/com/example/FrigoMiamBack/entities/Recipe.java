@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,7 +40,7 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Grade_Recipe> recipeGradesList;
+    private List<Grade_Recipe> recipeGradesList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "recipeLikedList")
     @Builder.Default

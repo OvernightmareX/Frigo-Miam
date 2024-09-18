@@ -50,8 +50,7 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // Manually initialize RecipeService and AccountService to resolve the circular dependency
-        recipeService = new RecipeService(recipeRepository);
+        recipeService = new RecipeService(recipeRepository, accountRepository);
         accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
 
         // Now inject the RecipeService back into AccountService
