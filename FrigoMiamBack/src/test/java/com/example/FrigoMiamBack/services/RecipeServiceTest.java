@@ -285,4 +285,40 @@ public class RecipeServiceTest {
         assertEquals(ExceptionsMessages.ACCOUNT_ALREADY_GRADED_CANNOT_GRADE, thrown.getMessage());
     }
 
+    @Test void testGetAverageGrade_Success(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+        Account account2 = accountRepository.save(AccountFactory.createAccountWithEmail("test2@mail.fr"));
+
+        this.recipeService.addGradeToRecipe(recipe, account, 3);
+        this.recipeService.addGradeToRecipe(recipe, account2, 5);
+
+        int average = this.recipeService.getAverageGrade(recipe.getId());
+
+        assertEquals(4, average);
+    }
+
+    @Test void testGetAverageGrade_WhenRecipeHasNoGrade(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        int average = this.recipeService.getAverageGrade(recipe.getId());
+
+        assertEquals(0, average);
+    }
+
+    @Test
+    public void testGetAverageGrade_WithoutRecipeId(){
+        Recipe recipe = RecipeFactory.createDefaultRecipe();
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.getAverageGrade(recipe.getId()));
+        assertEquals(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_GET_AVERAGE, thrown.getMessage());
+    }
+
+    @Test
+    public void testGetAverageGrade_WhenRecipeDoesNotExist(){
+        Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getAverageGrade(recipe.getId()));
+        assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GET_AVERAGE, thrown.getMessage());
+    }
+
+
 }
