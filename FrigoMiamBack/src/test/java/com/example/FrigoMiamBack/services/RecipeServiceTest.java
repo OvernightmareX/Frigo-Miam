@@ -37,12 +37,10 @@ public class RecipeServiceTest {
 
     @Autowired
     private AccountRepository accountRepository;
-    private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
-        recipeService = new RecipeService(recipeRepository);
-        accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
+        recipeService = new RecipeService(recipeRepository, accountRepository);
     }
 
     @Test
@@ -205,4 +203,86 @@ public class RecipeServiceTest {
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getFavoriteRecipes(UUID.randomUUID()));
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
     }
+
+    @Test
+    public void testAddGradeToRecipe_Success_WhenRecipeHasNoGrade(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+        boolean result = this.recipeService.addGradeToRecipe(recipe, account, 3);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testAddGradeToRecipe_Success_WhenRecipeGrades(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+        Account account2 = accountRepository.save(AccountFactory.createAccountWithEmail("test2@mail.fr"));
+        this.recipeService.addGradeToRecipe(recipe, account, 3);
+        boolean result = this.recipeService.addGradeToRecipe(recipe, account2, 5);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testAddGradeToRecipe_WhenGradeNegative(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, -3));
+        assertEquals(ExceptionsMessages.GRADE_CANNOT_BE_NEGATIVE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddGradeToRecipe_WhenGradeHigherThan_5(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 8));
+        assertEquals(ExceptionsMessages.GRADE_CANNOT_BE_HIGHER_THAN_5, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddGradeToRecipe_WithoutRecipeId(){
+        Recipe recipe = RecipeFactory.createDefaultRecipe();
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
+        assertEquals(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_GRADE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddGradeToRecipe_WhenRecipeDoesNotExist(){
+        Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
+        assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GRADE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddGradeToRecipe_WithoutAccountId(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = AccountFactory.createDefaultAccount();
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
+        assertEquals(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_GRADE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddGradeToRecipe_WhenAccountDoesNotExist(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
+        assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_GRADE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddGradetoRecipe_WhenAlreadyGradedByAccount(){
+        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+        this.recipeService.addGradeToRecipe(recipe, account, 3);
+        ConflictException thrown = assertThrows(ConflictException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
+        assertEquals(ExceptionsMessages.ACCOUNT_ALREADY_GRADED_CANNOT_GRADE, thrown.getMessage());
+    }
+
 }

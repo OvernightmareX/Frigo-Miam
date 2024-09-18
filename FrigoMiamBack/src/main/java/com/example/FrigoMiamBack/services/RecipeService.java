@@ -1,12 +1,15 @@
 package com.example.FrigoMiamBack.services;
 
 
+import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.entities.Grade_Recipe;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
+import com.example.FrigoMiamBack.repositories.AccountRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
@@ -16,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,9 +27,11 @@ import java.util.UUID;
 @Service
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
+    private final AccountRepository accountRepository;
 
-    public RecipeService(RecipeRepository recipeRepository) {
+    public RecipeService(RecipeRepository recipeRepository, AccountRepository accountRepository) {
         this.recipeRepository = recipeRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -103,15 +109,13 @@ public class RecipeService implements IRecipeService {
         if(accountId == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-
-        List<Recipe> recipes = this.recipeRepository.findAll();
-        /* TODO Ne pas appeler accountService car il y a redondance de dépendence.
-                Possibilité de faire autrement ?
-        if(this.accountService.getAccountById(accountId) == null){
+        Account accountFound;
+        if(this.accountRepository.findById(accountId).isPresent()){
+            accountFound = this.accountRepository.findById(accountId).get();
+        } else {
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
-        return accountService.getAccountById(accountId).getRecipeLikedList();*/
-        return null;
+        return accountFound.getRecipeLikedList();
     }
 
     @Override
@@ -137,6 +141,66 @@ public class RecipeService implements IRecipeService {
         return finalRecipes;
     }
 
+    @Override
+    public boolean addGradeToRecipe(Recipe recipe, Account account, int grade) {
+        if(grade < 0){
+            throw new WrongParameterException(ExceptionsMessages.GRADE_CANNOT_BE_NEGATIVE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(grade > 5){
+            throw new WrongParameterException(ExceptionsMessages.GRADE_CANNOT_BE_HIGHER_THAN_5, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(recipe.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!this.recipeRepository.existsById(recipe.getId())){
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+        if(account.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(this.accountRepository.findById(account.getId()).isEmpty()){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+
+        Grade_Recipe gradeRecipe = Grade_Recipe.builder()
+                .account(account)
+                .recipe(recipe)
+                .rate(grade)
+                .build();
+
+        List<Grade_Recipe> recipeGrades = recipe.getRecipeGradesList();
+
+        if(recipeGrades == null){
+            recipeGrades = new ArrayList<>();
+            recipeGrades.add(gradeRecipe);
+            recipe.setRecipeGradesList(recipeGrades);
+        } else {
+            recipeGrades.forEach(el -> {
+                if(el.getAccount() == account){
+                    throw new ConflictException(ExceptionsMessages.ACCOUNT_ALREADY_GRADED_CANNOT_GRADE, HttpStatus.CONFLICT, LocalDateTime.now());
+                }
+            });
+            recipe.getRecipeGradesList().add(gradeRecipe);
+        }
+
+        try {
+            this.recipeRepository.save(recipe);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public int getAverageGrade(String recipeId) {
+        return 0;
+    }
+
+    @Override
+    public int getAccountGrade(String recipeId, String accountId) {
+        return 0;
+    }
+
 //
 //    @Override
 //    public int getAverageGrade(String recipeId) {
@@ -154,25 +218,7 @@ public class RecipeService implements IRecipeService {
 //        }
 //    }
 //
-//    @Override
-//    public int getAccountGrade(String recipeId, String accountId) {
-//        try {
-//            return this.recipeRepository.findGradeByRecipeAndAccount(UUID.fromString(recipeId), UUID.fromString(accountId));
-//        } catch (Exception e) {
-//            //TODO exception
-//            return 0;
-//        }
-//    }
-//
-//    @Override
-//    public boolean addGradeToRecipe(String recipeId, String accountId, int grade) {
-//        return this.recipeRepository.addGradeToRecipe(UUID.fromString(recipeId), UUID.fromString(accountId), grade);
-//    }
-//
-//
-//
-//
-//
+
 //    @Override
 //    public List<Recipe> getFavoriteRecipes(String accountId) {
 //        try {

@@ -36,7 +36,7 @@ public class RecipeFactory {
         recipe.setValidation(Validation.INVALIDATED);
         recipe.setDiet(Diet.VEGETARIAN);
         recipe.setRecipeIngredientsList(new ArrayList<>());
-        recipe.setAccountRecipeList(new ArrayList<>());
+        recipe.setRecipeGradesList(new ArrayList<>());
         recipe.setAccountList(new ArrayList<>());
         return recipe;
     }
@@ -55,7 +55,7 @@ public class RecipeFactory {
         recipe.setDiet(diet);
         recipe.setAccount(account);
         recipe.setRecipeIngredientsList(new ArrayList<>());
-        recipe.setAccountRecipeList(new ArrayList<>());
+        recipe.setRecipeGradesList(new ArrayList<>());
         recipe.setAccountList(new ArrayList<>());
         return recipe;
     }

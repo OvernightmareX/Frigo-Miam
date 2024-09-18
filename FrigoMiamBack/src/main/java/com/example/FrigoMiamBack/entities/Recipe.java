@@ -4,17 +4,15 @@ import com.example.FrigoMiamBack.utils.enums.Diet;
 import com.example.FrigoMiamBack.utils.enums.TypeRecipe;
 import com.example.FrigoMiamBack.utils.enums.Validation;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,9 +38,9 @@ public class Recipe {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Grade_Recipe> accountRecipeList = new ArrayList<>();
+    private List<Grade_Recipe> recipeGradesList;
 
     @ManyToMany(mappedBy = "recipeLikedList")
     @Builder.Default
