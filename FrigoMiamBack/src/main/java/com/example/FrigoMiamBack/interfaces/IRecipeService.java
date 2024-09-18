@@ -22,9 +22,10 @@ public interface IRecipeService {
     List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets);
 
     boolean addGradeToRecipe(Recipe Recipe, Account Account, int grade);
-    int getAverageGrade(String recipeId);
+    int getAverageGrade(UUID recipeId);
 
-    int getAccountGrade(String recipeId, String accountId);
+    Integer getAccountGrade(UUID recipeId, UUID accountId);
 
+    Recipe addIngredientToRecipe(Recipe recipe, Ingredient ingredient, double quantity);
 //    List<Recipe> getRecipeCreated(String accountId);
 }

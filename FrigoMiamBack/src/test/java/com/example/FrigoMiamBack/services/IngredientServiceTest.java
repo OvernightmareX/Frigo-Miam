@@ -49,7 +49,7 @@ public class IngredientServiceTest {
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository);
 
-        recipeService = new RecipeService(recipeRepository, accountRepository);
+        recipeService = new RecipeService(recipeRepository, accountRepository, ingredientRepository);
 
         accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository, roleRepository);
     }
