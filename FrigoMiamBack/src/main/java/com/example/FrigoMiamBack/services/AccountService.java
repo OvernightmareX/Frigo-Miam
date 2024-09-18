@@ -1,5 +1,6 @@
 package com.example.FrigoMiamBack.services;
 
+import com.example.FrigoMiamBack.DTO.TokenDTO;
 import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
@@ -65,14 +66,14 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public String logIn(String email, String password) {
+    public TokenDTO logIn(String email, String password) {
         Account accountFound = this.accountRepository.findByEmail(email);
 
         if(accountFound == null)
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
 
         if(HashingUtils.verifyPassword(password, accountFound.getPassword()))
-            return JwtUtils.generateToken(accountFound, this.roleRepository.findByName("USER"));
+            return new TokenDTO(JwtUtils.generateToken(accountFound, this.roleRepository.findByName("USER")));
         else
             throw new RuntimeException();
     }

@@ -1,15 +1,13 @@
 package com.example.FrigoMiamBack.services;
 
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Grade_Recipe;
-import com.example.FrigoMiamBack.entities.Ingredient;
-import com.example.FrigoMiamBack.entities.Recipe;
+import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
@@ -28,10 +26,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
+    private final IngredientRepository ingredientRepository;
     private final AccountRepository accountRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, AccountRepository accountRepository) {
+    public RecipeService(RecipeRepository recipeRepository, AccountRepository accountRepository, IngredientRepository ingredientRepository) {
         this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
         this.accountRepository = accountRepository;
     }
 

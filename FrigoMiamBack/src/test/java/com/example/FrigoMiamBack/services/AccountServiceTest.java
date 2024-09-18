@@ -46,7 +46,7 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void setUp() {
-        recipeService = new RecipeService(recipeRepository, accountRepository);
+        recipeService = new RecipeService(recipeRepository, accountRepository, ingredientRepository);
         accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository, roleRepository);
     }
 

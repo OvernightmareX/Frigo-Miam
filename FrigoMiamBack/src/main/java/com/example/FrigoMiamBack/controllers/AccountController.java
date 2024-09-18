@@ -3,6 +3,7 @@ package com.example.FrigoMiamBack.controllers;
 import com.example.FrigoMiamBack.DTO.AddToFavoriteDTO;
 import com.example.FrigoMiamBack.DTO.AddToFridgeDTO;
 import com.example.FrigoMiamBack.DTO.LoginRequestDTO;
+import com.example.FrigoMiamBack.DTO.TokenDTO;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
@@ -54,7 +55,7 @@ public class AccountController {
     }
 
     @PostMapping(ApiUrls.LOGIN)
-    public ResponseEntity<String> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<TokenDTO> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         String email = loginRequestDTO.getEmail();
         String password = loginRequestDTO.getPassword();
         return new ResponseEntity<>(this.iAccountService.logIn(email, password), HttpStatus.OK);

@@ -1,5 +1,6 @@
 package com.example.FrigoMiamBack.interfaces;
 
+import com.example.FrigoMiamBack.DTO.TokenDTO;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
@@ -12,7 +13,7 @@ public interface IAccountService {
 
     boolean checkEmail(String email);
 
-    String logIn(String email, String password);
+    TokenDTO logIn(String email, String password);
 
     Account createAccount(Account accountToCreate);
 
