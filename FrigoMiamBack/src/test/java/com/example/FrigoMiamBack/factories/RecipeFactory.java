@@ -74,4 +74,19 @@ public class RecipeFactory {
                 .diet(DEFAULT_DIET)
                 .build();
     }
+
+    public static Recipe createRecipeWithAccount(Account account){
+        return Recipe.builder()
+                .title(DEFAULT_TITLE)
+                .description(DEFAULT_DESCRIPTION)
+                .instructions(DEFAULT_INSTRUCTIONS)
+                .preparation_time(DEFAULT_PREPARATION_TIME)
+                .cooking_time(DEFAULT_COOKING_TIME)
+                .calories(DEFAULT_CALORIES)
+                .typeRecipe(DEFAULT_TYPE_RECIPE)
+                .validation(DEFAULT_VALIDATION)
+                .diet(DEFAULT_DIET)
+                .account(account)
+                .build();
+    }
 }

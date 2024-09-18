@@ -31,10 +31,10 @@ public class RecipeController {
         return new ResponseEntity<>(this.iRecipeService.findByID(UUID.fromString(id)), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Recipe> addRecipe(@Valid @RequestBody Recipe recipe) {
-        return new ResponseEntity<>(this.iRecipeService.addRecipe(recipe), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<Recipe> addRecipe(@Valid @RequestBody Recipe recipe) {
+//        return new ResponseEntity<>(this.iRecipeService.addRecipe(recipe), HttpStatus.CREATED);
+//    }
 
     @PutMapping
     public ResponseEntity<Recipe> updateRecipe(@Valid @RequestBody Recipe recipe) {
