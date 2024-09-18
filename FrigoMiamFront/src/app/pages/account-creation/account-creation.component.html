@@ -7,8 +7,8 @@
       <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
     </div>
     <div class="firstName">
-      <label for="firstName">Prénom:</label>
-      <input type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" required>
+      <label for="firstname">Prénom:</label>
+      <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
     </div>
     <div class="birthdate">
       <label for="birthdate">Date de naissance:</label>
@@ -22,10 +22,10 @@
     <div class="diet">
       <label for="diets">Régime Alimentaire:</label>
 
-      <select id="diets" [(ngModel)]="user.diets" name="diets">
+      <select id="diets" [(ngModel)]="user.diet" name="diets">
         @for (diet of dietList ; track dietList){
 
-        <option>{{diet.value}}</option>
+        <option [value]=diet.value [label]=diet.label>{{diet.label}}</option>
           }
       </select>
 
@@ -34,14 +34,11 @@
       <div class="allergen">
         <label for="allergies">Allergie:</label>
 
-        <select id="allergies" [(ngModel)]="user.allergies" name="allergies">
-          @for (allergen of allergenList; track allergenList){
-
-          <option>{{allergen.value}}</option>
+        <select id="allergies" [(ngModel)]="user.allergies" name="allergies" multiple>
+          @for (allergen of allergenList; track allergen){
+              <option [value]=allergen.value [label]=allergen.label>{{ allergen.label }}</option>
           }
         </select>
-
-
       </div>
 
 

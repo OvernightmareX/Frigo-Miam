@@ -13,10 +13,10 @@ export class ProfilComponent {
 
   user: User = {
     "lastname": "",
-    "firstName": "",
+    "firstname": "",
     "birthdate": new Date(),
     "email": "",
-    "diets": [],
+    "diet": "",
     "allergies": [],
     "password": "",
   };

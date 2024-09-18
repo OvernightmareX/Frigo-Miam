@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "../../services/user.service";
+import {User} from "../../utils/types";
 
 @Component({
   selector: 'app-account-creation',
@@ -13,40 +14,41 @@ import {UserService} from "../../services/user.service";
   styleUrl: './account-creation.component.css'
 })
 export class AccountCreationComponent {
+
   dietList=[
-    { value :'vegetarien' ,label:'vegetarien'},
-    { value : 'végétalien', label:' végétalien '},
-    { value: 'cétogène', label:'cétogène'},
-    { value :"flexitarien", label:'flexitarien'},
-    { value : 'paléolithique', label:'paléolithique'},
-    { value: 'hypocalorique',label:'hypocalorique'},
+    { label : 'végétalien', value:' VEGETARIAN'},
+    { label: 'vegan', value:'VEGAN'},
+    { label :"pescetarien", value:'PESCATARIAN'}
   ]
 
   allergenList=[
-    { value :'sans lactose' ,label:'sans lactose'},
-    { value :'sans sucre', label:'sans sucre'},
-    { value:'sans gluten', label:'sans gluten'},
-
+    { label :'sans lactose' ,value:'DAIRY'},
+    { label :'sans noisette', value:'NUTS'},
+    { label:'sans gluten', value:'GLUTEN'},
+    { label:'sans oeufs', value:'EGGS'},
+    { label:'sans poisson', value:'FISH'},
+    { label:'sans fruit de mer', value:'SEAFOOD'},
+    { label:'sans soja', value:'SOY'},
   ]
 
-user ={
-  lastname:'',
-  firstName: '',
-  birthdate:'',
-  email:'',
-  diets:this.dietList ,
-  allergies:this.allergenList,
-  password:'',
-  confirmPassword:'',
-}
+  user = {
+    lastname:'',
+    firstname: '',
+    birthdate:'',
+    email:'',
+    diet:'',    // 'this.dietList' ,
+    allergies:[],  //[this.allergenList],
+    password:'',
+    confirmPassword:'',
+  }
 
-isSubmitted = false;
+  isSubmitted = false;
 
-constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {}
 
   get passwordHasError(){
-return this.isSubmitted && this.user.password.length <5;
-}
+    return this.isSubmitted && this.user.password.length <5;
+  }
 
   get confirmPasswordHasError(){
     return this.isSubmitted && this.user.password !== this.user.confirmPassword;
@@ -56,21 +58,31 @@ return this.isSubmitted && this.user.password.length <5;
 
     this.isSubmitted = true;
     if (!this.passwordHasError && !this.confirmPasswordHasError){
-      console.log(`user from formular: ${this.user}`);
 
-      // todo modifier le user pour que ça fit
+      console.log(`gna: ${JSON.stringify(this.user)}`)
 
-      this.userService.createUser().subscribe({
+      const userInstance = new User(
+        this.user.email,
+        this.user.password,
+        this.user.lastname,
+        this.user.firstname,
+        new Date(this.user.birthdate),
+        this.user.diet,
+        this.user.allergies
+      );
+
+      console.log(`userIstance: ${JSON.stringify(userInstance)}`)
+
+      this.userService.createUser(userInstance).subscribe({
         next: userFromBack => {
-          console.log(`userFromBack: ${userFromBack}`)
-          // localStorage.setItem('allIngredients', JSON.stringify(ingredients));
+          console.log(`userFromBack: ${JSON.stringify(userFromBack)}`)
         },
         error: err => {
-          console.error('Erreur lors de la récupération des ingrédients', err);
+          console.error("Erreur lors de la création de l'utilisateur", err);
         }
       })
     }
-
-}
+    this.isSubmitted = false;
+  }
 
 }

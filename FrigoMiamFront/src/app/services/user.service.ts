@@ -23,8 +23,8 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  createUser(): Observable<User>{
-    return this.http.post<User>(this.apiUrl, { "query_string": this.createUserBody}).pipe(
+  createUser(userToCreate: User): Observable<User>{
+    return this.http.post<User>(this.apiUrl, userToCreate).pipe(
       catchError(error => {
         alert(error.message);
         return of({} as User);
