@@ -1,0 +1,42 @@
+<div class="create-recipe">
+  <h1>Créer ta recette</h1>
+  <div class="registerRecipe">
+    <form (ngSubmit)="submitRecipe()">
+      <div class="title">
+        <label for="titleRecipe">Titre de votre recette</label>
+        <input type="text" id="titleRecipe" [(ngModel)]="recipe.title" name="titleRecipe" required>
+      </div>
+      <div class="addQt">
+        <div class="ingredient">
+          <label for="ingredient">Ingrédient</label>
+          <input type="text" id="ingredient" [(ngModel)]="recipe.ingredients" name="ingredient" required>
+        </div>
+        <div class="quantity">
+          <label for="quantity">Quantité</label>
+
+          <input type="number" id="quantity" [(ngModel)]="recipe.ingredients" name="quantity" required>
+        </div>
+
+        <button type="button" (click)="addIngredient()">Ajouter</button>
+        <div class="ingredientListAdd">
+          @for (ingredient of recipe.ingredients ; track ingredient){
+            <ul>
+              <li>{{ingredient.value}}</li>
+            </ul>
+          }
+
+        </div>
+      </div>
+      <div class="description">
+        <label for="descript">Préparation</label>
+        <textarea id="descript" name="descript" [(ngModel)]="recipe.descript"></textarea>
+      </div>
+      <div class="urlImg">
+        <label for="urlImg">URL de l'image :</label>
+        <input type="url" id="urlImg" [(ngModel)]="recipe.urlImg" name="urlImg">
+      </div>
+      <button type="submit">Valider</button>
+    </form>
+  </div>
+</div>
+

@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +48,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
         Recipe createdRecipe = recipeRepository.save(recipe);
 
-        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId_recipe().toString());
+        Recipe foundRecipe = recipeService.findByID(createdRecipe.getId());
 
         assertEquals(foundRecipe, createdRecipe);
     }
@@ -58,7 +57,7 @@ public class RecipeServiceTest {
     public void testFindRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
 
-        Recipe foundRecipe = recipeService.findByID(UUID.randomUUID().toString());
+        Recipe foundRecipe = recipeService.findByID(UUID.randomUUID());
 
         assertNotEquals(foundRecipe, recipe);
     }
@@ -102,7 +101,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createDefaultRecipe();
         Recipe result = this.recipeService.addRecipe(recipe);
 
-        assertNotNull(result.getId_recipe());
+        assertNotNull(result.getId());
         assertEquals(recipe.getTitle(), result.getTitle());
         assertEquals(recipe.getDescription(), result.getDescription());
         assertEquals(recipe.getInstructions(), result.getInstructions());
@@ -128,7 +127,7 @@ public class RecipeServiceTest {
     @Test
     public void testUpdateRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        recipe.setId_recipe(UUID.randomUUID());
+        recipe.setId(UUID.randomUUID());
 
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.updateRecipe(recipe));
 
@@ -149,7 +148,7 @@ public class RecipeServiceTest {
         Recipe recipe = RecipeFactory.createDefaultRecipe();
         Recipe savedRecipe = this.recipeService.addRecipe(recipe);
 
-        boolean result = this.recipeService.deleteRecipe(savedRecipe.getId_recipe().toString());
+        boolean result = this.recipeService.deleteRecipe(savedRecipe.getId());
 
         assertTrue(result);
     }
@@ -158,7 +157,7 @@ public class RecipeServiceTest {
     public void testDeleteRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createRecipeWithId(UUID.randomUUID());
 
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.deleteRecipe(recipe.getId_recipe().toString()));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.deleteRecipe(recipe.getId()));
 
         assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, thrown.getMessage());
     }
@@ -188,7 +187,8 @@ public class RecipeServiceTest {
         account.getRecipeLikedList().add(recipe);
         accountRepository.save(account);
 
-        List<Recipe> likedRecipes = this.recipeService.getFavoriteRecipes(account.getId().toString());
+        List<Recipe> likedRecipes = this.recipeService.getFavoriteRecipes(account.getId());
+
         assertEquals(recipe, likedRecipes.get(0));
     }
 
@@ -200,7 +200,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testGetFavoriteRecipes_WhenAccountDoesNotExist(){
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getFavoriteRecipes(UUID.randomUUID().toString()));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getFavoriteRecipes(UUID.randomUUID()));
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
     }
 

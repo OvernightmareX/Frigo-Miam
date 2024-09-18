@@ -13,9 +13,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class JwtUtilsServiceTest {
-    @Autowired
-    private JwtUtilsService jwtUtilsService;
+public class JwtUtilsTest {
 
     @Test
     public void testGenerateTokenSuccess() throws Exception{
@@ -27,11 +25,11 @@ public class JwtUtilsServiceTest {
 
         Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
 
-        String token = this.jwtUtilsService.generateToken(account, role);
+        String token = JwtUtils.generateToken(account, role);
 
-        assertEquals(account.getEmail(), this.jwtUtilsService.extractEmail(token));
-        assertEquals(resultExpected_2, this.jwtUtilsService.extractRole(token));
-        assertTrue(this.jwtUtilsService.validateToken(token, account));
+        assertEquals(account.getEmail(), JwtUtils.extractEmail(token));
+        assertEquals(resultExpected_2, JwtUtils.extractRole(token));
+        assertTrue(JwtUtils.validateToken(token, account));
     }
 
     @Test
@@ -41,7 +39,7 @@ public class JwtUtilsServiceTest {
                 .build();
 
         assertThrows(NullParameterException.class, () -> {
-            this.jwtUtilsService.generateToken(null, role);
+            JwtUtils.generateToken(null, role);
         });
     }
 
@@ -50,7 +48,7 @@ public class JwtUtilsServiceTest {
         Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
 
         assertThrows(NullParameterException.class, () -> {
-            this.jwtUtilsService.generateToken(account, null);
+            JwtUtils.generateToken(account, null);
         });
     }
 
@@ -63,9 +61,9 @@ public class JwtUtilsServiceTest {
                 .name("USER")
                 .build();
 
-        String token = this.jwtUtilsService.generateToken(account, role);
+        String token = JwtUtils.generateToken(account, role);
 
-        assertTrue(this.jwtUtilsService.validateToken(token, account));
+        assertTrue(JwtUtils.validateToken(token, account));
     }
 
 

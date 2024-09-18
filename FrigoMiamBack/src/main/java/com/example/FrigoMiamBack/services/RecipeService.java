@@ -36,12 +36,21 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public Recipe findByID(String id) {
-        if(id == null || id.isEmpty()) {
+    public Recipe findByID(UUID id) {
+        if(id == null) {
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
 
-        return this.recipeRepository.findById(UUID.fromString(id)).orElse(null);
+        return this.recipeRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public boolean existsById(UUID id) {
+        if(id == null) {
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+
+        return this.recipeRepository.existsById(id);
     }
 
     @Override
@@ -51,7 +60,7 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe addRecipe(Recipe recipe) {
-        if(recipe.getId_recipe() != null){
+        if(recipe.getId() != null){
             throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
 
@@ -64,10 +73,10 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe updateRecipe(Recipe recipe) {
-        if(recipe.getId_recipe() == null){
+        if(recipe.getId() == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(!this.recipeRepository.existsById(recipe.getId_recipe())){
+        if(!this.recipeRepository.existsById(recipe.getId())){
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
@@ -79,17 +88,17 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public boolean deleteRecipe(String id) {
+    public boolean deleteRecipe(UUID id) {
         System.out.println("service" + id);
         if(id == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(!this.recipeRepository.existsById(UUID.fromString(id))){
+        if(!this.recipeRepository.existsById(id)){
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {
-            this.recipeRepository.deleteById(UUID.fromString(id));
+            this.recipeRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             return false;
@@ -97,13 +106,13 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public List<Recipe> getFavoriteRecipes(String accountId) {
+    public List<Recipe> getFavoriteRecipes(UUID accountId) {
         if(accountId == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         Account accountFound;
-        if(this.accountRepository.findById(UUID.fromString(accountId)).isPresent()){
-            accountFound = this.accountRepository.findById(UUID.fromString(accountId)).get();
+        if(this.accountRepository.findById(accountId).isPresent()){
+            accountFound = this.accountRepository.findById(accountId).get();
         } else {
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
@@ -141,10 +150,10 @@ public class RecipeService implements IRecipeService {
         if(grade > 5){
             throw new WrongParameterException(ExceptionsMessages.GRADE_CANNOT_BE_HIGHER_THAN_5, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(recipe.getId_recipe() == null){
+        if(recipe.getId() == null){
             throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(!this.recipeRepository.existsById(recipe.getId_recipe())){
+        if(!this.recipeRepository.existsById(recipe.getId())){
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
         if(account.getId() == null){

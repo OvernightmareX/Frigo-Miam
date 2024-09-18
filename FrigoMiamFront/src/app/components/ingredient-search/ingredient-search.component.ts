@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {of} from "rxjs";
+import {IngredientBack} from "../../utils/types";
 
 @Component({
   selector: 'app-ingredient-search',
@@ -14,20 +15,18 @@ import {of} from "rxjs";
 })
 export class IngredientSearchComponent {
 
-  @Output() clickEvent = new EventEmitter<string>;
+  @Output() clickEvent = new EventEmitter<string>;  // TODO a renommer
+
+  ingredientsStored: IngredientBack[] = []
 
   constructor() {
     this.ingredient_control.valueChanges.subscribe(value => {
       this.filterPossibilities(value ?? '');
     });
+
+    this.ingredientsStored = this.getIngredientsFromLocalStorage();
   }
 
-  possibilityList = [ // TODO: will be replaced by values in service or localStorage
-    'a',
-    'aa',
-    'aaa',
-    'aaaa'
-  ]
   filteredPossibilities: string[] = [];
 
   ingredient_control = new FormControl(``, [
@@ -42,13 +41,25 @@ export class IngredientSearchComponent {
   }
 
   filterPossibilities(value: string) {
+
+    const ingredientNames = this.ingredientsStored.map(item => item.name)
+
     if (value) {
-      this.filteredPossibilities = this.possibilityList.filter(item =>
+      this.filteredPossibilities = ingredientNames.filter(item =>
         item.toLowerCase().startsWith(value.toLowerCase())
       );
     } else {
       this.filteredPossibilities = [];
     }
+  }
+
+  getIngredientsFromLocalStorage(): IngredientBack[] {
+    const storedIngredients = localStorage.getItem('allIngredients');
+
+    if (storedIngredients) {
+      return JSON.parse(storedIngredients) as IngredientBack[];
+    }
+    return [];
   }
 
   protected readonly of = of;

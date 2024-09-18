@@ -6,6 +6,7 @@ import com.example.FrigoMiamBack.utils.enums.Unit;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,8 +26,10 @@ public class Ingredient {
     private Allergy allergy;
 
     @OneToMany(mappedBy = "ingredient")
-    private List<Fridge> accountIngredientsList;
+    @Builder.Default
+    private List<Fridge> accountIngredientsList = new ArrayList<>();
 
     @OneToMany(mappedBy = "ingredient")
-    private List<Recipe_Ingredient> recipeIngredientsList;
+    @Builder.Default
+    private List<Recipe_Ingredient> recipeIngredientsList = new ArrayList<>();
 }

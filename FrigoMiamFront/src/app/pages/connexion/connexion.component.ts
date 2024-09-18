@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
-import {User} from "../../models/user";
+import {User} from "../../utils/types";
+
 
 
 @Component({
@@ -25,10 +26,13 @@ export class ConnexionComponent {
               private router: Router) {}
 
   connectSubmit() {
+    console.log(`arrived in connect submit`)
     const credentials = this.formConnect.value as Pick<User, 'email' | 'password'>;
+    console.log(`credentials : ${credentials}`)
 
     this.authService.login(credentials).subscribe({
       next: res => {
+        console.log(`after next`)
         if (res) {
           this.router.navigate(['/']);
         }

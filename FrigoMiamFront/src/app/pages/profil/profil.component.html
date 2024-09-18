@@ -1,1 +1,15 @@
-<p>profil works!</p>
+<div class="profilUser">
+<h1>Informations</h1>
+  <div class="profil">
+
+    <p>Nom: {{user.lastname}} </p>
+    <p>Prénom: {{user.firstName }}</p>
+    <p>Date de naissance:{{user.birthdate }} </p>
+    <p>Email: {{user.email}}</p>
+    <p>Régime alimentaire:{{user.diets}} </p>
+    <p>Allergie: {{user.allergies}}</p>
+
+  </div>
+  <div><button (click)="updateBtn()">Modifier le profil</button></div>
+  <div><button (click)="deleteBtn()">Supprimer le profil</button></div>
+</div>

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import {IngredientSearchComponent} from "../../components/ingredient-search/ingredient-search.component";
-import {IngredientListComponent} from "../../components/ingredient-list/ingredient-list.component";
+import {IngredientListComponent} from "../../components/ingredient-list-home/ingredient-list.component";
 import {RecipeCardShortComponent} from "../../components/recipe-card-short/recipe-card-short.component";
-import {Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
+import {IngredientBack, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
+import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,14 @@ import {Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
 })
 export class HomeComponent {
 
+  ingr: IngredientBack[] = []
+
+  constructor(private ingredientService: IngredientClientService) {
+    this.getAllIngredients()
+  }
+
   allRecipeCardsData: RecipeCard[] = [];
+  allUserIngredients: string[] = [];
 
   recipes: Recipe[] = [ // TODO: will be replaced by values in service or localStorage
     {
@@ -52,12 +60,11 @@ export class HomeComponent {
     }
   ]
 
-  addIngredient(addedIngredient: string): void {
+  addIngredient(addedIngredient: string): void {  // TODO a mettre dans util
     this.allUserIngredients.push(addedIngredient);
     this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
-  allUserIngredients: string[] = [];
 
   // find all recipe that CONTAINS the ingredient list
   recipeIngredientMatching(): RecipeCard[]{
@@ -74,7 +81,7 @@ export class HomeComponent {
           } else {                                                // sinon on ajoute la recette à la liste des recettes qui match
             recipesFiltered.push({
               "commonIngredientCount": 1,
-              "recepe": baseRecepe
+              "recepe": baseRecepe,
             });
           }
         }
@@ -92,8 +99,21 @@ export class HomeComponent {
   convertToRecipeCards(recipeList: RecipeMatched[]): RecipeCard[] {
     return recipeList.map(recipeMatched => ({
       nom: recipeMatched.recepe.nom,
-      description: recipeMatched.recepe.description
+      description: recipeMatched.recepe.description,
+      enoughQuantity: true  // field not used in home but in frigo
     }));
+  }
+
+  getAllIngredients(): void{
+    this.ingredientService.getAllIngredients().subscribe({
+      next: ingredients => {
+        localStorage.setItem('allIngredients', JSON.stringify(ingredients));
+      },
+      error: err => {
+        console.error('Erreur lors de la récupération des ingrédients', err);
+      }
+
+    })
   }
 
 

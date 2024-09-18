@@ -6,10 +6,37 @@ export type Recipe = {
 
 export type RecipeCard = {
   nom: string,
-  description: string
+  description: string,
+  enoughQuantity: boolean
 }
 
 export type RecipeMatched = {
   "commonIngredientCount": number,
   "recepe": Recipe
+}
+
+export type User = {
+  lastname?: string,
+  firstName?: string,
+  birthdate?: Date,
+  email: string,
+  diets?: string[],
+  allergies?: string[],
+  password: string,
+
+}
+
+export type IngredientFrigo = {
+  "name": string,
+  "quantity": number
+}
+
+export type IngredientBack = {
+  "id": string,
+  "name": string,
+  "unit": string,
+  "typeIngredient":string,
+  "allergy": string | null,
+  "accountIngredientsList": string[],  // may be blocking at a moment or another
+  "recipeIngredientsList": string[]  // may be blocking at a moment or another
 }

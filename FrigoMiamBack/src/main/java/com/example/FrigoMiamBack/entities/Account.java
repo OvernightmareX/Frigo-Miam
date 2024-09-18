@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,25 +33,48 @@ public class Account {
     @NotBlank
     private String password;
     private LocalDate birthdate;
-    private Allergy allergies;
+    private List<Allergy> allergies = new ArrayList<>();
     private Diet diets;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
     private Role role;
 
     @OneToMany(mappedBy = "account",  cascade = CascadeType.ALL)
-    private List<Fridge> accountIngredientsList;
+    @Builder.Default
+    private List<Fridge> accountIngredientsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Recipe> recipeCreatedList = new ArrayList<>();
 
     @OneToMany(mappedBy = "account")
-    private List<Recipe> recipeCreatedList;
-
-    @OneToMany(mappedBy = "account")
-    private List<Grade_Recipe> accountRecipeList;
+    @Builder.Default
+    private List<Grade_Recipe> accountRecipeList = new ArrayList<>();
 
     @ManyToMany
+    @Builder.Default
     @JoinTable(name = "account_likes_recipe",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id"))
-    private List<Recipe> recipeLikedList;
+    private List<Recipe> recipeLikedList = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", birthdate=" + birthdate +
+                ", allergies=" + (allergies != null ? allergies : "none") +
+                ", diets=" + (diets != null ? diets : "none") +
+                ", role=" + (role != null ? role.getName() : "none") +
+                ", accountIngredientsListSize=" + (accountIngredientsList != null ? accountIngredientsList.size() : 0) +
+                ", recipeCreatedListSize=" + (recipeCreatedList != null ? recipeCreatedList.size() : 0) +
+                ", accountRecipeListSize=" + (accountRecipeList != null ? accountRecipeList.size() : 0) +
+                ", recipeLikedListSize=" + (recipeLikedList != null ? recipeLikedList.size() : 0) +
+                '}';
+    }
+
 }

@@ -18,19 +18,25 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Service
-public class JwtUtilsService {
+public class JwtUtils {
 
     private static final String ISSUER = "FrigoMiam";
     private static final SecretKey SECRET = Keys.hmacShaKeyFor(Decoders.BASE64.decode("jeSuisUnMotDePasseSuperArchiMegaCompliqueeDePlusDe256bits!"));
     private static final long EXPIRATION_TIME = 1;
 
-    public String generateToken(Account account, Role role) throws Exception{
+    private JwtUtils() {
+        // Private constructor to prevent instantiation
+    }
 
-        if(account == null)
+    public static String generateToken(Account account, Role role) throws Exception {
+
+        if (account == null) {
             throw new NullParameterException(ExceptionsMessages.ACCOUNT_NULL_CANNOT_CREATE_TOKEN, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
 
-        if(role == null)
+        if (role == null) {
             throw new NullParameterException(ExceptionsMessages.ROLE_NULL_CANNOT_CREATE_TOKEN, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
 
         return Jwts.builder()
                 .issuer(ISSUER)
@@ -43,43 +49,46 @@ public class JwtUtilsService {
                 .compact();
     }
 
-    public boolean validateToken(String token, Account account) {
+    public static boolean validateToken(String token, Account account) {
 
-        if(account == null)
+        if (account == null) {
             throw new NullParameterException(ExceptionsMessages.ACCOUNT_NULL_CANNOT_VALIDATE_TOKEN, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
 
-        if(token == null)
+        if (token == null) {
             throw new NullParameterException(ExceptionsMessages.TOKEN_NULL_CANNOT_VALIDATE_TOKEN, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
 
         String email = extractEmail(token);
         String issuer = extractIssuer(token);
         return (issuer.equals(ISSUER) && email.equals(account.getEmail()) && !isTokenExpired(token));
     }
 
-    public String extractIssuer(String token){
+    public static String extractIssuer(String token) {
         return extractAllClaims(token).getIssuer();
     }
 
-    public String extractEmail(String token) {
+    public static String extractEmail(String token) {
         return extractAllClaims(token).get("email", String.class);
     }
 
-    public String extractRole(String token) {
+    public static String extractRole(String token) {
         return extractAllClaims(token).get("role", String.class);
     }
 
-    public Date extractExpiration(String token) {
+    public static Date extractExpiration(String token) {
         return extractAllClaims(token).getExpiration();
     }
 
-    private Claims extractAllClaims(String token) {
-        if(token == null)
+    private static Claims extractAllClaims(String token) {
+        if (token == null) {
             throw new NullParameterException("exception.token.parameter.null", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
 
         return Jwts.parser().verifyWith(SECRET).build().parseSignedClaims(token).getPayload();
     }
 
-    private boolean isTokenExpired(String token) {
+    private static boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 }

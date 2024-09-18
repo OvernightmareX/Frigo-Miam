@@ -40,6 +40,7 @@ public class ExceptionsMessages {
 
 
     public static final String ACCOUNT_DOES_NOT_EXIST = "updateAccount:: No account found.";
+    public static final String ACCOUNT_TO_LOGIN_DOES_NOT_EXIST = "login:: No account found.";
     public static final String WRONG_PARAMETERS = "update:: Wrong parameters.";
 
     public static final String RECIPE_ALREADY_EXIST = "createRecipe:: Recipe already exists.";
