@@ -28,7 +28,7 @@ public class JwtUtils {
         // Private constructor to prevent instantiation
     }
 
-    public static String generateToken(Account account, Role role) throws Exception {
+    public static String generateToken(Account account, Role role){
 
         if (account == null) {
             throw new NullParameterException(ExceptionsMessages.ACCOUNT_NULL_CANNOT_CREATE_TOKEN, HttpStatus.BAD_REQUEST, LocalDateTime.now());

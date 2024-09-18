@@ -1,19 +1,13 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Fridge;
-import com.example.FrigoMiamBack.entities.Ingredient;
-import com.example.FrigoMiamBack.entities.Recipe;
+import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.IngredientFactory;
 import com.example.FrigoMiamBack.factories.RecipeFactory;
-import com.example.FrigoMiamBack.repositories.AccountRepository;
-import com.example.FrigoMiamBack.repositories.FridgeRepository;
-import com.example.FrigoMiamBack.repositories.IngredientRepository;
-import com.example.FrigoMiamBack.repositories.RecipeRepository;
+import com.example.FrigoMiamBack.repositories.*;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -22,8 +16,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,16 +41,16 @@ public class AccountServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     private RecipeService recipeService;
     private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
         recipeService = new RecipeService(recipeRepository, accountRepository);
-        accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
-
-        // Now inject the RecipeService back into AccountService
-        accountService.setRecipeService(recipeService);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository, roleRepository);
     }
 
     @Nested
@@ -115,6 +111,56 @@ public class AccountServiceTest {
             assertEquals(ExceptionsMessages.ACCOUNT_ALREADY_CREATED, thrown.getMessage());
         }
     }
+
+    @Nested
+    class LogInTest {
+
+        @Test
+        public void ShouldLogInSuccessfully_WithCorrectCredentials() {
+            String email = "test@example.com";
+            String password = "correctPassword";
+            Account account = AccountFactory.createDefaultAccount();
+            account.setEmail(email);
+            account.setPassword(password);
+
+            accountService.createAccount(account);
+
+            Role role = Role.builder().name("USER").build();
+            roleRepository.save(role);
+
+            String token = accountService.logIn(email, password);
+
+            assertNotNull(token);
+            assertTrue(JwtUtils.validateToken(token, account));
+        }
+
+        @Test
+        public void ShouldThrowNotFoundException_WhenEmailDoesNotExist() {
+            String email = "nonexistent@example.com";
+            String password = "password";
+
+            NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.logIn(email, password));
+
+            assertEquals(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, thrown.getMessage());
+        }
+
+        @Test
+        public void ShouldThrowRuntimeException_WhenPasswordIsIncorrect() {
+            // Arrange
+            String email = "test@example.com";
+            String correctPassword = "correctPassword";
+            String wrongPassword = "wrongPassword";
+
+            Account account = AccountFactory.createDefaultAccount();
+            account.setEmail(email);
+            account.setPassword(HashingUtils.hashPassword(correctPassword)); // Store the hashed correct password
+
+            accountService.createAccount(account);
+
+            assertThrows(RuntimeException.class, () -> accountService.logIn(email, wrongPassword));
+        }
+    }
+
 
     @Test
     public void testGetAccountById_WithoutAccountId() {

@@ -45,15 +45,6 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public boolean existsById(UUID id) {
-        if(id == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-
-        return this.recipeRepository.existsById(id);
-    }
-
-    @Override
     public List<Recipe> findAll() {
         return this.recipeRepository.findAll();
     }

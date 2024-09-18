@@ -8,10 +8,7 @@ import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.IngredientFactory;
-import com.example.FrigoMiamBack.repositories.AccountRepository;
-import com.example.FrigoMiamBack.repositories.FridgeRepository;
-import com.example.FrigoMiamBack.repositories.IngredientRepository;
-import com.example.FrigoMiamBack.repositories.RecipeRepository;
+import com.example.FrigoMiamBack.repositories.*;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +38,9 @@ public class IngredientServiceTest {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     private IngredientService ingredientService;
     private AccountService accountService;
     private RecipeService recipeService;
@@ -51,7 +51,7 @@ public class IngredientServiceTest {
 
         recipeService = new RecipeService(recipeRepository, accountRepository);
 
-        accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository, roleRepository);
     }
 
     @Test

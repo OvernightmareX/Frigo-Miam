@@ -15,7 +15,6 @@ public interface IRecipeService {
     Recipe addRecipe(Recipe recipe);
     Recipe updateRecipe(Recipe recipe);
     boolean deleteRecipe(UUID id);
-    boolean existsById(UUID id);
 
     List<Recipe> getFavoriteRecipes(UUID accountId);
 
