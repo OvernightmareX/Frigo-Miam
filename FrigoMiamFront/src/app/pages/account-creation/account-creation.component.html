@@ -1,63 +1,82 @@
-<div class="account-create">
-  <h1>Création de compte</h1>
-  <div class="register">
-    <form  (ngSubmit)="submitAccount()">
-    <div class="lastname">
-      <label for="lastname">Nom:</label>
-      <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required>
-    </div>
-    <div class="firstName">
-      <label for="firstname">Prénom:</label>
-      <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required>
-    </div>
-    <div class="birthdate">
-      <label for="birthdate">Date de naissance:</label>
-      <input type="date" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate">
-    </div>
+<div class="account-create min-h-screen flex flex-col justify-center items-center bg-100">
 
-    <div class="email">
-      <label for="email">Email:</label>
-      <input type="email" id="email" [(ngModel)]="user.email" name="email" required>
-    </div>
-    <div class="diet">
-      <label for="diets">Régime Alimentaire:</label>
-
-      <select id="diets" [(ngModel)]="user.diet" name="diets">
-        @for (diet of dietList ; track dietList){
-
-        <option [value]=diet.value [label]=diet.label>{{diet.label}}</option>
-          }
-      </select>
+  <h1 class="text-2xl font-bold mb-8  text-[#289E8D]">Création de compte</h1>
 
 
-    </div>
-      <div class="allergen">
-        <label for="allergies">Allergie:</label>
+  <div class="register bg-[#289E8D] shadow-lg rounded-lg p-8 w-full max-w-lg ">
+    <form (ngSubmit)="submitAccount()" class="space-y-4 ">
 
-        <select id="allergies" [(ngModel)]="user.allergies" name="allergies" multiple>
-          @for (allergen of allergenList; track allergen){
-              <option [value]=allergen.value [label]=allergen.label>{{ allergen.label }}</option>
+
+      <div class="lastname">
+        <label for="lastname" class="block text-sm font-medium text-[#FCF3F1]">Nom:</label>
+        <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm">
+      </div>
+
+      <div class="firstname">
+        <label for="firstname" class="block text-sm font-medium text-[#FCF3F1]">Prénom:</label>
+        <input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm">
+      </div>
+
+      <div class="birthdate">
+        <label for="birthdate" class="block text-sm font-medium text-[#FCF3F1]">Date de naissance:</label>
+        <input type="date" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate"
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm text-[#289E8D]">
+      </div>
+
+      <div class="email">
+        <label for="email" class="block text-sm font-medium text-[#FCF3F1]">Email:</label>
+        <input type="email" id="email" [(ngModel)]="user.email" name="email" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm">
+      </div>
+
+      <div class="diet">
+        <label for="diets" class="block text-sm font-medium text-[#FCF3F1]">Régime Alimentaire:</label>
+        <select id="diets" [(ngModel)]="user.diet" name="diets"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm text-[#289E8D]">
+          @for (diet of dietList; track dietList){
+            <option [value]="diet.value">{{diet.label}}</option>
           }
         </select>
       </div>
 
+      <div class="allergen">
+        <label for="allergies" class="block text-sm font-medium text-[#FCF3F1]">Allergies:</label>
+        <select id="allergies" [(ngModel)]="user.allergies" name="allergies" multiple
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm text-[#289E8D]">
+          @for (allergen of allergenList; track allergen){
+            <option [value]="allergen.value">{{allergen.label}}</option>
+          }
+        </select>
+      </div>
 
-    <div class="password">
-      <label for="pwd">Mot de passe: </label>
-      <input type="password" id="pwd" name="password" [(ngModel)]="user.password"   required>
-      @if(passwordHasError){
-        <small class="error">Mot de passe incorrecte</small>
-      }
-    </div>
-      <div class="confirm-password">
-        <label for="confirmPassword">Confirmez le mot de passe:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="user.confirmPassword" required>
-        @if(confirmPasswordHasError){
-          <small class="errorConfirm">Les deux mots de passes ne se correspondt pas</small>
+      <!-- Password -->
+      <div class="password">
+        <label for="pwd" class="block text-sm font-medium text-[#FCF3F1]">Mot de passe:</label>
+        <input type="password" id="pwd" name="password" [(ngModel)]="user.password" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm">
+        @if(passwordHasError){
+          <small class="text-red-500">Mot de passe incorrect</small>
         }
       </div>
-    <button type="submit" >S'inscrire</button>
-    </form>
 
+      <!-- Confirm Password -->
+      <div class="confirm-password">
+        <label for="confirmPassword" class="block text-sm font-medium text-[#FCF3F1]">Confirmez le mot de passe:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="user.confirmPassword" required
+               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm">
+        @if(confirmPasswordHasError){
+          <small class="text-red-500">Les deux mots de passe ne correspondent pas</small>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="w-full bg-[#bd4f37] text-white py-2 px-4 rounded-md shadow hover:bg-[#fcf3f1] hover:text-[#bd4f37] transition duration-300">
+        S'inscrire
+      </button>
+
+    </form>
   </div>
 </div>
+
