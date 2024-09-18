@@ -106,6 +106,73 @@ public class AccountServiceTest {
         }
     }
 
+    @Test
+    public void testGetAccountById_WithoutAccountId(){
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> {accountService.getAccountById(null);});
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_ACCOUNT, thrown.getMessage());
+    }
+
+    @Test
+    public void testGetAccountById_WithAccountId(){
+        Account account = AccountFactory.createDefaultAccount();
+        Account saved = accountService.createAccount(account);
+
+        Account found = accountService.getAccountById(saved.getId().toString());
+
+        assertEquals(saved, found);
+    }
+
+    @Test
+    public void testUpdateAccountSuccess() {
+        Account account = AccountFactory.createDefaultAccount();
+        accountService.createAccount(account);
+        account.setFirstname("Totoro");
+        Account updated = accountService.updateAccount(account);
+
+        assertEquals(account.getFirstname(), updated.getFirstname());
+    }
+
+    @Test
+    public void testUpdateAccount_WithoutAccountId(){
+        Account account = AccountFactory.createDefaultAccount();
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> accountService.updateAccount(account));
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_UPDATE_ACCOUNT, thrown.getMessage());
+    }
+
+    @Test
+    public void testUpdateAccount_WhenAccountDoesNotExist(){
+        Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.updateAccount(account));
+        assertEquals(ExceptionsMessages.NO_ACCOUNT_FOUND_CANNOT_UPDATE, thrown.getMessage());
+    }
+
+    @Test
+    public void testDeleteAccountSuccess() {
+        Account account = AccountFactory.createDefaultAccount();
+        accountService.createAccount(account);
+        boolean result = accountService.deleteAccount(account);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testDeleteAccount_WithoutAccountId(){
+        Account account = AccountFactory.createDefaultAccount();
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> accountService.deleteAccount(account));
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_ACCOUNT, thrown.getMessage());
+    }
+
+    @Test
+    public void testDeleteAccount_WhenAccountDoesNotExist(){
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.deleteAccount(AccountFactory.createAccountWithId(UUID.randomUUID())));
+        assertEquals(ExceptionsMessages.NO_ACCOUNT_FOUND_CANNOT_DELETE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddRecipeToFavoriteSuccess() {
+        Account accountDefault = AccountFactory.createDefaultAccount();
+        Account createdAccount = this.accountService.createAccount(accountDefault);
+    }
+
     @Nested
     class AddRecipeTest{
         @Test
@@ -132,8 +199,8 @@ public class AccountServiceTest {
 
             WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> accountService.addRecipeToFavorite(accountDefault, createdRecipe));
 
-            assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
-        }
+        assertEquals(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_ADD_RECIPE_TO_FAVORITE, thrown.getMessage());
+    }
 
         @Test
         public void ShouldThrowWrongParameterException_WithoutRecipeId(){
@@ -143,8 +210,8 @@ public class AccountServiceTest {
 
             WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> accountService.addRecipeToFavorite(savedAccount, recipeDefault));
 
-            assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
-        }
+        assertEquals(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_ADD_RECIPE_TO_FAVORITE, thrown.getMessage());
+    }
 
         @Test
         public void ShouldThrowNotFoundException_WhenRecipeDoesNotExist(){
@@ -155,8 +222,8 @@ public class AccountServiceTest {
 
             NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.addRecipeToFavorite(savedAccount, recipeDefault));
 
-            assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, thrown.getMessage());
-        }
+        assertEquals(ExceptionsMessages.NO_RECIPE_FOUND_CANNOT_ADD_RECIPE_TO_FAVORITE, thrown.getMessage());
+    }
 
         @Test
         public void ShouldThrowNotFoundException_WhenAccountDoesNotExist(){
@@ -167,8 +234,7 @@ public class AccountServiceTest {
 
             NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.addRecipeToFavorite(accountDefault, savedRecipe));
 
-            assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
-        }
+        assertEquals(ExceptionsMessages.NO_ACCOUNT_FOUND_CANNOT_ADD_RECIPE_TO_FAVORITE, thrown.getMessage());
     }
 
     @Nested
@@ -191,7 +257,98 @@ public class AccountServiceTest {
             assertEquals(quantity, fridges.get(0).getQuantity());
         }
 
-        //TODO add more tests to AddIngredientToFridge
+    @Test
+    public void testAddIngredientToFridge_WithQuantityLowerThan_1(){
+        Account accountCreated = accountService.createAccount(AccountFactory.createDefaultAccount());
+        Ingredient ingredientCreated = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.accountService.addIngredientToFridge(ingredientCreated, accountCreated, 0));
+
+        assertEquals(ExceptionsMessages.QUANTITY_CANNOT_BE_ZERO_OR_LESS, thrown.getMessage());
     }
+
+    @Test
+    public void testAddIngredientToFridge_WithoutIngredientId(){
+        Account account = AccountFactory.createDefaultAccount();
+        Account savedAccount = accountService.createAccount(account);
+        int quantity = 5;
+        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.accountService.addIngredientToFridge(ingredient, savedAccount, quantity));
+        assertEquals(ExceptionsMessages.EMPTY_INGREDIENT_ID_CANNOT_ADD_INGREDIENT_TO_FRIDGE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddIngredientToFridge_WhenIngredientDoesNotExist(){
+        Account account = AccountFactory.createDefaultAccount();
+        Account savedAccount = accountService.createAccount(account);
+
+        Ingredient ingredient = IngredientFactory.createIngredientWithCustomId(UUID.randomUUID());
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.accountService.addIngredientToFridge(ingredient, savedAccount, 5));
+
+        assertEquals(ExceptionsMessages.NO_INGREDIENT_FOUND_CANNOT_ADD_INGREDIENT_TO_FRIDGE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddIngredientToFridge_WithoutAccountId(){
+        Account accountDefault = AccountFactory.createDefaultAccount();
+        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.accountService.addIngredientToFridge(savedIngredient, accountDefault, 5));
+        assertEquals(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_ADD_INGREDIENT_TO_FRIDGE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddIngredientToFridge_WhenAccountDoesNotExist(){
+        Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
+        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.accountService.addIngredientToFridge(savedIngredient, account, 5));
+        assertEquals(ExceptionsMessages.NO_ACCOUNT_FOUND_CANNOT_ADD_INGREDIENT_TO_FRIDGE, thrown.getMessage());
+    }
+
+    @Test
+    public void testAddIngredientToFridge_WhenIngredientAlreadyAdded(){
+        Account accountCreated = accountService.createAccount(AccountFactory.createDefaultAccount());
+        Ingredient ingredientCreated = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+
+        accountService.addIngredientToFridge(ingredientCreated, accountCreated, 5);
+        ConflictException thrown = assertThrows(ConflictException.class , () -> this.accountService.addIngredientToFridge(ingredientCreated, accountCreated, 5));
+        assertEquals(ExceptionsMessages.INGREDIENT_ALREADY_ADDED_TO_FRIDGE, thrown.getMessage());
+    }
+
+
+    @Test
+    public void testGetFridge_WhenFridgeExists() {
+        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+        Ingredient ingredient2 = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient2 = ingredientRepository.save(ingredient2);
+        Account account = AccountFactory.createAccountWithId(UUID.fromString("1083349f-d171-4e59-9769-e073222f96d9"));
+        Account savedAccount = accountRepository.save(account);
+        int quantity = 5;
+
+        accountService.addIngredientToFridge(savedIngredient, savedAccount, quantity);
+        accountService.addIngredientToFridge(savedIngredient2, savedAccount, quantity);
+
+        List<Fridge> fridge = accountService.getFridges(savedAccount.getId());
+        assertEquals(2, fridge.size());
+    }
+
+    @Test
+    public void testGetFridge_WithoutAccountId() {
+        WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> accountService.getFridges(null));
+        assertEquals(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_FIND_FRIDGE, thrown.getMessage());
+    }
+
+    @Test
+    public void testGetFridge_WhenAccountDoesNotExist() {
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> accountService.getFridges(UUID.randomUUID().toString()));
+        assertEquals(ExceptionsMessages.NO_ACCOUNT_FOUND_CANNOT_FIND_FRIDGE, thrown.getMessage());
+    }
+
+}
 
 }

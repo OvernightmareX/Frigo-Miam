@@ -29,9 +29,9 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public Ingredient getIngredientById(UUID id) {
-        if(id == null)
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-
+        if(id == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
         return this.ingredientRepository.findById(id).orElse(null);
     }
 
@@ -49,11 +49,12 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public boolean deleteIngredient(UUID id) {
-        if(id == null)
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-
-        if(!ingredientRepository.existsById(id))
-            throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        if(id == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!ingredientRepository.existsById(id)){
+            throw new NotFoundException(ExceptionsMessages.NO_INGREDIENT_FOUND_CANNOT_DELETE, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
 
         try {
             this.ingredientRepository.deleteById(id);

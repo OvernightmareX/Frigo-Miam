@@ -98,7 +98,7 @@ public class IngredientServiceTest {
     public void testFindIngredient_WithoutIngredientId(){
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.getIngredientById(null));
 
-        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_INGREDIENT, thrown.getMessage());
     }
 
     @Test
@@ -136,14 +136,14 @@ public class IngredientServiceTest {
     public void testDeleteIngredient_WhenIngredientDoesNotExist(){
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.ingredientService.deleteIngredient(UUID.randomUUID()));
 
-        assertEquals(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, thrown.getMessage());
+        assertEquals(ExceptionsMessages.NO_INGREDIENT_FOUND_CANNOT_DELETE, thrown.getMessage());
     }
 
     @Test
     public void testDeleteIngredient_WithoutIngredientId(){
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.deleteIngredient(null));
 
-        assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+        assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_INGREDIENT, thrown.getMessage());
     }
 
     @Test

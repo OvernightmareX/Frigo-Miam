@@ -20,9 +20,11 @@ import java.util.UUID;
 @Service
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
+    private final AccountService accountService;
 
-    public RecipeService(RecipeRepository recipeRepository) {
+    public RecipeService(RecipeRepository recipeRepository, AccountService accountService) {
         this.recipeRepository = recipeRepository;
+        this.accountService = accountService;
     }
 
     @Override
@@ -94,16 +96,41 @@ public class RecipeService implements IRecipeService {
             return false;
         }
     }
-//
-//    @Override
-//    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets) {
-//        return this.recipeRepository.findRecipesByIngredientAndAllergyAndDiet(ingredients, allergies, diets);
-//    }
-//
-//    @Override
-//    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, List<Diet> diets) {
-//        return List.of();
-//    }
+
+    @Override
+    public List<Recipe> getFavoriteRecipes(String accountId) {
+        if(accountId == null){
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(this.accountService.getAccountById(accountId) == null){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+        return accountService.getAccountById(accountId).getRecipeLikedList();
+    }
+
+    @Override
+    public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
+        List<Recipe> finalRecipes = this.recipeRepository.findAll();
+
+        finalRecipes.forEach(recipe -> {
+
+        });
+        if(diets != null){
+            finalRecipes = finalRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
+        }
+        //TODO AJOUTER UN INGREDIENT A UNE RECETTE POUR POUVOIR FILTRER/INGREDIENt et /ALLERGEN
+//        if(ingredients != null){
+//            for(Ingredient ingredient : ingredients){
+//                for(Recipe recipe : finalRecipes){
+//                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+//                    System.out.println(recipeIngredients);
+//                }
+//                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
+//            }
+//        }
+        return finalRecipes;
+    }
+
 //
 //    @Override
 //    public int getAverageGrade(String recipeId) {
@@ -143,7 +170,7 @@ public class RecipeService implements IRecipeService {
 //    @Override
 //    public List<Recipe> getFavoriteRecipes(String accountId) {
 //        try {
-//            return this.recipeRepository.findRecipeLikedList(UUID.fromString(accountId));
+//            return this.recipeRepository.findRecipeLikedListByAccountId(UUID.fromString(accountId));
 //        } catch (Exception e) {
 //            //TODO exception
 //            return null;
