@@ -28,11 +28,12 @@ export class ConnexionComponent {
   connectSubmit() {
     console.log(`arrived in connect submit`)
     const credentials = this.formConnect.value as Pick<User, 'email' | 'password'>;
-    console.log(`credentials : ${credentials}`)
+    console.log(`credentials : ${JSON.stringify(credentials)}`)
 
     this.authService.login(credentials).subscribe({
       next: res => {
         console.log(`after next`)
+        console.log(`res: ${JSON.stringify(res)}`);
         if (res) {
           this.router.navigate(['/']);
         }

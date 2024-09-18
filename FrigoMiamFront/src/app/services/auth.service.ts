@@ -23,21 +23,17 @@ export class AuthService {
    }
 
 
-  login(cred: Pick<User, 'email' | 'password'>): Observable<{ accessToken: string }> {
+  login(cred: Pick<User, 'email' | 'password'>): Observable<{ token: string }> {
     console.log("arrived in login")
-    return this.http.post<{ accessToken: string }>(`${this.apiUrl}/login`, cred).pipe(
-      tap(res => localStorage.setItem('token', res.accessToken)),
+    return this.http.post<{ token: string }>(`${this.apiUrl}/account/login`, cred).pipe(
+      tap(res => localStorage.setItem('token', res.token)),
       catchError(error => {
         alert(error.message);
-        return of({accessToken:''});
+        return of({token:''});
       })
     );
   }
 
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
 }
 
 
