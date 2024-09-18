@@ -1,18 +1,21 @@
-<header class="border-b border-gray-300 shadow-md bg-[#fcf3f1]">
-  <div class="flex flex-col lg:flex-row justify-between items-center p-4 ">
-    <div class="logoWeb mb-4 lg:mb-0">
-      <img id="logo" class="w-[10em] h-auto max-h-[6em] object-contain" src="./logo_frigomiam.png" alt="logo" />
+<div class="min-h-screen flex flex-col bg-[#fcf3f1]">
+  <header class="border-b border-gray-300 shadow-md bg-[#fcf3f1]">
+    <div class="flex flex-col lg:flex-row justify-between items-center p-4">
+      <div class="logoWeb mb-4 lg:mb-0">
+        <img id="logo" class="w-[10em] h-auto max-h-[6em] object-contain" src="./logo_frigomiam.png" alt="logo" />
+      </div>
+      <div class="navWeb w-full lg:w-auto text-center">
+        <app-nav></app-nav>
+      </div>
     </div>
-    <div class="navWeb w-full lg:w-auto text-center">
-      <app-nav></app-nav>
-    </div>
-  </div>
-</header>
+  </header>
 
-<main class="bg-[#fcf3f1] mt-4-">
-  <router-outlet></router-outlet>
-</main>
+  <main class="flex-grow bg-[#fcf3f1]">
+    <router-outlet></router-outlet>
+  </main>
 
-<footer class="footer bg-[#289e8d] text-[#fcf3f1] py-6 text-center fixed bottom-0 w-full">
-  <app-footer></app-footer>
-</footer>
+  <footer class="bg-[#289e8d] text-[#fcf3f1] py-6 text-center">
+    <app-footer></app-footer>
+  </footer>
+</div>
+

@@ -3,7 +3,7 @@
   <h1 class="text-2xl font-bold mb-8  text-[#289E8D]">Création de compte</h1>
 
 
-  <div class="register bg-[#289E8D] shadow-lg rounded-lg p-8 w-full max-w-lg ">
+  <div class="register bg-[#289E8D] shadow-lg rounded-lg p-8 w-full max-w-lg mb-12 ">
     <form (ngSubmit)="submitAccount()" class="space-y-4 ">
 
 
@@ -43,7 +43,7 @@
 
       <div class="allergen">
         <label for="allergies" class="block text-sm font-medium text-[#FCF3F1]">Allergies:</label>
-        <select id="allergies" [(ngModel)]="user.allergies" name="allergies" multiple
+        <select id="allergies" [(ngModel)]="user.allergies" name="allergies"
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm text-[#289E8D]">
           @for (allergen of allergenList; track allergen){
             <option [value]="allergen.value">{{allergen.label}}</option>
@@ -51,7 +51,6 @@
         </select>
       </div>
 
-      <!-- Password -->
       <div class="password">
         <label for="pwd" class="block text-sm font-medium text-[#FCF3F1]">Mot de passe:</label>
         <input type="password" id="pwd" name="password" [(ngModel)]="user.password" required
@@ -61,7 +60,6 @@
         }
       </div>
 
-      <!-- Confirm Password -->
       <div class="confirm-password">
         <label for="confirmPassword" class="block text-sm font-medium text-[#FCF3F1]">Confirmez le mot de passe:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="user.confirmPassword" required
@@ -71,7 +69,6 @@
         }
       </div>
 
-      <!-- Submit Button -->
       <button type="submit" class="w-full bg-[#bd4f37] text-white py-2 px-4 rounded-md shadow hover:bg-[#fcf3f1] hover:text-[#bd4f37] transition duration-300">
         S'inscrire
       </button>
