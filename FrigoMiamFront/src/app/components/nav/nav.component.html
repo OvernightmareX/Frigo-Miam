@@ -1,22 +1,23 @@
-<nav class="p-4 pt-[50px] flex flex-row justify-center items-center space-x-4 lg:ml-12 lg:mt-0 lg:flex-row lg:items-center lg:space-x-4">
-  <ul class="flex flex-row justify-center items-center space-x-4 lg:flex-row lg:space-x-4 text-center w-full lg:w-auto">
+<nav class="fixed top-0 right-0 p-4 pt-[50px] lg:ml-12 lg:mt-0 flex items-center space-x-4">
+  <ul class="flex items-center space-x-4">
     <li>
       <a routerLink="/" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Accueil</a>
     </li>
-    <li>
+    <li class="relative">
       @if (!isAuthentified) {
-        <a routerLink="/connexion" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Se connecter</a>
-      }
-      @else {
+        <li>
+          <a routerLink="/connexion" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Se connecter</a>
+        </li>
+      } @else {
         <button (click)="toggleMenu()" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">User</button>
       }
-    </li>
-    <li *ngIf="isUserMenuOpen && isAuthentified">
-      <ul class="absolute right-0 mt-2 w-48 bg-white shadow-lg">
-        <li><a routerLink="/profile" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Profil</a></li>
-        <li><a routerLink="/frigo" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Frigo</a></li>
-        <li><a routerLink="/recette" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Recette</a></li>
-      </ul>
+      @if (isUserMenuOpen && isAuthentified) {
+        <ul class="absolute right-0 mt-2 w-48 bg-white shadow-lg">
+          <li><a routerLink="/profile" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Profil</a></li>
+          <li><a routerLink="/frigo" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Frigo</a></li>
+          <li><a routerLink="/recette" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Recette</a></li>
+        </ul>
+      }
     </li>
     <li>
       <a routerLink="/admin" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Administration</a>
