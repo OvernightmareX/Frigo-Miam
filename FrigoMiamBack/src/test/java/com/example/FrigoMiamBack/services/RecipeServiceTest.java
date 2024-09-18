@@ -456,16 +456,26 @@ public class RecipeServiceTest {
         assertEquals(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT, thrown.getMessage());
     }
 
-    //TODO PAS FIABLE CAR PAS DE METHODE POUR GEREr RElATION ACCOUNT/RECIPE
     @Test
     public void testGetRecipeCreated_Success(){
-        Account account = AccountFactory.createDefaultAccount();
+        Account account = accountRepository.save(AccountFactory.createDefaultAccount());
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        this.recipeService.addRecipe(recipe, account);
 
-        List<Recipe> recipeList = this.recipeService.getRecipeCreated(account.getId());
-        System.out.println(recipeList);
-        System.out.println("Account in Recipe" + recipe.getAccount());
-        assertEquals(recipe, recipeList.get(0));
+        List<IngredientQuantityDTO> ingredients = new ArrayList<>();
+        Ingredient ingredient = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        Ingredient ingredient2 = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        Ingredient ingredient3 = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+        ingredients.add(new IngredientQuantityDTO(ingredient2, 5));
+        ingredients.add(new IngredientQuantityDTO(ingredient3, 5));
+
+        Recipe savedRecipe = this.recipeService.addRecipe(recipe, account, ingredients);
+
+        List<Recipe> createdRecipeList = this.recipeService.getRecipeCreated(account.getId());
+        System.out.println("Account du Recipe" + " " + savedRecipe.getAccount());
+        System.out.println("recipe du Account" + " " + account.getRecipeCreatedList());
+        System.out.println(createdRecipeList);
+
+        assertEquals(1, createdRecipeList.size());
     }
 }

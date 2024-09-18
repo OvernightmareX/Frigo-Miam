@@ -72,6 +72,7 @@ public class RecipeService implements IRecipeService {
         });
 
         savedRecipe.setAccount(account);
+        account.getRecipeCreatedList().add(savedRecipe);
 
         try {
             return this.recipeRepository.save(savedRecipe);
@@ -289,8 +290,6 @@ public class RecipeService implements IRecipeService {
         }
     }
 
-
-    //TODO GERER L'UTILISATEUR POUR CREATION RECETTE
     @Override
     public List<Recipe> getRecipeCreated(UUID accountId) {
         if (accountId == null) {
