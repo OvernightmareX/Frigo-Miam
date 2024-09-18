@@ -1,6 +1,7 @@
 package com.example.FrigoMiamBack.services;
 
 
+import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
@@ -8,6 +9,8 @@ import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
+import com.example.FrigoMiamBack.utils.enums.Allergy;
+import com.example.FrigoMiamBack.utils.enums.Diet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,11 +23,9 @@ import java.util.UUID;
 @Service
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
-    private final AccountService accountService;
 
-    public RecipeService(RecipeRepository recipeRepository, AccountService accountService) {
+    public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
-        this.accountService = accountService;
     }
 
     @Override
@@ -98,14 +99,19 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public List<Recipe> getFavoriteRecipes(String accountId) {
+    public List<Recipe> getFavoriteRecipes(UUID accountId) {
         if(accountId == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
+
+        List<Recipe> recipes = this.recipeRepository.findAll();
+        /* TODO Ne pas appeler accountService car il y a redondance de dépendence.
+                Possibilité de faire autrement ?
         if(this.accountService.getAccountById(accountId) == null){
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
-        return accountService.getAccountById(accountId).getRecipeLikedList();
+        return accountService.getAccountById(accountId).getRecipeLikedList();*/
+        return null;
     }
 
     @Override

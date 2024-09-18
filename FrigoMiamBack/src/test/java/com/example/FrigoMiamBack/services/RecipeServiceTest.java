@@ -41,8 +41,8 @@ public class RecipeServiceTest {
 
     @BeforeEach
     public void setUp() {
-        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
-        recipeService = new RecipeService(recipeRepository, accountService);
+        recipeService = new RecipeService(recipeRepository);
+        accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
     }
 
     @Test
@@ -189,7 +189,8 @@ public class RecipeServiceTest {
         account.getRecipeLikedList().add(recipe);
         accountRepository.save(account);
 
-        List<Recipe> likedRecipes = this.recipeService.getFavoriteRecipes(account.getId().toString());
+        List<Recipe> likedRecipes = this.recipeService.getFavoriteRecipes(account.getId());
+
         assertEquals(recipe, likedRecipes.get(0));
     }
 
@@ -201,7 +202,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testGetFavoriteRecipes_WhenAccountDoesNotExist(){
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getFavoriteRecipes(UUID.randomUUID().toString()));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getFavoriteRecipes(UUID.randomUUID()));
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
     }
 }

@@ -7,6 +7,7 @@ import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
 import com.example.FrigoMiamBack.repositories.FridgeRepository;
+import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,16 @@ import java.util.UUID;
 public class AccountService implements IAccountService {
 
     private final AccountRepository accountRepository;
-    private final RecipeService recipeService;
+    private RecipeService recipeService;
+    private final IngredientRepository ingredientRepository;
 
-    public AccountService(AccountRepository accountRepository, RecipeService recipeService) {
+    public AccountService(AccountRepository accountRepository, RecipeService recipeService, IngredientRepository ingredientRepository) {
         this.accountRepository = accountRepository;
+        this.recipeService = recipeService;
+        this.ingredientRepository = ingredientRepository;
+    }
+
+    public void setRecipeService(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
@@ -128,7 +135,7 @@ public class AccountService implements IAccountService {
         if (recipe.getId() == null) {
             throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_ADD_RECIPE_TO_FAVORITE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if (!this.recipeRepository.existsById(recipe.getId())) {
+        if (!this.recipeService.existsById(recipe.getId())) {
             throw new NotFoundException(ExceptionsMessages.NO_RECIPE_FOUND_CANNOT_ADD_RECIPE_TO_FAVORITE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
@@ -195,7 +202,7 @@ public class AccountService implements IAccountService {
         if (accountId == null) {
             throw new WrongParameterException(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_FIND_FRIDGE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if (!this.accountRepository.existsById(UUID.fromString(accountId))) {
+        if (!this.accountRepository.existsById(accountId)) {
             throw new NotFoundException(ExceptionsMessages.NO_ACCOUNT_FOUND_CANNOT_FIND_FRIDGE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
         try {

@@ -16,7 +16,7 @@ public interface IRecipeService {
     boolean deleteRecipe(UUID id);
     boolean existsById(UUID id);
 
-    List<Recipe> getFavoriteRecipes(String accountId);
+    List<Recipe> getFavoriteRecipes(UUID accountId);
 
     List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets);
 //

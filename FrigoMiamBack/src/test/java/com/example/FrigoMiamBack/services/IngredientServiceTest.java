@@ -32,24 +32,26 @@ public class IngredientServiceTest {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    private IngredientService ingredientService;
-
     @Autowired
     private FridgeRepository fridgeRepository;
 
+    @Autowired
     private RecipeRepository recipeRepository;
 
     @Autowired
     private AccountRepository accountRepository;
 
+    private IngredientService ingredientService;
     private AccountService accountService;
-
+    private RecipeService recipeService;
 
     @BeforeEach
     public void setup() {
         ingredientService = new IngredientService(ingredientRepository);
-        accountService = new AccountService(accountRepository, new RecipeService(recipeRepository));
 
+        recipeService = new RecipeService(recipeRepository); // Temporarily pass null for AccountService
+
+        accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
     }
 
     @Test
