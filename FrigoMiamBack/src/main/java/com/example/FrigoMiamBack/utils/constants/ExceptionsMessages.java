@@ -70,4 +70,8 @@ public class ExceptionsMessages {
     public static final String EMPTY_INGREDIENT_ID_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Ingredient id is empty.";
     public static final String RECIPE_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Recipe not found.";
     public static final String INGREDIENT_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Ingredient not found.";
+
+    public static final String EMPTY_ACCOUNT_ID_CANNOT_FIND_RECIPE = "findRecipeByAccount:: Account id is empty.";
+    public static final String ACCOUNT_DOES_NOT_EXIST_CANNOT_FIND_RECIPES = "findRecipeByAccount:: Account not found.";
+
 }

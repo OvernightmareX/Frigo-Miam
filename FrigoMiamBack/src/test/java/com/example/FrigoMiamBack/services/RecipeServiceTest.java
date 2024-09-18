@@ -1,5 +1,6 @@
 package com.example.FrigoMiamBack.services;
 
+import com.example.FrigoMiamBack.DTO.IngredientQuantityDTO;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
@@ -88,13 +89,22 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddRecipe_WhenRecipeExists(){
+        Account account = AccountFactory.createDefaultAccount();
+        Account createdAccount = accountRepository.save(account);
+
         UUID id = UUID.randomUUID();
         Recipe recipe = RecipeFactory.createRecipeWithId(id);
         recipeRepository.save(recipe);
 
         Recipe newRecipe = RecipeFactory.createRecipeWithId(id);
 
-        ConflictException thrown = assertThrows(ConflictException.class, () -> recipeService.addRecipe(newRecipe));
+        List<IngredientQuantityDTO> ingredients = new ArrayList<>();
+        Ingredient ingredient = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+        ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+        ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+
+        ConflictException thrown = assertThrows(ConflictException.class, () -> recipeService.addRecipe(newRecipe, createdAccount, ingredients));
 
         assertEquals(ExceptionsMessages.RECIPE_ALREADY_EXIST, thrown.getMessage());
     }
@@ -102,7 +112,16 @@ public class RecipeServiceTest {
     @Test
     public void testAddRecipe_WhenRecipeDoesNotExist(){
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        Recipe result = this.recipeService.addRecipe(recipe);
+        Account account = this.accountRepository.save(AccountFactory.createDefaultAccount());
+        List<IngredientQuantityDTO> ingredients = new ArrayList<>();
+        Ingredient ingredient = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        Ingredient ingredient2 = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        Ingredient ingredient3 = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+        ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+        ingredients.add(new IngredientQuantityDTO(ingredient2, 5));
+        ingredients.add(new IngredientQuantityDTO(ingredient3, 5));
+
+        Recipe result = this.recipeService.addRecipe(recipe, account, ingredients);
 
         assertNotNull(result.getId());
         assertEquals(recipe.getTitle(), result.getTitle());
@@ -114,12 +133,14 @@ public class RecipeServiceTest {
         assertEquals(recipe.getTypeRecipe(), result.getTypeRecipe());
         assertEquals(recipe.getValidation(), result.getValidation());
         assertEquals(recipe.getDiet(), result.getDiet());
+        assertEquals(recipe.getAccount(), result.getAccount());
+        assertEquals(recipe.getRecipeIngredientsList(), result.getRecipeIngredientsList());
     }
 
     @Test
     public void testUpdateRecipe_WhenRecipeExists(){
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        this.recipeService.addRecipe(recipe);
+        this.recipeRepository.save(recipe);
 
         recipe.setDescription("new description");
         Recipe expected = this.recipeService.updateRecipe(recipe);
@@ -149,7 +170,7 @@ public class RecipeServiceTest {
     @Test
     public void testDeleteRecipe_WhenRecipeExists(){
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        Recipe savedRecipe = this.recipeService.addRecipe(recipe);
+        Recipe savedRecipe = this.recipeRepository.save(recipe);
 
         boolean result = this.recipeService.deleteRecipe(savedRecipe.getId());
 
@@ -176,7 +197,7 @@ public class RecipeServiceTest {
     @Test
     public void testGetRecipeByDiet(){
         Recipe recipe = RecipeFactory.createDefaultRecipe();
-        this.recipeService.addRecipe(recipe);
+        this.recipeRepository.save(recipe);
 
         List<Recipe> found = this.recipeService.getRecipesByFilters(null, null, Diet.VEGETARIAN);
 
@@ -209,7 +230,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradeToRecipe_Success_WhenRecipeHasNoGrade(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
         boolean result = this.recipeService.addGradeToRecipe(recipe, account, 3);
@@ -219,7 +240,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradeToRecipe_Success_WhenRecipeGrades(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
         Account account2 = accountRepository.save(AccountFactory.createAccountWithEmail("test2@mail.fr"));
         this.recipeService.addGradeToRecipe(recipe, account, 3);
@@ -230,7 +251,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradeToRecipe_WhenGradeNegative(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, -3));
@@ -239,7 +260,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradeToRecipe_WhenGradeHigherThan_5(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 8));
@@ -264,7 +285,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradeToRecipe_WithoutAccountId(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = AccountFactory.createDefaultAccount();
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
         assertEquals(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_GRADE, thrown.getMessage());
@@ -272,7 +293,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradeToRecipe_WhenAccountDoesNotExist(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.addGradeToRecipe(recipe, account, 3));
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_GRADE, thrown.getMessage());
@@ -280,7 +301,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddGradetoRecipe_WhenAlreadyGradedByAccount(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
         this.recipeService.addGradeToRecipe(recipe, account, 3);
@@ -289,7 +310,7 @@ public class RecipeServiceTest {
     }
 
     @Test void testGetAverageGrade_Success(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
         Account account2 = accountRepository.save(AccountFactory.createAccountWithEmail("test2@mail.fr"));
 
@@ -302,7 +323,7 @@ public class RecipeServiceTest {
     }
 
     @Test void testGetAverageGrade_WhenRecipeHasNoGrade(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         int average = this.recipeService.getAverageGrade(recipe.getId());
 
         assertEquals(0, average);
@@ -325,7 +346,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testGetAccountGrade_Success(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
         this.recipeService.addGradeToRecipe(recipe, account, 3);
@@ -344,7 +365,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testGetAccountGrade_WithoutAccountId(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = AccountFactory.createDefaultAccount();
 
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.getAccountGrade(recipe.getId(), account.getId()));
@@ -360,14 +381,14 @@ public class RecipeServiceTest {
 
     @Test
     public void testGetAccountGrade_WhenAccountDoesNotExist(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.getAccountGrade(recipe.getId(), UUID.randomUUID()));
         assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_GET_ACCOUNT_GRADE, thrown.getMessage());
     }
 
     @Test
     public void testGetAccountGrade_WhenNoGradeByAccount(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
         Integer grade = this.recipeService.getAccountGrade(recipe.getId(), account.getId());
@@ -376,7 +397,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddIngredientToRecipe_Success(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Ingredient ingredient = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
 
         Recipe result = this.recipeService.addIngredientToRecipe(recipe, ingredient, 10);
@@ -385,7 +406,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddIngredientToRecipe_WhenIngredientAlreadyAdded(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Ingredient ingredient = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
         this.recipeService.addIngredientToRecipe(recipe, ingredient, 10);
         ConflictException thrown = assertThrows(ConflictException.class, () -> this.recipeService.addIngredientToRecipe(recipe, ingredient, 10));
@@ -394,7 +415,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddIngredientToRecipe_WithWrongQuantity(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Ingredient ingredient = this.ingredientRepository.save(IngredientFactory.createDefaultIngredient());
         this.recipeService.addIngredientToRecipe(recipe, ingredient, 10);
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addIngredientToRecipe(recipe, ingredient, 0));
@@ -412,7 +433,7 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddIngredientToRecipe_WithoutIngredientId(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
 
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.recipeService.addIngredientToRecipe(recipe, ingredient, 10));
@@ -429,13 +450,22 @@ public class RecipeServiceTest {
 
     @Test
     public void testAddIngredientToRecipe_WhenIngredientDoesNotExist(){
-        Recipe recipe = this.recipeService.addRecipe(RecipeFactory.createDefaultRecipe());
+        Recipe recipe = this.recipeRepository.save(RecipeFactory.createDefaultRecipe());
         Ingredient ingredient = IngredientFactory.createIngredientWithCustomId(UUID.randomUUID());
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.recipeService.addIngredientToRecipe(recipe, ingredient, 10));
         assertEquals(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT, thrown.getMessage());
     }
 
+    //TODO PAS FIABLE CAR PAS DE METHODE POUR GEREr RElATION ACCOUNT/RECIPE
+    @Test
+    public void testGetRecipeCreated_Success(){
+        Account account = AccountFactory.createDefaultAccount();
+        Recipe recipe = RecipeFactory.createDefaultRecipe();
+        this.recipeService.addRecipe(recipe, account);
 
-
-
+        List<Recipe> recipeList = this.recipeService.getRecipeCreated(account.getId());
+        System.out.println(recipeList);
+        System.out.println("Account in Recipe" + recipe.getAccount());
+        assertEquals(recipe, recipeList.get(0));
+    }
 }
