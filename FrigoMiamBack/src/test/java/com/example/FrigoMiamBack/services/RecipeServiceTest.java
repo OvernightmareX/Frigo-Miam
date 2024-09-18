@@ -38,12 +38,10 @@ public class RecipeServiceTest {
 
     @Autowired
     private AccountRepository accountRepository;
-    private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
-        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
-        recipeService = new RecipeService(recipeRepository, accountService);
+        recipeService = new RecipeService(recipeRepository, accountRepository);
     }
 
     @Test

@@ -21,7 +21,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class AccountService implements IAccountService {
-
     private final AccountRepository accountRepository;
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;

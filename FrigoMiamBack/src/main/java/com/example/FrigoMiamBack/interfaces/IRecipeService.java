@@ -17,14 +17,13 @@ public interface IRecipeService {
 
     List<Recipe> getFavoriteRecipes(String accountId);
 
+    //FINIR CETTE METHODE
     List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets);
-//
-    boolean addGradeToRecipe(Recipe Recipe, Account Account, int grade);
-//    int getAverageGrade(String recipeId);
-//
-//    int getAccountGrade(String recipeId, String accountId);
-//
 
-//
+    boolean addGradeToRecipe(Recipe Recipe, Account Account, int grade);
+    int getAverageGrade(String recipeId);
+
+    int getAccountGrade(String recipeId, String accountId);
+
 //    List<Recipe> getRecipeCreated(String accountId);
 }

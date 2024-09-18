@@ -9,6 +9,7 @@ import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
+import com.example.FrigoMiamBack.repositories.AccountRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
@@ -26,11 +27,11 @@ import java.util.UUID;
 @Service
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
-    private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, AccountService accountService) {
+    public RecipeService(RecipeRepository recipeRepository, AccountRepository accountRepository) {
         this.recipeRepository = recipeRepository;
-        this.accountService = accountService;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -99,10 +100,13 @@ public class RecipeService implements IRecipeService {
         if(accountId == null){
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(this.accountService.getAccountById(accountId) == null){
+        Account accountFound;
+        if(this.accountRepository.findById(UUID.fromString(accountId)).isPresent()){
+            accountFound = this.accountRepository.findById(UUID.fromString(accountId)).get();
+        } else {
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
-        return accountService.getAccountById(accountId).getRecipeLikedList();
+        return accountFound.getRecipeLikedList();
     }
 
     @Override
@@ -145,7 +149,7 @@ public class RecipeService implements IRecipeService {
         if(account.getId() == null){
             throw new WrongParameterException(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(this.accountService.getAccountById(account.getId().toString()) == null){
+        if(this.accountRepository.findById(account.getId()).isEmpty()){
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
@@ -178,6 +182,16 @@ public class RecipeService implements IRecipeService {
         }
     }
 
+    @Override
+    public int getAverageGrade(String recipeId) {
+        return 0;
+    }
+
+    @Override
+    public int getAccountGrade(String recipeId, String accountId) {
+        return 0;
+    }
+
 //
 //    @Override
 //    public int getAverageGrade(String recipeId) {
@@ -195,22 +209,7 @@ public class RecipeService implements IRecipeService {
 //        }
 //    }
 //
-//    @Override
-//    public int getAccountGrade(String recipeId, String accountId) {
-//        try {
-//            return this.recipeRepository.findGradeByRecipeAndAccount(UUID.fromString(recipeId), UUID.fromString(accountId));
-//        } catch (Exception e) {
-//            //TODO exception
-//            return 0;
-//        }
-//    }
-//
 
-//
-//
-//
-//
-//
 //    @Override
 //    public List<Recipe> getFavoriteRecipes(String accountId) {
 //        try {
