@@ -50,7 +50,7 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void setUp() {
-        recipeService = new RecipeService(recipeRepository, accountRepository);
+        recipeService = new RecipeService(recipeRepository, accountRepository, ingredientRepository);
         accountService = new AccountService(accountRepository, recipeService, ingredientRepository);
 
         // Now inject the RecipeService back into AccountService

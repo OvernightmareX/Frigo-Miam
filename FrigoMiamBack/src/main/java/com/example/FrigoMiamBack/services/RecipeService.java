@@ -1,15 +1,13 @@
 package com.example.FrigoMiamBack.services;
 
 
-import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Grade_Recipe;
-import com.example.FrigoMiamBack.entities.Ingredient;
-import com.example.FrigoMiamBack.entities.Recipe;
+import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
+import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
@@ -29,10 +27,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RecipeService implements IRecipeService {
     private final RecipeRepository recipeRepository;
     private final AccountRepository accountRepository;
+    private final IngredientRepository ingredientRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, AccountRepository accountRepository) {
+    public RecipeService(RecipeRepository recipeRepository, AccountRepository accountRepository, IngredientRepository ingredientRepository) {
         this.recipeRepository = recipeRepository;
         this.accountRepository = accountRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
@@ -215,7 +215,7 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public int getAccountGrade(UUID recipeId, UUID accountId) {
+    public Integer getAccountGrade(UUID recipeId, UUID accountId) {
         if (recipeId == null) {
             throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_GET_ACCOUNT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
@@ -229,8 +229,57 @@ public class RecipeService implements IRecipeService {
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GET_ACCOUNT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
         List<Grade_Recipe> recipeGrades = this.recipeRepository.findById(recipeId).get().getRecipeGradesList();
-        Grade_Recipe accountGrade = recipeGrades.stream().filter(gradeRecipe -> gradeRecipe.getAccount().getId().equals(accountId)).findFirst().get();
-        return accountGrade.getRate();
+        if(recipeGrades.stream().noneMatch(grade->grade.getAccount().getId().equals(accountId))){
+            return null;
+        } else {
+            Grade_Recipe accountGrade = recipeGrades.stream().filter(gradeRecipe -> gradeRecipe.getAccount().getId().equals(accountId)).findFirst().get();
+            return accountGrade.getRate();
+        }
+    }
+
+    @Override
+    public Recipe addIngredientToRecipe(Recipe recipe, Ingredient ingredient, double quantity) {
+        if(quantity <=0){
+            throw new WrongParameterException(ExceptionsMessages.QUANTITY_CANNOT_BE_ZERO_OR_LESS_CANNOT_ADD_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(recipe.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_ADD_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(ingredient.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_INGREDIENT_ID_CANNOT_ADD_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!this.recipeRepository.existsById(recipe.getId())) {
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+        if(!this.ingredientRepository.existsById(ingredient.getId())) {
+            throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+
+        Recipe_Ingredient addedIngredient = Recipe_Ingredient.builder()
+                .recipe(recipe)
+                .ingredient(ingredient)
+                .quantity(quantity)
+                .build();
+
+        List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+        if (recipeIngredients == null) {
+            recipeIngredients = new ArrayList<>();
+            recipeIngredients.add(addedIngredient);
+            recipe.setRecipeIngredientsList(recipeIngredients);
+        } else {
+            recipeIngredients.forEach(el -> {
+                if (el.getIngredient() == ingredient) {
+                    throw new ConflictException(ExceptionsMessages.INGREDIENT_ALREADY_IN_RECIPE, HttpStatus.CONFLICT, LocalDateTime.now());
+                }
+            });
+            recipe.getRecipeIngredientsList().add(addedIngredient);
+        }
+
+        try {
+            return this.recipeRepository.save(recipe);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 //

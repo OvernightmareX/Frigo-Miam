@@ -25,7 +25,8 @@ public interface IRecipeService {
     boolean addGradeToRecipe(Recipe Recipe, Account Account, int grade);
     int getAverageGrade(UUID recipeId);
 
-    int getAccountGrade(UUID recipeId, UUID accountId);
+    Integer getAccountGrade(UUID recipeId, UUID accountId);
 
+    Recipe addIngredientToRecipe(Recipe recipe, Ingredient ingredient, double quantity);
 //    List<Recipe> getRecipeCreated(String accountId);
 }

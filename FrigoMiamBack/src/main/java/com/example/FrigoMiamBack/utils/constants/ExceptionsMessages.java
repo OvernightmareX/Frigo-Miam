@@ -64,5 +64,10 @@ public class ExceptionsMessages {
     public static final String ACCOUNT_DOES_NOT_EXIST_CANNOT_GET_ACCOUNT_GRADE = "getAccountGrade:: Account not found.";
     public static final String RECIPE_DOES_NOT_EXIST_CANNOT_GET_ACCOUNT_GRADE = "getAccountGrade:: Recipe not found.";
 
-
+    public static final String INGREDIENT_ALREADY_IN_RECIPE = "addIngredientToRecipe:: Ingredient already in recipe.";
+    public static final String QUANTITY_CANNOT_BE_ZERO_OR_LESS_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Quantity cannot be zero or less.";
+    public static final String EMPTY_RECIPE_ID_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Recipe id is empty.";
+    public static final String EMPTY_INGREDIENT_ID_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Ingredient id is empty.";
+    public static final String RECIPE_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Recipe not found.";
+    public static final String INGREDIENT_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT = "addIngredientToRecipe:: Ingredient not found.";
 }
