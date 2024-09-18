@@ -48,4 +48,12 @@ public class ExceptionsMessages {
     public static final String INGREDIENT_ALREADY_EXIST = "createIngredient:: Ingredient already exists.";
     public static final String INGREDIENT_DOES_NOT_EXIST = "updateIngredient:: No ingredient found.";
 
+    public static final String GRADE_CANNOT_BE_NEGATIVE = "addGrade:: Grade cannot be negative.";
+    public static final String GRADE_CANNOT_BE_HIGHER_THAN_5 = "addGrade:: Grade cannot be higher than 5.";
+    public static final String RECIPE_DOES_NOT_EXIST_CANNOT_GRADE = "addGrade:: Recipe not found.";
+    public static final String EMPTY_RECIPE_ID_CANNOT_GRADE = "addGrade:: Recipe id is empty.";
+    public static final String ACCOUNT_DOES_NOT_EXIST_CANNOT_GRADE = "addGrade:: Account not found.";
+    public static final String EMPTY_ACCOUNT_ID_CANNOT_GRADE = "addGrade:: Account id is empty.";
+    public static final String ACCOUNT_ALREADY_GRADED_CANNOT_GRADE = "addGrade:: Account already graded.";
+
 }

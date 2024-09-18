@@ -1,6 +1,8 @@
 package com.example.FrigoMiamBack.services;
 
 
+import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.entities.Grade_Recipe;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -125,6 +128,56 @@ public class RecipeService implements IRecipeService {
         return finalRecipes;
     }
 
+    @Override
+    public boolean addGradeToRecipe(Recipe recipe, Account account, int grade) {
+        if(grade < 0){
+            throw new WrongParameterException(ExceptionsMessages.GRADE_CANNOT_BE_NEGATIVE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(grade > 5){
+            throw new WrongParameterException(ExceptionsMessages.GRADE_CANNOT_BE_HIGHER_THAN_5, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(recipe.getId_recipe() == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(!this.recipeRepository.existsById(recipe.getId_recipe())){
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+        if(account.getId() == null){
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_GRADE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        }
+        if(this.accountService.getAccountById(account.getId().toString()) == null){
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
+        }
+
+        Grade_Recipe gradeRecipe = Grade_Recipe.builder()
+                .account(account)
+                .recipe(recipe)
+                .rate(grade)
+                .build();
+
+        List<Grade_Recipe> recipeGrades = recipe.getRecipeGradesList();
+
+        if(recipeGrades == null){
+            recipeGrades = new ArrayList<>();
+            recipeGrades.add(gradeRecipe);
+            recipe.setRecipeGradesList(recipeGrades);
+        } else {
+            recipeGrades.forEach(el -> {
+                if(el.getAccount() == account){
+                    throw new ConflictException(ExceptionsMessages.ACCOUNT_ALREADY_GRADED_CANNOT_GRADE, HttpStatus.CONFLICT, LocalDateTime.now());
+                }
+            });
+            recipe.getRecipeGradesList().add(gradeRecipe);
+        }
+
+        try {
+            this.recipeRepository.save(recipe);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 //
 //    @Override
 //    public int getAverageGrade(String recipeId) {
@@ -152,10 +205,7 @@ public class RecipeService implements IRecipeService {
 //        }
 //    }
 //
-//    @Override
-//    public boolean addGradeToRecipe(String recipeId, String accountId, int grade) {
-//        return this.recipeRepository.addGradeToRecipe(UUID.fromString(recipeId), UUID.fromString(accountId), grade);
-//    }
+
 //
 //
 //

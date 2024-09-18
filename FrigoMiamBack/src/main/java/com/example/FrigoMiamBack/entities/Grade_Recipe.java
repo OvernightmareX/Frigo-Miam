@@ -1,25 +1,26 @@
 package com.example.FrigoMiamBack.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Grade_Recipe {
-    @EmbeddedId
-    private Grade_Recipe_Id id = new Grade_Recipe_Id();
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToOne
-    @MapsId("accountId")
     @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne
-    @MapsId("recipeId")
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
