@@ -15,11 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,7 +82,7 @@ public class AccountServiceTest {
             assertEquals(account.getEmail(), createdAccount.getEmail());
             assertEquals(account.getBirthdate(), createdAccount.getBirthdate());
             assertEquals(account.getAllergies(), createdAccount.getAllergies());
-            assertEquals(account.getDiets(), createdAccount.getDiets());
+            assertEquals(account.getDiet(), createdAccount.getDiet());
         }
 
         @Test
