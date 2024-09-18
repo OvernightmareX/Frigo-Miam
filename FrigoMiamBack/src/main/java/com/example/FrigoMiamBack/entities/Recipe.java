@@ -30,7 +30,7 @@ public class Recipe {
     private Validation validation;
     private Diet diet;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Recipe_Ingredient> recipeIngredientsList = new ArrayList<>();
 

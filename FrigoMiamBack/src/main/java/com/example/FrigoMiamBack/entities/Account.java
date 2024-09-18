@@ -34,7 +34,7 @@ public class Account {
     private String password;
     private LocalDate birthdate;
     private List<Allergy> allergies = new ArrayList<>();
-    private Diet diets;
+    private Diet diet;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
@@ -68,7 +68,7 @@ public class Account {
                 ", email='" + email + '\'' +
                 ", birthdate=" + birthdate +
                 ", allergies=" + (allergies != null ? allergies : "none") +
-                ", diets=" + (diets != null ? diets : "none") +
+                ", diets=" + (diet != null ? diet : "none") +
                 ", role=" + (role != null ? role.getName() : "none") +
                 ", accountIngredientsListSize=" + (accountIngredientsList != null ? accountIngredientsList.size() : 0) +
                 ", recipeCreatedListSize=" + (recipeCreatedList != null ? recipeCreatedList.size() : 0) +
