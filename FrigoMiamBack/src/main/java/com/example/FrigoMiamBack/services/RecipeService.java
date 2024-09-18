@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
@@ -184,7 +185,13 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public int getAverageGrade(String recipeId) {
-        return 0;
+        Recipe recipe = this.recipeRepository.findById(UUID.fromString(recipeId)).get();
+        AtomicInteger total = new AtomicInteger();
+        List <Grade_Recipe> grades = recipe.getRecipeGradesList();
+        grades.forEach(grade -> {
+            total.addAndGet(grade.getRate());
+        });
+        return total.get() /grades.size();
     }
 
     @Override
