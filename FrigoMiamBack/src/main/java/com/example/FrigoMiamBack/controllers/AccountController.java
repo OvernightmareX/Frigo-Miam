@@ -2,8 +2,8 @@ package com.example.FrigoMiamBack.controllers;
 
 import com.example.FrigoMiamBack.DTO.AddToFavoriteDTO;
 import com.example.FrigoMiamBack.DTO.AddToFridgeDTO;
-import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.DTO.LoginRequestDTO;
+import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Fridge;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
@@ -28,14 +28,14 @@ public class AccountController {
         this.iAccountService = iAccountService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Account>> getAccounts() {
         return new ResponseEntity<>(this.iAccountService.getAccounts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable @NotBlank String id) {
-        return new ResponseEntity<>(this.iAccountService.getAccountById(id), HttpStatus.OK);
+        return new ResponseEntity<>(this.iAccountService.getAccountById(UUID.fromString(id)), HttpStatus.OK);
     }
 
     @GetMapping(ApiUrls.EMAIL)
@@ -45,7 +45,7 @@ public class AccountController {
 
     @GetMapping(ApiUrls.FRIDGE)
     public ResponseEntity<List<Fridge>> getFridge(@Valid @RequestBody Account account) {
-        return new ResponseEntity<>(this.iAccountService.getFridges(account.getId().toString()), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.iAccountService.getFridges(account.getId()), HttpStatus.CREATED);
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class AccountController {
     }
 
     @PostMapping(ApiUrls.LOGIN)
-    public ResponseEntity<Boolean> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<String> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         String email = loginRequestDTO.getEmail();
         String password = loginRequestDTO.getPassword();
         return new ResponseEntity<>(this.iAccountService.logIn(email, password), HttpStatus.OK);

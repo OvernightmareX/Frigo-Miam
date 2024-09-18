@@ -7,26 +7,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class HashingServiceTest {
-    @Autowired
-    private HashingService hashingService;
+public class HashingUtilsTest {
 
     @Test
     public void testHashPasswordSuccess() throws Exception{
         String password = "password";
 
-        String hashedPassword = this.hashingService.hashPassword(password);
+        String hashedPassword = HashingUtils.hashPassword(password);
 
         assertNotEquals(hashedPassword, password);
-        assertTrue(this.hashingService.verifyPassword(password, hashedPassword));
+        assertTrue(HashingUtils.verifyPassword(password, hashedPassword));
     }
 
     @Test
     public void testHashPassword_WhenSamePassword_ThenDifferentHashedPassword() throws Exception{
         String password = "password";
 
-        String hashedPassword = this.hashingService.hashPassword(password);
-        String hashedPassword_2 = this.hashingService.hashPassword(password);
+        String hashedPassword = HashingUtils.hashPassword(password);
+        String hashedPassword_2 = HashingUtils.hashPassword(password);
 
         assertNotEquals(hashedPassword, password);
         assertNotEquals(hashedPassword, hashedPassword_2);
@@ -36,19 +34,19 @@ public class HashingServiceTest {
     public void testVerifyPassword_WhenCorrectPassword() throws Exception{
         String password = "password";
 
-        String hashedPassword = this.hashingService.hashPassword("password");
+        String hashedPassword = HashingUtils.hashPassword("password");
 
         assertNotEquals(hashedPassword, password);
-        assertTrue(this.hashingService.verifyPassword(password, hashedPassword));
+        assertTrue(HashingUtils.verifyPassword(password, hashedPassword));
     }
 
     @Test
     public void testVerifyPassword_WhenWrongPassword() throws Exception{
         String password = "password";
 
-        String hashedPassword = this.hashingService.hashPassword("wrong password");
+        String hashedPassword = HashingUtils.hashPassword("wrong password");
 
         assertNotEquals(hashedPassword, password);
-        assertFalse(this.hashingService.verifyPassword(password, hashedPassword));
+        assertFalse(HashingUtils.verifyPassword(password, hashedPassword));
     }
 }

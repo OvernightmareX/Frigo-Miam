@@ -6,17 +6,13 @@ import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.AccountRepository;
-import com.example.FrigoMiamBack.repositories.FridgeRepository;
-import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,18 +21,12 @@ import static com.example.FrigoMiamBack.utils.constants.ExceptionsMessages.INGRE
 @Slf4j
 @Service
 public class AccountService implements IAccountService {
-
     private final AccountRepository accountRepository;
-    private final RecipeRepository recipeRepository;
-    private final IngredientRepository ingredientRepository;
+    private final RecipeService recipeService;
 
-    public AccountService(
-            AccountRepository accountRepository,
-            RecipeRepository recipeRepository,
-            IngredientRepository ingredientRepository) {
+    public AccountService(AccountRepository accountRepository, RecipeService recipeService) {
         this.accountRepository = accountRepository;
-        this.recipeRepository = recipeRepository;
-        this.ingredientRepository = ingredientRepository;
+        this.recipeService = recipeService;
     }
 
     @Override
@@ -54,6 +44,7 @@ public class AccountService implements IAccountService {
         if (checkEmail(accountToCreate.getEmail()))
             throw new ConflictException(ExceptionsMessages.EMAIL_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
 
+        accountToCreate.setPassword(HashingUtils.hashPassword(accountToCreate.getPassword()));
         return this.accountRepository.save(accountToCreate);
     }
 
@@ -63,30 +54,32 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account getAccountById(String accountId) {
-        if (accountId == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        return this.accountRepository.findById(UUID.fromString(accountId)).orElse(null);
+    public Account getAccountById(UUID accountId) {
+        return this.accountRepository.findById(accountId).orElse(null);
     }
 
     @Override
-    public boolean logIn(String email, String password) {
-        //TODO vérifier si boolean sur email/password ++ NE PAS TOUCHER
-        return this.accountRepository.findByEmailAndPassword(email, password) != null;
+    public String logIn(String email, String password) {
+        Account accountFound = this.accountRepository.findByEmail(email);
+
+        if(accountFound == null)
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+
+        /*
+        if(HashingUtils.verifyPassword(password, accountFound.getPassword()))
+            return JwtUtils.generateToken(accountFound, new Role());
+        else*/
+            return null;
     }
 
     @Override
     public Account updateAccount(Account accountToUpdate) {
         log.info("updateAccount:: update account with id {}", accountToUpdate.getId());
-
-        if (accountToUpdate.getId() == null) {
+        if (accountToUpdate.getId() == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
 
-        if (!checkEmail(accountToUpdate.getEmail())) {
+        if(!checkEmail(accountToUpdate.getEmail()))
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
 
         try {
             return this.accountRepository.save(accountToUpdate);
@@ -98,34 +91,34 @@ public class AccountService implements IAccountService {
     @Override
     public boolean deleteAccount(Account accountToDelete) {
         log.info("deleteAccount:: delete account with id {}", accountToDelete.getId());
+        if (accountToDelete.getId() == null)
+            throw new WrongParameterException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
-        if (accountToDelete.getId() == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-
-        if (!this.accountRepository.existsById(accountToDelete.getId())) {
+        if(!this.accountRepository.existsById(accountToDelete.getId()))
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
 
-        this.accountRepository.delete(accountToDelete);
-        return true;
+        try {
+            this.accountRepository.delete(accountToDelete);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public Account addRecipeToFavorite(Account account, Recipe recipe) {
-        if (account.getId() == null) {
+        log.info("addRecipeToFavorite:: add a recipe {} for account with id {}", recipe.getTitle() ,account.getId());
+        if(account.getId() == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if (!this.accountRepository.existsById(account.getId())) {
-            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
 
-        if(recipe.getId() == null){
+        if(!this.accountRepository.existsById(account.getId()))
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+
+        if(recipe.getId() == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if(!this.recipeRepository.existsById(recipe.getId())){
+
+        if(!this.recipeService.existsById(recipe.getId()))
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
 
         try {
             account.getRecipeLikedList().add(recipe);
@@ -137,45 +130,26 @@ public class AccountService implements IAccountService {
 
     @Override
     public boolean addIngredientToFridge(Ingredient ingredient, Account account, int quantity) {
-
-        if (quantity <= 0) {
+        log.info("addRecipeToFavorite:: add an ingredient {} with a quantity of {} for account with id {}", ingredient.getName(), quantity ,account.getId());
+        if(quantity <= 0)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
 
-        if (account.getId() == null) {
+        if(account.getId() == null)
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if (!this.accountRepository.existsById(account.getId())) {
+
+        if(!this.accountRepository.existsById(account.getId()))
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
-        if (ingredient.getId() == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if (!this.ingredientRepository.existsById(ingredient.getId())) {
-            throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
+
+        //TODO GERER EXCEPTIONS POUR INGREDIENTS
+        //TODO GERER POUR PAS AJOUTER DEUX FOIS LE MEME INGREDIENT
 
         Fridge fridge = Fridge.builder()
-                .account(account)
-                .ingredient(ingredient)
-                .quantity(quantity)
-                .build();
+                            .account(account)
+                            .ingredient(ingredient)
+                            .quantity(quantity)
+                            .build();
 
-        List<Fridge> fridgeAccount = account.getAccountIngredientsList();
-
-        if (fridgeAccount == null) {
-            fridgeAccount = new ArrayList<>();
-            fridgeAccount.add(fridge);
-            account.setAccountIngredientsList(fridgeAccount);
-        } else {
-            fridgeAccount.forEach(el -> {
-                if(el.getIngredient() == ingredient) {
-                    throw new ConflictException(INGREDIENT_ALREADY_ADDED, HttpStatus.CONFLICT, LocalDateTime.now());
-                }
-            });
-            account.getAccountIngredientsList().add(fridge);
-        }
-
+        account.getAccountIngredientsList().add(fridge);
         try {
             this.accountRepository.save(account);
             log.info("Ingredient {} added to fridge for account {}", ingredient.getName(), account.getEmail());
@@ -186,17 +160,8 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public List<Fridge> getFridges(String accountId) {
-        if (accountId == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
-        }
-        if (!this.accountRepository.existsById(UUID.fromString(accountId))) {
-            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
-        }
-        try {
-            return this.getAccountById(accountId).getAccountIngredientsList();
-        } catch (Exception e) {
-            return null;
-        }
+    public List<Fridge> getFridges(UUID accountId) {
+        //TODO GERER LES EXCEPTIONS POUR ACCOUNT ID
+        return this.getAccountById(accountId).getAccountIngredientsList();
     }
 }

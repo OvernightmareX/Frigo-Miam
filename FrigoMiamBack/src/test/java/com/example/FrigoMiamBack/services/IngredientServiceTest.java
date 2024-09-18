@@ -37,10 +37,7 @@ public class IngredientServiceTest {
     @Autowired
     private FridgeRepository fridgeRepository;
 
-    @Autowired
     private RecipeRepository recipeRepository;
-
-    private RecipeService recipeService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -50,8 +47,8 @@ public class IngredientServiceTest {
 
     @BeforeEach
     public void setup() {
-        ingredientService = new IngredientService(ingredientRepository, accountRepository);
-        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
+        ingredientService = new IngredientService(ingredientRepository);
+        accountService = new AccountService(accountRepository, new RecipeService(recipeRepository));
 
     }
 
@@ -86,14 +83,14 @@ public class IngredientServiceTest {
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
         Ingredient saved = this.ingredientService.addIngredient(ingredient);
 
-        Ingredient expected = this.ingredientService.getIngredientById(saved.getId().toString());
+        Ingredient expected = this.ingredientService.getIngredientById(saved.getId());
 
         assertEquals(expected, saved);
     }
 
     @Test
     public void testFindIngredient_WhenIngredientDoesNotExist_ReturnNull() {
-        Ingredient ingredient = this.ingredientService.getIngredientById(UUID.randomUUID().toString());
+        Ingredient ingredient = this.ingredientService.getIngredientById(UUID.randomUUID());
         assertNull(ingredient);
     }
 
@@ -130,14 +127,14 @@ public class IngredientServiceTest {
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
         Ingredient savedIngredient = this.ingredientService.addIngredient(ingredient);
 
-        boolean result = this.ingredientService.deleteIngredient(savedIngredient.getId().toString());
+        boolean result = this.ingredientService.deleteIngredient(savedIngredient.getId());
 
         assertTrue(result);
     }
 
     @Test
     public void testDeleteIngredient_WhenIngredientDoesNotExist(){
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.ingredientService.deleteIngredient(UUID.randomUUID().toString()));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> this.ingredientService.deleteIngredient(UUID.randomUUID()));
 
         assertEquals(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, thrown.getMessage());
     }
@@ -173,5 +170,22 @@ public class IngredientServiceTest {
         Ingredient ingredient = IngredientFactory.createDefaultIngredient();
         WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> this.ingredientService.updateIngredient(ingredient));
         assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+    }
+
+    @Test
+    public void testGetFridge_WhenFridgeExists() {
+        Ingredient ingredient = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+        Ingredient ingredient2 = IngredientFactory.createDefaultIngredient();
+        Ingredient savedIngredient2 = ingredientRepository.save(ingredient2);
+        Account account = AccountFactory.createAccountWithId(UUID.fromString("1083349f-d171-4e59-9769-e073222f96d9"));
+        Account savedAccount = accountRepository.save(account);
+        int quantity = 5;
+
+        accountService.addIngredientToFridge(savedIngredient, savedAccount, quantity);
+        accountService.addIngredientToFridge(savedIngredient2, savedAccount, quantity);
+
+        List<Fridge> fridge = accountService.getFridges(savedAccount.getId());
+        assertEquals(2, fridge.size());
     }
 }

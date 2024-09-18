@@ -1,18 +1,17 @@
 package com.example.FrigoMiamBack.interfaces;
 
-import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
-import com.example.FrigoMiamBack.utils.enums.Allergy;
-import com.example.FrigoMiamBack.utils.enums.Diet;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IRecipeService {
-    Recipe findByID(String id);
+    Recipe findByID(UUID id);
     List<Recipe> findAll();
     Recipe addRecipe(Recipe recipe);
     Recipe updateRecipe(Recipe recipe);
-    boolean deleteRecipe(String id);
+    boolean deleteRecipe(UUID id);
+    boolean existsById(UUID id);
 
     List<Recipe> getFavoriteRecipes(String accountId);
 

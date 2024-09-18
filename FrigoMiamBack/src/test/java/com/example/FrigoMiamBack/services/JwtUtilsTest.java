@@ -13,9 +13,9 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class JwtUtilsServiceTest {
+public class JwtUtilsTest {
     @Autowired
-    private JwtUtilsService jwtUtilsService;
+    private JwtUtils jwtUtilsService;
 
     @Test
     public void testGenerateTokenSuccess() throws Exception{
