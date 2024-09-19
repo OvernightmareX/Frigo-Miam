@@ -25,7 +25,7 @@ export class RecipeCreateComponent {
 
   addIngredient() {
     if (this.newIngredient.ingredient && this.newIngredient.quantity > 0) {
-      this.recipe.ingredients.push({ ...this.newIngredient });
+      //this.recipe.ingredients.push({ ...this.newIngredient });
       this.newIngredient = { ingredient: '', quantity: 1 };
     }
   }
