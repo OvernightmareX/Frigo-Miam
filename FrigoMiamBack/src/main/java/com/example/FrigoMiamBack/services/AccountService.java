@@ -49,6 +49,7 @@ public class AccountService implements IAccountService {
             throw new ConflictException(ExceptionsMessages.EMAIL_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
 
         accountToCreate.setPassword(HashingUtils.hashPassword(accountToCreate.getPassword()));
+        accountToCreate.setRole(this.roleRepository.findByName("USER"));
         return this.accountRepository.save(accountToCreate);
     }
 
