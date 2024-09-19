@@ -57,7 +57,6 @@ public class RecipeService implements IRecipeService {
         }
 
         Recipe savedRecipe = this.recipeRepository.save(recipe);
-        System.out.println(savedRecipe.getRecipeIngredientsList().size());
 
         ingredients.forEach(ing -> {
             addIngredientToRecipe(savedRecipe, ing.getIngredient(), ing.getQuantity());
@@ -65,7 +64,6 @@ public class RecipeService implements IRecipeService {
 
         savedRecipe.setAccount(account);
         account.getRecipeCreatedList().add(savedRecipe);
-        System.out.println(savedRecipe.getRecipeIngredientsList().size());
 
         try {
             return this.recipeRepository.save(savedRecipe);
@@ -271,11 +269,7 @@ public class RecipeService implements IRecipeService {
             recipe.getRecipeIngredientsList().add(addedIngredient);
         }
 
-        System.out.println(recipe.getRecipeIngredientsList().size());
-
-
         try {
-
             return recipe;
         } catch (Exception e) {
             return null;
