@@ -4,6 +4,7 @@ import com.example.FrigoMiamBack.DTO.IngredientQuantityDTO;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
+import com.example.FrigoMiamBack.entities.Role;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
@@ -73,13 +74,14 @@ public class RecipeServiceTest {
     @Nested
     class FindAllRecipesTest{
         @Test
-        public void ShouldReturnListOfRecipes_WhenRecipesExist() {
+        public void ShouldReturnListOfValidatedRecipes_WhenRecipesExist() {
             Recipe recipe = RecipeFactory.createDefaultRecipe();
+            recipe.setValidation(Validation.VALIDATED);
             Recipe createdRecipe = recipeRepository.save(recipe);
             Recipe recipe2 = RecipeFactory.createDefaultRecipe();
             Recipe createdRecipe2 = recipeRepository.save(recipe2);
 
-            List<Recipe> expected = List.of(createdRecipe, createdRecipe2);
+            List<Recipe> expected = List.of(createdRecipe);
             List<Recipe> actual = recipeService.findAll();
 
             assertEquals(expected, actual);
@@ -90,6 +92,21 @@ public class RecipeServiceTest {
             List<Recipe> actual = recipeService.findAll();
 
             assertEquals(0, actual.size());
+        }
+
+        @Test
+        public void ShouldReturnPendingRecipes_WhenRecipeIsPending(){
+            Recipe recipe = RecipeFactory.createDefaultRecipe();
+            recipe.setValidation(Validation.PENDING);
+            Recipe createdRecipe = recipeRepository.save(recipe);
+            Recipe recipe2 = RecipeFactory.createDefaultRecipe();
+            recipe2.setValidation(Validation.VALIDATED);
+            Recipe createdRecipe2 = recipeRepository.save(recipe2);
+
+            List<Recipe> expected = List.of(createdRecipe);
+            List<Recipe> actual = recipeService.getPendingRecipes();
+
+            assertEquals(expected, actual);
         }
     }
 
@@ -116,6 +133,53 @@ public class RecipeServiceTest {
 
             assertEquals(ExceptionsMessages.RECIPE_ALREADY_EXIST, thrown.getMessage());
         }
+
+        @Test
+        public void ShouldSetValidatedStatus_WhenAccountRoleIsAdmin(){
+            Recipe recipe = RecipeFactory.createDefaultRecipe();
+            Role admin = Role.builder()
+                    .name("ADMIN")
+                    .build();
+            Account account = AccountFactory.createDefaultAccount();
+            account.setRole(admin);
+            accountRepository.save(account);
+
+            List<IngredientQuantityDTO> ingredients = new ArrayList<>();
+            Ingredient ingredient = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+            Ingredient ingredient2 = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+            Ingredient ingredient3 = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+            ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+            ingredients.add(new IngredientQuantityDTO(ingredient2, 5));
+            ingredients.add(new IngredientQuantityDTO(ingredient3, 5));
+
+            Recipe result = recipeService.addRecipe(recipe, account, ingredients);
+
+            assertEquals(Validation.VALIDATED, result.getValidation());
+        }
+
+        @Test
+        public void ShouldSetPendingStatus_WhenAccountRoleIsUser(){
+            Recipe recipe = RecipeFactory.createDefaultRecipe();
+            Role user = Role.builder()
+                    .name("USER")
+                    .build();
+            Account account = AccountFactory.createDefaultAccount();
+            account.setRole(user);
+            accountRepository.save(account);
+
+            List<IngredientQuantityDTO> ingredients = new ArrayList<>();
+            Ingredient ingredient = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+            Ingredient ingredient2 = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+            Ingredient ingredient3 = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
+            ingredients.add(new IngredientQuantityDTO(ingredient, 5));
+            ingredients.add(new IngredientQuantityDTO(ingredient2, 5));
+            ingredients.add(new IngredientQuantityDTO(ingredient3, 5));
+
+            Recipe result = recipeService.addRecipe(recipe, account, ingredients);
+
+            assertEquals(Validation.PENDING, result.getValidation());
+        }
+
         @Test
         public void ShouldReturnCreatedRecipe_WhenRecipeDoesNotExist(){
             Recipe recipe = RecipeFactory.createDefaultRecipe();
@@ -164,7 +228,7 @@ public class RecipeServiceTest {
 
             NotFoundException thrown = assertThrows(NotFoundException.class, () -> recipeService.updateRecipe(recipe));
 
-            assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, thrown.getMessage());
+            assertEquals(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_UPDATE_RECIPE, thrown.getMessage());
         }
         @Test
         public void ShouldThrowWrongParameterException_WithoutRecipeId(){
@@ -172,7 +236,7 @@ public class RecipeServiceTest {
 
             WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> recipeService.updateRecipe(recipe));
 
-            assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+            assertEquals(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_UPDATE_RECIPE, thrown.getMessage());
         }
     }
 
@@ -202,7 +266,7 @@ public class RecipeServiceTest {
 
             WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> recipeService.deleteRecipe(null));
 
-            assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+            assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_RECIPE, thrown.getMessage());
         }
     }
 
@@ -417,13 +481,13 @@ public class RecipeServiceTest {
         @Test
         public void testGetFavoriteRecipes_WithoutAccountId(){
             WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> recipeService.getFavoriteRecipes(null));
-            assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+            assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_FAVORITE_RECIPE, thrown.getMessage());
         }
 
         @Test
         public void testGetFavoriteRecipes_WhenAccountDoesNotExist(){
             NotFoundException thrown = assertThrows(NotFoundException.class, () -> recipeService.getFavoriteRecipes(UUID.randomUUID()));
-            assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, thrown.getMessage());
+            assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_FIND_FAVORITE_RECIPE, thrown.getMessage());
         }
     }
 

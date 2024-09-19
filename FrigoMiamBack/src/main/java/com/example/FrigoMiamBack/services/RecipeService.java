@@ -13,6 +13,7 @@ import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
+import com.example.FrigoMiamBack.utils.enums.Validation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class RecipeService implements IRecipeService {
     @Override
     public Recipe findByID(UUID id) {
         if (id == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS_CANNOT_FIND_ACCOUNT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
 
         return this.recipeRepository.findById(id).orElse(null);
@@ -48,8 +49,11 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<Recipe> findAll() {
-        return this.recipeRepository.findAll();
+        List<Recipe> allRecipes = this.recipeRepository.findAll();
+        return allRecipes.stream().filter(recipe -> recipe.getValidation() == Validation.VALIDATED).toList();
     }
+
+
 
     @Override
     public Recipe addRecipe(Recipe recipe, Account account, List<IngredientQuantityDTO> ingredients) {
@@ -57,6 +61,7 @@ public class RecipeService implements IRecipeService {
             throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
 
+        recipe.setValidation(account.getRole().getName().equals("ADMIN") ? Validation.VALIDATED : Validation.PENDING);
         Recipe savedRecipe = this.recipeRepository.save(recipe);
 
         ingredients.forEach(ing -> {
@@ -76,10 +81,10 @@ public class RecipeService implements IRecipeService {
     @Override
     public Recipe updateRecipe(Recipe recipe) {
         if (recipe.getId() == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_UPDATE_RECIPE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         if (!this.recipeRepository.existsById(recipe.getId())) {
-            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_UPDATE_RECIPE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {
@@ -93,7 +98,7 @@ public class RecipeService implements IRecipeService {
     public boolean deleteRecipe(UUID id) {
         System.out.println("service" + id);
         if (id == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_RECIPE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         if (!this.recipeRepository.existsById(id)) {
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
@@ -110,13 +115,19 @@ public class RecipeService implements IRecipeService {
     @Override
     public List<Recipe> getFavoriteRecipes(UUID accountId) {
         if (accountId == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_FAVORITE_RECIPE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         Account accountFound;
         if (this.accountRepository.findById(accountId).isEmpty()) {
-            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_FIND_FAVORITE_RECIPE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
         return this.accountRepository.findById(accountId).get().getRecipeLikedList();
+    }
+
+    @Override
+    public List<Recipe> getPendingRecipes() {
+        List<Recipe> allRecipes = this.recipeRepository.findAll();
+        return allRecipes.stream().filter(recipe -> recipe.getValidation() == Validation.PENDING).toList();
     }
 
     @Override
