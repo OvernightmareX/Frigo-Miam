@@ -79,6 +79,4 @@ public class RecipeController {
     public ResponseEntity<Boolean> deleteRecipe(@Valid @RequestBody Recipe recipe) {
         return new ResponseEntity<>(this.iRecipeService.deleteRecipe(recipe.getId()), HttpStatus.OK);
     }
-
-
 }
