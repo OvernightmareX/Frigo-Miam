@@ -54,11 +54,20 @@ export class FrigoComponent {
 
   // appelé par la bar de recherche
   addIngredient(ingredientName: string): void {  // TODO a mettre dans util. Yaura de la merde aussi avec le type du paramètre d'entrée
-    const addedIngredient: IngredientFrigo = {
-      name: ingredientName,
-      quantity: 1
-    };
-    this.allFrigoIngredients.push(addedIngredient);
+    const existingIngredient = this.allFrigoIngredients.find(
+      ingredientName => ingredientName.name.toLowerCase() === ingredientName.name
+
+    );
+    if (existingIngredient){
+      existingIngredient.quantity += 1;
+    }else {
+
+      const addedIngredient: IngredientFrigo = {
+        name: ingredientName,
+        quantity: 1
+      };
+      this.allFrigoIngredients.push(addedIngredient);
+    }
     this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
