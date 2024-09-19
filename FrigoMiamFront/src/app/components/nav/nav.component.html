@@ -11,7 +11,7 @@
       } @else {
         <button (click)="toggleMenu()" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">User</button>
       }
-      @if (isUserMenuOpen && isAuthentified) {
+      @if (isAuthentified) {  <!-- -->
         <ul class="absolute right-0 mt-2 w-48 bg-white shadow-lg">
           <li><a routerLink="/profile" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Profil</a></li>
           <li><a routerLink="/frigo" class="text-[#bd4f37] hover:border-t-2 hover:border-[#289e8d] hover:text-[#289e8d] transition duration-300">Frigo</a></li>

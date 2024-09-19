@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-nav',
@@ -11,24 +12,25 @@ import {Router, RouterLink} from "@angular/router";
   styleUrl: './nav.component.css'
 })
 export class NavComponent {
-  isUserMenuOpen = false;
-  isAuthentified: string | null = null;
+  isAuthentified: boolean = false;
 
-  constructor(private router: Router) {
 
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.authentified$.subscribe(isAuth => {
+      this.isAuthentified = isAuth;
+    });
   }
 
   toggleMenu() {
     if (this.isAuthentified){
-      this.isUserMenuOpen = !this.isUserMenuOpen;
+      console.log("nav authentifié")
     }else {
       this.router.navigate(['/connexion']);
     }
-
   }
 
 
-  get checkAuthentification() {
-    return this.isAuthentified = localStorage.getItem("isAuthentified");
-  }
+  // get checkAuthentification() {
+  //   return this.isAuthentified = localStorage.getItem("isAuthentified");
+  // }
 }
