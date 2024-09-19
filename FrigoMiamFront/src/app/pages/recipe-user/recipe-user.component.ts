@@ -9,4 +9,14 @@ import { Component } from '@angular/core';
 })
 export class RecipeUserComponent {
 
+  createRecipe(){
+
+  }
+  BtnDeleteRecipe(){
+
+  }
+  BtnUpdateRecipe(){
+
+  }
 }
+
