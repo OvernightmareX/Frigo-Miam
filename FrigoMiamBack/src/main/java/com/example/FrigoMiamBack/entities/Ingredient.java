@@ -3,6 +3,7 @@ package com.example.FrigoMiamBack.entities;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.TypeIngredient;
 import com.example.FrigoMiamBack.utils.enums.Unit;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,9 +28,11 @@ public class Ingredient {
 
     @OneToMany(mappedBy = "ingredient")
     @Builder.Default
+    @JsonIgnore
     private List<Fridge> accountIngredientsList = new ArrayList<>();
 
     @OneToMany(mappedBy = "ingredient")
     @Builder.Default
+    @JsonIgnore
     private List<Recipe_Ingredient> recipeIngredientsList = new ArrayList<>();
 }

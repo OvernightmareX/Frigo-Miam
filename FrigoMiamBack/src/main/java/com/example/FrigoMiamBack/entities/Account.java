@@ -44,7 +44,7 @@ public class Account {
     @Builder.Default
     private List<Fridge> accountIngredientsList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account")
     @Builder.Default
     private List<Recipe> recipeCreatedList = new ArrayList<>();
 

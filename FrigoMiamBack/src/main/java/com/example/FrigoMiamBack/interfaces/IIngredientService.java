@@ -19,5 +19,4 @@ public interface IIngredientService {
 
     Ingredient updateIngredient(Ingredient ingredient);
 
-//    boolean addIngredientToRecipe(Recipe recipe, Ingredient ingredient);
 }

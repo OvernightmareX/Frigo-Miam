@@ -1,5 +1,6 @@
 package com.example.FrigoMiamBack.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,6 @@ public class Role {
     @NotBlank
     private String name;
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<Account> accounts;
 }
