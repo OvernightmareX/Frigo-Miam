@@ -1,23 +1,28 @@
-
+<!-- Composant de recherche d'ingrédients -->
 <app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
 
-<div class="containIngredients flex flex-col md:flex-row justify-between items-center p-4">
-  <div class="listIngrdt md:w-1/2 w-full mb-4 md:mb-0">
-<app-ingredient-tab-frigo
-  [ingredientsInFrigo]="allFrigoIngredients"
-  (deleteIngredientEvent)="deleteIngredientFromFrigo($event)"
-  (quantityChange)="changeQuantity($event)">
-</app-ingredient-tab-frigo>
+
+<div class="containIngredients flex flex-col md:flex-row justify-between items-center p-4 mx-auto md:w-3/4 w-full">
+  <!-- Liste des ingrédients -->
+  <div class="listIngrdt  bg-[#A5D2C0] rounded-sm p-4 md:w-1/2 w-full  mb-4 md:mb-0">
+    <app-ingredient-tab-frigo
+      [ingredientsInFrigo]="allFrigoIngredients"
+      (quantityChange)="changeQuantity($event)"
+      (deleteIngredientEvent)="deleteIngredientFromFrigo($event)">
+    </app-ingredient-tab-frigo>
   </div>
-  <div class="imgFrigo">
-    <img src="../frigo.png" alt="dessin frigo "/>
+
+  <div class="imgFrigo md:w-1/2 w-full flex justify-center">
+    <img src="../frigo.png" alt="dessin frigo" class="w-3/4 max-w-sm">
   </div>
 </div>
 
-<div>
+<!-- Liste des recettes -->
+<div class="mt-6">
   @for(recipe of allRecipeCardsData; track recipe){
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
   }
 </div>
+
 
 
