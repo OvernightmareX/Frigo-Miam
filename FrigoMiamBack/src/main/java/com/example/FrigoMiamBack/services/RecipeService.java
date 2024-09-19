@@ -120,22 +120,47 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
-        List<Recipe> finalRecipes = this.recipeRepository.findAll();
+        List<Recipe> allRecipes = this.recipeRepository.findAll();
 
+        List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
-            finalRecipes = finalRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
+            filteredByDiet = allRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
         }
 
-//        if(ingredients != null){
-//            for(Ingredient ingredient : ingredients){
-//                for(Recipe recipe : finalRecipes){
-//                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
-//                    System.out.println(recipeIngredients);
-//                }
-//                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
-//            }
-//        }
-        return finalRecipes;
+        List<Recipe> filteredByIngredients = new ArrayList<>();
+        if(ingredients != null){
+            for(Ingredient ing : ingredients){
+                for(Recipe recipe : filteredByDiet){
+                    List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
+                    recipeAllIngredients.forEach(ingr -> {
+                        if(ingr.getIngredient() == ing){
+                            filteredByIngredients.add(recipe);
+                        }
+                    });
+                }
+            }
+        }
+
+        List<Recipe> filteredByAllergens = new ArrayList<>();
+        if(allergies != null){
+            for(Allergy all : allergies){
+                for(Recipe recipe : filteredByIngredients){
+                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+                    List<Ingredient> recipeIngredient = new ArrayList<>();
+                    recipeIngredients.forEach(ing -> {
+                        recipeIngredient.add(ing.getIngredient());
+                    });
+                    List<Allergy> ingrAllergens = new ArrayList<>();
+                    recipeIngredient.forEach(ingr -> {
+                        if(ingr.getAllergy() == all){
+                            filteredByAllergens.add(recipe);
+                        }
+                    });
+                }
+            }
+        }
+
+        return filteredByAllergens;
     }
 
     @Override
