@@ -126,15 +126,15 @@ public class RecipeService implements IRecipeService {
             finalRecipes = finalRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
         }
 
-        if(ingredients != null){
-            for(Ingredient ingredient : ingredients){
-                for(Recipe recipe : finalRecipes){
-                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
-                    System.out.println(recipeIngredients);
-                }
-                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
-            }
-        }
+//        if(ingredients != null){
+//            for(Ingredient ingredient : ingredients){
+//                for(Recipe recipe : finalRecipes){
+//                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+//                    System.out.println(recipeIngredients);
+//                }
+//                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
+//            }
+//        }
         return finalRecipes;
     }
 
