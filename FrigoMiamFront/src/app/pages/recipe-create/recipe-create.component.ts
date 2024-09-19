@@ -12,10 +12,19 @@ export class RecipeCreateComponent {
 
   recipe = {
     title: '',
-    ingredients: [] as { ingredient: string, quantity: number, value: number }[],
+    ingredients: [],
     descript: '',
     urlImg: '',
   };
+
+  ingredient = {
+    name: '',
+    quantity: ''
+  }
+
+  ingredientList = {}
+
+
 
   isSubmitted = false;
 
@@ -25,7 +34,7 @@ export class RecipeCreateComponent {
 
   addIngredient() {
     if (this.newIngredient.ingredient && this.newIngredient.quantity > 0) {
-      this.recipe.ingredients.push({ ...this.newIngredient });
+      //this.recipe.ingredients.push({ ...this.newIngredient });
       //this.newIngredient = { ingredient: '', quantity: 1, value: 2 };
     }
   }

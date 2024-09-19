@@ -9,19 +9,18 @@
       <div class="addQt">
         <div class="ingredient">
           <label for="ingredient">Ingrédient</label>
-          <input type="text" id="ingredient" [(ngModel)]="recipe.ingredients" name="ingredient" required>
+          <input type="text" id="ingredient" [(ngModel)]="ingredient.name" name="ingredient" required>
         </div>
         <div class="quantity">
           <label for="quantity">Quantité</label>
-
-          <input type="number" id="quantity" [(ngModel)]="recipe.ingredients" name="quantity" required>
+          <input type="number" id="quantity" [(ngModel)]="ingredient.quantity" name="quantity" required>
         </div>
 
         <button type="button" (click)="addIngredient()">Ajouter</button>
         <div class="ingredientListAdd">
           @for (ingredient of recipe.ingredients ; track ingredient){
             <ul>
-              <li>{{ingredient.value}}</li>
+              <li>{{ingredient}}</li>
             </ul>
           }
 

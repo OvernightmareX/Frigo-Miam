@@ -19,7 +19,7 @@ export const routes: Routes = [
   {path: 'inscription', component: AccountCreationComponent},
   {path: 'recette', component: RecipeUserComponent},
   {path: 'recette/:name', component: RecetteComponent},
-  //{path: 'recetteCreate', component: RecipeCreateComponent},
+  {path: 'recetteCreate', component: RecipeCreateComponent},
   {path: '**' , component:NotFound404Component},
 ];
 
