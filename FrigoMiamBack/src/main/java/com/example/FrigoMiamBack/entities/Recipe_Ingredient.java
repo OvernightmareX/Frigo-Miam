@@ -1,5 +1,6 @@
 package com.example.FrigoMiamBack.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Recipe_Ingredient {
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
+    @JsonIgnore
     private Recipe recipe;
 
     @ManyToOne
