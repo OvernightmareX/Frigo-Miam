@@ -44,9 +44,9 @@ public class AccountController {
         return new ResponseEntity<>(this.iAccountService.checkEmail(email.toLowerCase().trim()), HttpStatus.OK);
     }
 
-    @GetMapping(ApiUrls.FRIDGE)
-    public ResponseEntity<List<Fridge>> getFridge(@Valid @RequestBody Account account) {
-        return new ResponseEntity<>(this.iAccountService.getFridges(account.getId()), HttpStatus.CREATED);
+    @GetMapping(ApiUrls.FRIDGE+"/{id}")
+    public ResponseEntity<List<Fridge>> getFridge(@PathVariable @NotBlank String id) {
+        return new ResponseEntity<>(this.iAccountService.getFridges(UUID.fromString(id)), HttpStatus.OK);
     }
 
     @PostMapping
@@ -56,24 +56,21 @@ public class AccountController {
 
     @PostMapping(ApiUrls.LOGIN)
     public ResponseEntity<TokenDTO> logIn(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-        String email = loginRequestDTO.getEmail();
-        String password = loginRequestDTO.getPassword();
-        return new ResponseEntity<>(this.iAccountService.logIn(email, password), HttpStatus.OK);
+        return new ResponseEntity<>(this.iAccountService.logIn(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()), HttpStatus.OK);
     }
 
     @PostMapping(ApiUrls.FRIDGE)
     public ResponseEntity<Boolean> addIngredientToFridge(@Valid @RequestBody AddToFridgeDTO addToFridgeDTO) {
-        Account account = addToFridgeDTO.getAccount();
-        Ingredient ingredient = addToFridgeDTO.getIngredient();
-        int quantity = addToFridgeDTO.getQuantity();
-        return new ResponseEntity<>(this.iAccountService.addIngredientToFridge(ingredient, account, quantity), HttpStatus.OK);
+        return new ResponseEntity<>(this.iAccountService.addIngredientToFridge(
+                        addToFridgeDTO.getIngredient(),
+                        addToFridgeDTO.getAccount(),
+                        addToFridgeDTO.getQuantity()),
+                        HttpStatus.OK);
     }
 
     @PostMapping(ApiUrls.FAVORITE)
     public ResponseEntity<Account> addRecipeToFavorite(@Valid @RequestBody AddToFavoriteDTO addToFavoriteDTO) {
-        Account account = addToFavoriteDTO.getAccount();
-        Recipe recipe = addToFavoriteDTO.getRecipe();
-        return new ResponseEntity<>(this.iAccountService.addRecipeToFavorite(account, recipe), HttpStatus.OK);
+        return new ResponseEntity<>(this.iAccountService.addRecipeToFavorite(addToFavoriteDTO.getAccount(), addToFavoriteDTO.getRecipe()), HttpStatus.OK);
     }
 
     @PutMapping

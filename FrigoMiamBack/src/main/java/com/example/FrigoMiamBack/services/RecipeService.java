@@ -38,7 +38,7 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe findByID(UUID id) {
-        if(id == null) {
+        if (id == null) {
             throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
 
@@ -121,10 +121,6 @@ public class RecipeService implements IRecipeService {
     @Override
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
         List<Recipe> allRecipes = this.recipeRepository.findAll();
-        System.out.println("ingredientFilter : " + ingredients);
-        System.out.println("allergiesFilter : " + allergies);
-        System.out.println("dietsFilter : " + diets);
-        System.out.println("All recipe : " + allRecipes);
 
         List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
@@ -134,13 +130,13 @@ public class RecipeService implements IRecipeService {
         }
 
         List<Recipe> filteredByIngredients;
-        if(ingredients != null){
+        if (ingredients != null) {
             filteredByIngredients = new ArrayList<>();
-            for(Ingredient ing : ingredients){
-                for(Recipe recipe : filteredByDiet){
+            for (Ingredient ing : ingredients) {
+                for (Recipe recipe : filteredByDiet) {
                     List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
                     recipeAllIngredients.forEach(ingr -> {
-                        if(ingr.getIngredient() == ing){
+                        if (ingr.getIngredient() == ing) {
                             filteredByIngredients.add(recipe);
                         }
                     });
@@ -150,27 +146,34 @@ public class RecipeService implements IRecipeService {
             filteredByIngredients = filteredByDiet;
         }
 
-        List<Recipe> filteredByAllergens;
-        if(allergies != null){
-            filteredByAllergens = new ArrayList<>();
-            for(Allergy all : allergies){
-                for(Recipe recipe : filteredByIngredients){
-                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
-                    List<Ingredient> recipeIngredient = new ArrayList<>();
-                    recipeIngredients.forEach(ing -> {
-                        recipeIngredient.add(ing.getIngredient());
-                    });
-                    List<Allergy> ingrAllergens = new ArrayList<>();
-                    recipeIngredient.forEach(ingr -> {
-                        if(ingr.getAllergy() != all){
-                            filteredByAllergens.add(recipe);
-                        }
-                    });
+        List<Recipe> filteredByAllergens = new ArrayList<>();
+        if (allergies != null) {
+            for (Recipe recipe : filteredByIngredients) {
+                List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+                boolean hasAllergen = false;
+
+                for (Recipe_Ingredient recipeIngredient : recipeIngredients) {
+                    Ingredient ingredient = recipeIngredient.getIngredient();
+                    Allergy ingrAllergen = ingredient.getAllergy();
+
+
+                    if (allergies.contains(ingrAllergen)) {
+                        hasAllergen = true;
+                        break;
+                    }
+                }
+
+                if (!hasAllergen) {
+                    filteredByAllergens.add(recipe);
                 }
             }
         } else {
             filteredByAllergens = filteredByIngredients;
         }
+
+        filteredByAllergens.forEach(rec -> {
+            System.out.println(rec.getTitle());
+        });
 
         return filteredByAllergens;
     }
@@ -262,7 +265,7 @@ public class RecipeService implements IRecipeService {
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_GET_ACCOUNT_GRADE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
         List<Grade_Recipe> recipeGrades = this.recipeRepository.findById(recipeId).get().getRecipeGradesList();
-        if(recipeGrades.stream().noneMatch(grade->grade.getAccount().getId().equals(accountId))){
+        if (recipeGrades.stream().noneMatch(grade -> grade.getAccount().getId().equals(accountId))) {
             return null;
         } else {
             Grade_Recipe accountGrade = recipeGrades.stream().filter(gradeRecipe -> gradeRecipe.getAccount().getId().equals(accountId)).findFirst().get();
@@ -272,19 +275,19 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe addIngredientToRecipe(Recipe recipe, Ingredient ingredient, double quantity) {
-        if(quantity <=0){
+        if (quantity <= 0) {
             throw new WrongParameterException(ExceptionsMessages.QUANTITY_CANNOT_BE_ZERO_OR_LESS_CANNOT_ADD_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(recipe.getId() == null){
+        if (recipe.getId() == null) {
             throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_ADD_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(ingredient.getId() == null){
+        if (ingredient.getId() == null) {
             throw new WrongParameterException(ExceptionsMessages.EMPTY_INGREDIENT_ID_CANNOT_ADD_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
-        if(!this.recipeRepository.existsById(recipe.getId())) {
+        if (!this.recipeRepository.existsById(recipe.getId())) {
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
-        if(!this.ingredientRepository.existsById(ingredient.getId())) {
+        if (!this.ingredientRepository.existsById(ingredient.getId())) {
             throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_ADD_INGREDIENT, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 

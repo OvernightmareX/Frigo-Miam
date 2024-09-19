@@ -242,6 +242,7 @@ public class RecipeServiceTest {
             List<Recipe> found = recipeService.getRecipesByFilters(ingredientsFilter, null, null);
 
             assertEquals(recipe, found.get(0));
+            assertEquals(1, found.size());
         }
 
         @Test
@@ -274,6 +275,7 @@ public class RecipeServiceTest {
             List<Recipe> found = recipeService.getRecipesByFilters(null, null, Diet.PESCATARIAN);
 
             assertEquals(recipe2, found.get(0));
+            assertEquals(1, found.size());
         }
 
         @Test
@@ -309,6 +311,7 @@ public class RecipeServiceTest {
 
             List<Recipe> found = recipeService.getRecipesByFilters(null, allergens, null);
 
+            assertEquals(1, found.size());
             assertEquals(recipe, found.get(0));
         }
 
@@ -370,6 +373,7 @@ public class RecipeServiceTest {
             List<Recipe> found = recipeService.getRecipesByFilters(ingredientsFilter, allergens, Diet.VEGAN);
 
             assertEquals(recipe4, found.get(0));
+            assertEquals(1, found.size());
         }
     }
 

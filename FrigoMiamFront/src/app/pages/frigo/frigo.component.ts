@@ -54,7 +54,6 @@ export class FrigoComponent {
 
   // appelé par la bar de recherche
   addIngredient(ingredientName: string): void {  // TODO a mettre dans util. Yaura de la merde aussi avec le type du paramètre d'entrée
-    console.log()
     const addedIngredient: IngredientFrigo = {
       name: ingredientName,
       quantity: 1
