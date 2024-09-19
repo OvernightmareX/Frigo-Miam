@@ -36,21 +36,17 @@ export class IngredientSearchComponent {
   ]);
 
   addIngredient() {
-    console.log(`addIngredient IN, this.selectedIngredient: ${JSON.stringify(this.selectedIngredient)}`);
     if (this.selectedIngredient) {
       this.clickEvent.emit(this.ingredient_control.value ?? '');
       this.selectedIngredient = undefined
     } else {
       console.log('Aucun ingrédient sélectionné ou ingrédient non trouvé');
     }
-    console.log(`addIngredient OUT, this.selectedIngredient: ${JSON.stringify(this.selectedIngredient)}`);
   }
 
   onIngredientSelect() {
-    console.log(`onIngredientSelect IN, this.selectedIngredient: ${JSON.stringify(this.selectedIngredient)}`);
     const selectedName = this.ingredient_control.value;
     this.selectedIngredient = this.ingredientsStored.find(ingredient => ingredient.name === selectedName);
-    console.log(`onIngredientSelect OUT, this.selectedIngredient: ${JSON.stringify(this.selectedIngredient)}`);
   }
 
   filterPossibilities(value: string) {

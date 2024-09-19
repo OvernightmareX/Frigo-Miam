@@ -4,6 +4,7 @@ import {IngredientListComponent} from "../../components/ingredient-list-home/ing
 import {RecipeCardShortComponent} from "../../components/recipe-card-short/recipe-card-short.component";
 import {IngredientBack, IngredientFrigo, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
 import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
+import {RecipeService} from "../../services/http/recipes/recipe.service";
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ import {IngredientClientService} from "../../services/http/ingredient/ingredient
 })
 export class HomeComponent {
 
-  constructor(private ingredientService: IngredientClientService) {
+  constructor(private ingredientService: IngredientClientService, private recipeService: RecipeService) {
     this.getAllIngredients()
   }
 
@@ -48,6 +49,37 @@ export class HomeComponent {
         console.error('Erreur lors de la récupération des ingrédients', err);
       }
     })
+  }
+
+  getRecipesBasedOnIngredients(): void{
+    const allIngredients: IngredientBack[] = this.getIngredientsFromLocalStorage()
+
+    const userSelectedIngredients: IngredientBack[] = this.allUserIngredients
+      .map(ingredientName => allIngredients.find(ingredient => ingredient.name === ingredientName))
+      .filter(ingredient => ingredient !== undefined && ingredient !== null);  // Filtrer les éléments non trouvés
+
+    console.log(`userSelectedIngredients: ${JSON.stringify(userSelectedIngredients)}`);
+
+    this.recipeService.getRecipesBasedOnIngredients(userSelectedIngredients).subscribe({
+      next: recipes => {
+        console.log(`response: ${JSON.stringify(recipes)}`);
+
+        // localStorage.setItem('allIngredients', JSON.stringify(recipes));
+      },
+      error: err => {
+        console.error('Erreur lors de la récupération des ingrédients', err);
+      }
+
+    })
+  }
+
+  getIngredientsFromLocalStorage(): IngredientBack[] {
+    const storedIngredients = localStorage.getItem('allIngredients');
+
+    if (storedIngredients) {
+      return JSON.parse(storedIngredients) as IngredientBack[];
+    }
+    return [];
   }
 
 }

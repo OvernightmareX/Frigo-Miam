@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-recipe-create',
@@ -58,6 +58,5 @@ export class RecipeCreateComponent {
     console.log('Recette soumise', this.recipe);
   }
 
-  protected readonly of = of;
 }
 
