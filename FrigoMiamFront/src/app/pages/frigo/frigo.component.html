@@ -1,12 +1,18 @@
 
 <app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
 
-
+<div class="containIngredients flex flex-col md:flex-row justify-between items-center p-4">
+  <div class="listIngrdt md:w-1/2 w-full mb-4 md:mb-0">
 <app-ingredient-tab-frigo
   [ingredientsInFrigo]="allFrigoIngredients"
   (deleteIngredientEvent)="deleteIngredientFromFrigo($event)"
   (quantityChange)="changeQuantity($event)">
 </app-ingredient-tab-frigo>
+  </div>
+  <div class="imgFrigo">
+    <img src="../frigo.png" alt="dessin frigo "/>
+  </div>
+</div>
 
 <div>
   @for(recipe of allRecipeCardsData; track recipe){
