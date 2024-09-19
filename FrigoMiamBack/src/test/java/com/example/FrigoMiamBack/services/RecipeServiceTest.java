@@ -375,6 +375,29 @@ public class RecipeServiceTest {
             assertEquals(recipe4, found.get(0));
             assertEquals(1, found.size());
         }
+
+        @Test
+        public void WhenIngredientDoesNotExist_ThenShouldThrowIngredientNotFoundException(){
+            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+            Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
+            Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe1 = new ArrayList<>();
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(beef, 5));
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(carrot, 5));
+
+            Recipe recipe = RecipeFactory.createCustomRecipeNoId("Boeuf au carottes", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, null, null);
+            recipeService.addRecipe(recipe, account, ingredientsDTORecipe1);
+
+            Ingredient ingredient = IngredientFactory.createIngredientWithCustomId(UUID.randomUUID());
+            List<Ingredient> filter = new ArrayList<>();
+            filter.add(ingredient);
+            filter.add(carrot);
+
+            NotFoundException thrown = assertThrows(NotFoundException.class, () -> recipeService.getRecipesByFilters(filter, null, null));
+            assertEquals(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_FILTER, thrown.getMessage());
+        }
     }
 
     @Nested
@@ -662,9 +685,6 @@ public class RecipeServiceTest {
             Recipe savedRecipe = recipeService.addRecipe(recipe, account, ingredients);
 
             List<Recipe> createdRecipeList = recipeService.getRecipeCreated(account.getId());
-            System.out.println("Account du Recipe" + " " + savedRecipe.getAccount());
-            System.out.println("recipe du Account" + " " + account.getRecipeCreatedList().get(0).getTitle());
-            System.out.println(createdRecipeList);
 
             assertEquals(1, createdRecipeList.size());
         }

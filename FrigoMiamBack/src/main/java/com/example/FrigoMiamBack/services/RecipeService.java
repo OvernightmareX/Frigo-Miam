@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +58,6 @@ public class RecipeService implements IRecipeService {
         }
 
         Recipe savedRecipe = this.recipeRepository.save(recipe);
-        System.out.println(savedRecipe.getRecipeIngredientsList().size());
 
         ingredients.forEach(ing -> {
             addIngredientToRecipe(savedRecipe, ing.getIngredient(), ing.getQuantity());
@@ -65,7 +65,6 @@ public class RecipeService implements IRecipeService {
 
         savedRecipe.setAccount(account);
         account.getRecipeCreatedList().add(savedRecipe);
-        System.out.println(savedRecipe.getRecipeIngredientsList().size());
 
         try {
             return this.recipeRepository.save(savedRecipe);
@@ -126,6 +125,9 @@ public class RecipeService implements IRecipeService {
 
         List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
+            if(!EnumSet.allOf(Diet.class).contains(diets)) {
+                throw new NotFoundException(ExceptionsMessages.DIET_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            }
             filteredByDiet = allRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
         } else {
             filteredByDiet = allRecipes;
@@ -135,6 +137,9 @@ public class RecipeService implements IRecipeService {
         if (ingredients != null) {
             filteredByIngredients = new ArrayList<>();
             for (Ingredient ing : ingredients) {
+                if(!ingredientRepository.existsById(ing.getId())){
+                    throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+                }
                 for (Recipe recipe : filteredByDiet) {
                     List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
                     recipeAllIngredients.forEach(ingr -> {
@@ -150,21 +155,24 @@ public class RecipeService implements IRecipeService {
 
         List<Recipe> filteredByAllergens = new ArrayList<>();
         if (allergies != null) {
+            for(Allergy all : allergies) {
+                if(!EnumSet.allOf(Allergy.class).contains(all)) {
+                    throw new NotFoundException(ExceptionsMessages.ALLERGY_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+                }
+            }
+
             for (Recipe recipe : filteredByIngredients) {
                 List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
                 boolean hasAllergen = false;
-
                 for (Recipe_Ingredient recipeIngredient : recipeIngredients) {
                     Ingredient ingredient = recipeIngredient.getIngredient();
                     Allergy ingrAllergen = ingredient.getAllergy();
-
 
                     if (allergies.contains(ingrAllergen)) {
                         hasAllergen = true;
                         break;
                     }
                 }
-
                 if (!hasAllergen) {
                     filteredByAllergens.add(recipe);
                 }
@@ -172,10 +180,6 @@ public class RecipeService implements IRecipeService {
         } else {
             filteredByAllergens = filteredByIngredients;
         }
-
-        filteredByAllergens.forEach(rec -> {
-            System.out.println(rec.getTitle());
-        });
 
         return filteredByAllergens;
     }
@@ -310,9 +314,6 @@ public class RecipeService implements IRecipeService {
             });
             recipe.getRecipeIngredientsList().add(addedIngredient);
         }
-
-        System.out.println(recipe.getRecipeIngredientsList().size());
-
 
         try {
 
