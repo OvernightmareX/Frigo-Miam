@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-recipe-create',
@@ -10,11 +11,33 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 })
 export class RecipeCreateComponent {
 
+  createRecipe = new FormGroup({
+    titleRecipe: new FormControl(''),
+    descript: new FormControl(''),
+    instructions: new FormControl(''),
+    preparation_time: new FormControl (''),
+    cooking_time: new FormControl(''),
+    calories: new FormControl(''),
+    diet: new FormControl(''),
+    addQt: new FormGroup({
+      ingredient: new FormControl(''),
+      quantity: new FormControl(''),
+
+    })
+    }
+
+  );
+
   recipe = {
     title: '',
-    ingredients: [] as { ingredient: string, quantity: number, value: number }[],
     descript: '',
-    urlImg: '',
+    instructions:'',
+    preparation_time:'',
+    cooking_time:'',
+    diet:[],
+    ingredients: [] as { ingredient: string, quantity: number, value: number }[],
+
+
   };
 
   isSubmitted = false;
@@ -22,6 +45,7 @@ export class RecipeCreateComponent {
   newIngredient: { ingredient: string; quantity: number, value: number } = { ingredient: '', quantity: 1, value: 2 };
 
   constructor() { }
+
 
   addIngredient() {
     if (this.newIngredient.ingredient && this.newIngredient.quantity > 0) {
@@ -34,5 +58,7 @@ export class RecipeCreateComponent {
     this.isSubmitted = true;
     console.log('Recette soumise', this.recipe);
   }
+
+  protected readonly of = of;
 }
 

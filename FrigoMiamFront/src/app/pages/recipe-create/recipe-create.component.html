@@ -1,20 +1,57 @@
 <div class="create-recipe">
   <h1>Créer ta recette</h1>
   <div class="registerRecipe">
-    <form (ngSubmit)="submitRecipe()">
+    <form  [formGroup]="createRecipe" (ngSubmit)="submitRecipe()">
       <div class="title">
         <label for="titleRecipe">Titre de votre recette</label>
-        <input type="text" id="titleRecipe" [(ngModel)]="recipe.title" name="titleRecipe" required>
+        <input type="text" id="titleRecipe"  formControlName="titleRecipe" >
       </div>
-      <div class="addQt">
+
+      <div class="description">
+        <label for="descript">Préparation</label>
+        <textarea id="descript" formControlName="description" ></textarea>
+      </div>
+
+      <div class="instructions">
+        <label for="instructions">Instructions</label>
+        <textarea id="instructions" formControlName="instructions" ></textarea>
+      </div>
+
+      <div class="preparation_time">
+        <label for="preparation_time">Temps de préparation</label>
+        <input type="number" id="preparation_time"  formControlName="preparation_time">
+      </div>
+
+      <div class="cooking_time">
+        <label for="cooking_time">Temps de cuisson</label>
+        <input type="number" id="cooking_time"  formControlName="cooking_time">
+      </div>
+
+      <div class="calories">
+        <label for="calories">Calories</label>
+        <input type="number" id="calories"  formControlName="calories">
+      </div>
+      <div>
+        <label for="diet">Régime alimentaire</label>
+          <select id="diet" formControlName="diet">
+
+            <option ></option>
+
+          </select>
+      </div>
+
+
+
+
+      <div class="addQt" formGroupName="addQt">
         <div class="ingredient">
           <label for="ingredient">Ingrédient</label>
-          <input type="text" id="ingredient" [(ngModel)]="recipe.ingredients" name="ingredient" required>
+          <input type="text" id="ingredient" formControlName="ingredient">
         </div>
         <div class="quantity">
           <label for="quantity">Quantité</label>
 
-          <input type="number" id="quantity" [(ngModel)]="recipe.ingredients" name="quantity" required>
+          <input type="number" id="quantity" formControlName="quantity" >
         </div>
 
         <button type="button" (click)="addIngredient()">Ajouter</button>
@@ -27,14 +64,13 @@
 
         </div>
       </div>
-      <div class="description">
-        <label for="descript">Préparation</label>
-        <textarea id="descript" name="descript" [(ngModel)]="recipe.descript"></textarea>
-      </div>
-      <div class="urlImg">
-        <label for="urlImg">URL de l'image :</label>
-        <input type="url" id="urlImg" [(ngModel)]="recipe.urlImg" name="urlImg">
-      </div>
+
+
+
+
+
+
+
       <button type="submit">Valider</button>
     </form>
   </div>
