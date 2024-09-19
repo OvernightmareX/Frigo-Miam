@@ -12,7 +12,7 @@ export class RecipeCreateComponent {
 
   recipe = {
     title: '',
-    ingredients: [] as { ingredient: string, quantity: number }[],
+    ingredients: [] as { ingredient: string, quantity: number, value: number }[],
     descript: '',
     urlImg: '',
   };
