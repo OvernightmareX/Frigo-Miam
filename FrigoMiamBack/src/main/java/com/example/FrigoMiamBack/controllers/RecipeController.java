@@ -1,5 +1,9 @@
 package com.example.FrigoMiamBack.controllers;
 
+import com.example.FrigoMiamBack.DTO.AccountGradeDTO;
+import com.example.FrigoMiamBack.DTO.AddRecipeDTO;
+import com.example.FrigoMiamBack.DTO.AddRecipeGradeDTO;
+import com.example.FrigoMiamBack.DTO.RecipeFilterDTO;
 import com.example.FrigoMiamBack.entities.Recipe;
 import com.example.FrigoMiamBack.interfaces.IRecipeService;
 import com.example.FrigoMiamBack.utils.constants.ApiUrls;
@@ -27,14 +31,44 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable @NotBlank String id) {
-        return new ResponseEntity<>(this.iRecipeService.findByID(UUID.fromString(id)), HttpStatus.OK);
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable @NotBlank String recipeId) {
+        return new ResponseEntity<>(this.iRecipeService.findByID(UUID.fromString(recipeId)), HttpStatus.OK);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Recipe> addRecipe(@Valid @RequestBody Recipe recipe) {
-//        return new ResponseEntity<>(this.iRecipeService.addRecipe(recipe), HttpStatus.CREATED);
-//    }
+    @GetMapping(ApiUrls.FAVORITE)
+    public ResponseEntity<List<Recipe>> getFavoriteRecipes(@PathVariable @NotBlank String accountId) {
+        return new ResponseEntity<>(this.iRecipeService.getFavoriteRecipes(UUID.fromString(accountId)), HttpStatus.OK);
+    }
+
+    @GetMapping(ApiUrls.FILTER)
+    public ResponseEntity<List<Recipe>> getRecipesByFilters(@Valid @RequestBody RecipeFilterDTO recipeFilterDTO) {
+        return new ResponseEntity<>(this.iRecipeService.getRecipesByFilters(recipeFilterDTO.getIngredientList(), recipeFilterDTO.getAllergyList(), recipeFilterDTO.getDiet()), HttpStatus.OK);
+    }
+
+    @GetMapping(ApiUrls.ACCOUNT)
+    public ResponseEntity<Integer> getAccountGrade(@Valid @RequestBody AccountGradeDTO accountGradeDTO) {
+        return new ResponseEntity<>(this.iRecipeService.getAccountGrade(accountGradeDTO.getRecipeID(), accountGradeDTO.getAccountID()), HttpStatus.OK);
+    }
+
+    @GetMapping(ApiUrls.ACCOUNT + ApiUrls.CREATED)
+    public ResponseEntity<List<Recipe>> getRecipeCreated(@PathVariable @NotBlank String accountId) {
+        return new ResponseEntity<>(this.iRecipeService.getRecipeCreated(UUID.fromString(accountId)), HttpStatus.OK);
+    }
+
+    @GetMapping(ApiUrls.AVERAGE)
+    public ResponseEntity<Integer> getAverageGrade(@PathVariable @NotBlank String recipeId) {
+        return new ResponseEntity<>(this.iRecipeService.getAverageGrade(UUID.fromString(recipeId)), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Recipe> addRecipe(@Valid @RequestBody AddRecipeDTO recipeDTO) {
+        return new ResponseEntity<>(this.iRecipeService.addRecipe(recipeDTO.getRecipe(), recipeDTO.getAccount(), recipeDTO.getIngredients()), HttpStatus.CREATED);
+    }
+
+    @PostMapping(ApiUrls.GRADE)
+    public ResponseEntity<Boolean> addGradeToRecipe(@Valid @RequestBody AddRecipeGradeDTO recipeGradeDTO) {
+        return new ResponseEntity<>(this.iRecipeService.addGradeToRecipe(recipeGradeDTO.getRecipe(), recipeGradeDTO.getAccount(), recipeGradeDTO.getGrade()), HttpStatus.CREATED);
+    }
 
     @PutMapping
     public ResponseEntity<Recipe> updateRecipe(@Valid @RequestBody Recipe recipe) {
@@ -45,4 +79,6 @@ public class RecipeController {
     public ResponseEntity<Boolean> deleteRecipe(@Valid @RequestBody Recipe recipe) {
         return new ResponseEntity<>(this.iRecipeService.deleteRecipe(recipe.getId()), HttpStatus.OK);
     }
+
+
 }

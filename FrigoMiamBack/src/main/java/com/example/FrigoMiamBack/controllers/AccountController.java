@@ -35,7 +35,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccount(@PathVariable @NotBlank String id) {
+    public ResponseEntity<Account> getAccountById(@PathVariable @NotBlank String id) {
         return new ResponseEntity<>(this.iAccountService.getAccountById(UUID.fromString(id)), HttpStatus.OK);
     }
 
