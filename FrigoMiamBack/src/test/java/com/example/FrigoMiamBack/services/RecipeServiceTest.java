@@ -505,7 +505,7 @@ public class RecipeServiceTest {
 
             List<Recipe> createdRecipeList = recipeService.getRecipeCreated(account.getId());
             System.out.println("Account du Recipe" + " " + savedRecipe.getAccount());
-            System.out.println("recipe du Account" + " " + account.getRecipeCreatedList());
+            System.out.println("recipe du Account" + " " + account.getRecipeCreatedList().get(0).getTitle());
             System.out.println(createdRecipeList);
 
             assertEquals(1, createdRecipeList.size());
