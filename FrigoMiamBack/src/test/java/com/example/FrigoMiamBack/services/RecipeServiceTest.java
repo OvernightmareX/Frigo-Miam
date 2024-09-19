@@ -752,6 +752,20 @@ public class RecipeServiceTest {
 
             assertEquals(1, createdRecipeList.size());
         }
+
+        @Test
+        public void ShouldThrowWrongParameterException_WithAccountIdNull(){
+            WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> recipeService.getRecipeCreated(null));
+
+            assertEquals(ExceptionsMessages.EMPTY_ACCOUNT_ID_CANNOT_FIND_RECIPE,thrown.getMessage());
+        }
+
+        @Test
+        public void ShouldThrowWrongParameterException_WhenAccountDoesNotExist(){
+            NotFoundException thrown = assertThrows(NotFoundException.class, () -> recipeService.getRecipeCreated(UUID.randomUUID()));
+
+            assertEquals(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_FIND_RECIPES,thrown.getMessage());
+        }
     }
 
 }
