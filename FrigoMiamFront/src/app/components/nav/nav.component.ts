@@ -29,6 +29,11 @@ export class NavComponent {
     }
   }
 
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
 
   // get checkAuthentification() {
   //   return this.isAuthentified = localStorage.getItem("isAuthentified");

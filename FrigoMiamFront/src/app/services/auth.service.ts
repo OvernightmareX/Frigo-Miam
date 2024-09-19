@@ -20,6 +20,9 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.apiUrl}/account/login`, cred).pipe(
       tap(res => {
         localStorage.setItem('token', res.token);
+        localStorage.setItem('email', cred.email);
+        localStorage.setItem('password', cred.password);
+
 
 
         this.authentifiedSubject.next(true);
@@ -33,6 +36,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
     this.authentifiedSubject.next(false);  // Set the boolean to false on logout
   }
 
