@@ -122,9 +122,6 @@ public class AccountServiceTest {
 
             accountService.createAccount(account);
 
-            Role role = Role.builder().name("USER").build();
-            roleRepository.save(role);
-
             TokenDTO token = accountService.logIn(email, password);
 
             assertNotNull(token);

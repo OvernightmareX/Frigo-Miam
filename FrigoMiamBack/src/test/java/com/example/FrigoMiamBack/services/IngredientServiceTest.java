@@ -177,7 +177,7 @@ public class IngredientServiceTest {
         public void ShouldThrowWrongParameterException_WithoutIngredientId(){
             Ingredient ingredient = IngredientFactory.createDefaultIngredient();
             WrongParameterException thrown = assertThrows(WrongParameterException.class, () -> ingredientService.updateIngredient(ingredient));
-            assertEquals(ExceptionsMessages.WRONG_PARAMETERS, thrown.getMessage());
+            assertEquals(ExceptionsMessages.EMPTY_ID_CANNOT_UPDATE_INGREDIENT, thrown.getMessage());
         }
     }
 

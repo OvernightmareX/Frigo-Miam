@@ -20,7 +20,8 @@ public interface IRecipeService {
 
     List<Recipe> getFavoriteRecipes(UUID accountId);
 
-    //FINIR CETTE METHODE
+    List<Recipe> getPendingRecipes();
+
     List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets);
 
     boolean addGradeToRecipe(Recipe Recipe, Account Account, int grade);

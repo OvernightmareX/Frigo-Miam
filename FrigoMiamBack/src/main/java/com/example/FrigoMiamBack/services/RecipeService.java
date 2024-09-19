@@ -13,12 +13,14 @@ import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
+import com.example.FrigoMiamBack.utils.enums.Validation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,7 +41,7 @@ public class RecipeService implements IRecipeService {
     @Override
     public Recipe findByID(UUID id) {
         if (id == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS_CANNOT_FIND_ACCOUNT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
 
         return this.recipeRepository.findById(id).orElse(null);
@@ -47,8 +49,11 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<Recipe> findAll() {
-        return this.recipeRepository.findAll();
+        List<Recipe> allRecipes = this.recipeRepository.findAll();
+        return allRecipes.stream().filter(recipe -> recipe.getValidation() == Validation.VALIDATED).toList();
     }
+
+
 
     @Override
     public Recipe addRecipe(Recipe recipe, Account account, List<IngredientQuantityDTO> ingredients) {
@@ -56,6 +61,7 @@ public class RecipeService implements IRecipeService {
             throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
 
+        recipe.setValidation(account.getRole().getName().equals("ADMIN") ? Validation.VALIDATED : Validation.PENDING);
         Recipe savedRecipe = this.recipeRepository.save(recipe);
 
         ingredients.forEach(ing -> {
@@ -75,10 +81,10 @@ public class RecipeService implements IRecipeService {
     @Override
     public Recipe updateRecipe(Recipe recipe) {
         if (recipe.getId() == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_RECIPE_ID_CANNOT_UPDATE_RECIPE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         if (!this.recipeRepository.existsById(recipe.getId())) {
-            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST_CANNOT_UPDATE_RECIPE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
 
         try {
@@ -92,7 +98,7 @@ public class RecipeService implements IRecipeService {
     public boolean deleteRecipe(UUID id) {
         System.out.println("service" + id);
         if (id == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_DELETE_RECIPE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         if (!this.recipeRepository.existsById(id)) {
             throw new NotFoundException(ExceptionsMessages.RECIPE_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
@@ -109,13 +115,19 @@ public class RecipeService implements IRecipeService {
     @Override
     public List<Recipe> getFavoriteRecipes(UUID accountId) {
         if (accountId == null) {
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_FAVORITE_RECIPE, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }
         Account accountFound;
         if (this.accountRepository.findById(accountId).isEmpty()) {
-            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_DOES_NOT_EXIST_CANNOT_FIND_FAVORITE_RECIPE, HttpStatus.NOT_FOUND, LocalDateTime.now());
         }
         return this.accountRepository.findById(accountId).get().getRecipeLikedList();
+    }
+
+    @Override
+    public List<Recipe> getPendingRecipes() {
+        List<Recipe> allRecipes = this.recipeRepository.findAll();
+        return allRecipes.stream().filter(recipe -> recipe.getValidation() == Validation.PENDING).toList();
     }
 
     @Override
@@ -124,6 +136,9 @@ public class RecipeService implements IRecipeService {
 
         List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
+            if(!EnumSet.allOf(Diet.class).contains(diets)) {
+                throw new NotFoundException(ExceptionsMessages.DIET_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+            }
             filteredByDiet = allRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
         } else {
             filteredByDiet = allRecipes;
@@ -133,6 +148,9 @@ public class RecipeService implements IRecipeService {
         if (ingredients != null) {
             filteredByIngredients = new ArrayList<>();
             for (Ingredient ing : ingredients) {
+                if(!ingredientRepository.existsById(ing.getId())){
+                    throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+                }
                 for (Recipe recipe : filteredByDiet) {
                     List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
                     recipeAllIngredients.forEach(ingr -> {
@@ -148,21 +166,24 @@ public class RecipeService implements IRecipeService {
 
         List<Recipe> filteredByAllergens = new ArrayList<>();
         if (allergies != null) {
+            for(Allergy all : allergies) {
+                if(!EnumSet.allOf(Allergy.class).contains(all)) {
+                    throw new NotFoundException(ExceptionsMessages.ALLERGY_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+                }
+            }
+
             for (Recipe recipe : filteredByIngredients) {
                 List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
                 boolean hasAllergen = false;
-
                 for (Recipe_Ingredient recipeIngredient : recipeIngredients) {
                     Ingredient ingredient = recipeIngredient.getIngredient();
                     Allergy ingrAllergen = ingredient.getAllergy();
-
 
                     if (allergies.contains(ingrAllergen)) {
                         hasAllergen = true;
                         break;
                     }
                 }
-
                 if (!hasAllergen) {
                     filteredByAllergens.add(recipe);
                 }
@@ -170,10 +191,6 @@ public class RecipeService implements IRecipeService {
         } else {
             filteredByAllergens = filteredByIngredients;
         }
-
-        filteredByAllergens.forEach(rec -> {
-            System.out.println(rec.getTitle());
-        });
 
         return filteredByAllergens;
     }
