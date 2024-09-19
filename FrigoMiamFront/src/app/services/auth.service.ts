@@ -22,9 +22,6 @@ export class AuthService {
         localStorage.setItem('token', res.token);
         localStorage.setItem('email', cred.email);
         localStorage.setItem('password', cred.password);
-
-
-
         this.authentifiedSubject.next(true);
       }),
       catchError(error => {

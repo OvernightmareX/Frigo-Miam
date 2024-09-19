@@ -7,7 +7,8 @@ import {FrigoComponent} from "./pages/frigo/frigo.component";
 import {AccountCreationComponent} from "./pages/account-creation/account-creation.component";
 import {RecetteComponent} from "./pages/recette/recette.component";
 import {NotFound404Component} from "./pages/not-found404/not-found404.component";
-import {NgModule} from "@angular/core";
+import {RecipeCreateComponent} from "./pages/recipe-create/recipe-create.component";
+import {RecipeUserComponent} from "./pages/recipe-user/recipe-user.component";
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -16,7 +17,9 @@ export const routes: Routes = [
   {path: 'connexion', component: ConnexionComponent},
   {path: 'frigo', component: FrigoComponent},
   {path: 'inscription', component: AccountCreationComponent},
-  {path: 'recette/:name', component: RecetteComponent}, //
+  {path: 'recette/:name', component: RecetteComponent},
+  {path: 'recette', component: RecipeUserComponent},
+  {path: 'recetteCreate', component: RecipeCreateComponent},
   {path: '**' , component:NotFound404Component},
 ];
 
