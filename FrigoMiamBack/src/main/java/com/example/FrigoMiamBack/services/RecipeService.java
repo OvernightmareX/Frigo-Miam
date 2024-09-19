@@ -121,14 +121,21 @@ public class RecipeService implements IRecipeService {
     @Override
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
         List<Recipe> allRecipes = this.recipeRepository.findAll();
+        System.out.println("ingredientFilter : " + ingredients);
+        System.out.println("allergiesFilter : " + allergies);
+        System.out.println("dietsFilter : " + diets);
+        System.out.println("All recipe : " + allRecipes);
 
         List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
             filteredByDiet = allRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
+        } else {
+            filteredByDiet = allRecipes;
         }
 
-        List<Recipe> filteredByIngredients = new ArrayList<>();
+        List<Recipe> filteredByIngredients;
         if(ingredients != null){
+            filteredByIngredients = new ArrayList<>();
             for(Ingredient ing : ingredients){
                 for(Recipe recipe : filteredByDiet){
                     List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
@@ -139,10 +146,13 @@ public class RecipeService implements IRecipeService {
                     });
                 }
             }
+        } else {
+            filteredByIngredients = filteredByDiet;
         }
 
-        List<Recipe> filteredByAllergens = new ArrayList<>();
+        List<Recipe> filteredByAllergens;
         if(allergies != null){
+            filteredByAllergens = new ArrayList<>();
             for(Allergy all : allergies){
                 for(Recipe recipe : filteredByIngredients){
                     List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
@@ -152,12 +162,14 @@ public class RecipeService implements IRecipeService {
                     });
                     List<Allergy> ingrAllergens = new ArrayList<>();
                     recipeIngredient.forEach(ingr -> {
-                        if(ingr.getAllergy() == all){
+                        if(ingr.getAllergy() != all){
                             filteredByAllergens.add(recipe);
                         }
                     });
                 }
             }
+        } else {
+            filteredByAllergens = filteredByIngredients;
         }
 
         return filteredByAllergens;

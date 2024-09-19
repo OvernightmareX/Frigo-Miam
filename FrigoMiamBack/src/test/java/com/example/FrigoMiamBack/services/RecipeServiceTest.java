@@ -14,9 +14,7 @@ import com.example.FrigoMiamBack.repositories.AccountRepository;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
-import com.example.FrigoMiamBack.utils.enums.Diet;
-import com.example.FrigoMiamBack.utils.enums.TypeIngredient;
-import com.example.FrigoMiamBack.utils.enums.Unit;
+import com.example.FrigoMiamBack.utils.enums.*;
 import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -211,32 +209,167 @@ public class RecipeServiceTest {
     @Nested
     class GetRecipeTest{
         @Test
-        public void ShouldHaveRecipe_WithRightDietParameter(){
-            List<IngredientQuantityDTO> ingredientsDTO = new ArrayList<>();
-            List<Ingredient> ingredients = new ArrayList<>();
-
-            Ingredient ingredient = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
-            Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
-            Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
-//            ingredients.add(ingredient);
-            ingredients.add(beef);
-            ingredients.add(carrot);
-
-            IngredientQuantityDTO ingredientDTO = new IngredientQuantityDTO(ingredient, 5);
-            ingredientsDTO.add(ingredientDTO);
-            IngredientQuantityDTO ingredientDTOBeef = new IngredientQuantityDTO(beef, 5);
-            ingredientsDTO.add(ingredientDTOBeef);
-            IngredientQuantityDTO ingredientDTOCarrot = new IngredientQuantityDTO(carrot, 5);
-            ingredientsDTO.add(ingredientDTOCarrot);
-
+        public void ShouldHaveRecipe_WithRightIngredientParameter(){
             Account account = accountRepository.save(AccountFactory.createDefaultAccount());
 
-            Recipe recipe = RecipeFactory.createDefaultRecipe();
-            recipeService.addRecipe(recipe, account, ingredientsDTO);
+            // RECETTE 1
+            Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
+            Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
 
-            List<Recipe> found = recipeService.getRecipesByFilters(ingredients, null, Diet.VEGETARIAN);
-//            System.out.println(found);
-//            assertEquals(recipe, found.get(0));
+            List<IngredientQuantityDTO> ingredientsDTORecipe1 = new ArrayList<>();
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(beef, 5));
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(carrot, 5));
+
+            Recipe recipe = RecipeFactory.createCustomRecipeNoId("Boeuf au carottes", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, null, null);
+            recipeService.addRecipe(recipe, account, ingredientsDTORecipe1);
+
+
+            // RECETTE 2
+            Ingredient wheatPasta = ingredientRepository.save(IngredientFactory.createIngredient("Wheat Pasta", Unit.GR, TypeIngredient.PASTA, Allergy.GLUTEN));
+            Ingredient tuna = ingredientRepository.save(IngredientFactory.createIngredient("Canned tuna", Unit.GR, TypeIngredient.FISH, Allergy.FISH));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe2 = new ArrayList<>();
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(wheatPasta, 5));
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(tuna, 5));
+
+            Recipe recipe2 = RecipeFactory.createCustomRecipeNoId("Pâtes au thon", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, Diet.PESCATARIAN, null);
+            recipeService.addRecipe(recipe2, account, ingredientsDTORecipe2);
+
+            // FILTRE
+            List<Ingredient> ingredientsFilter = new ArrayList<>();
+            ingredientsFilter.add(beef);
+
+            List<Recipe> found = recipeService.getRecipesByFilters(ingredientsFilter, null, null);
+
+            assertEquals(recipe, found.get(0));
+        }
+
+        @Test
+        public void ShouldHaveRecipe_WithRightDietParameter(){
+            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+            // RECETTE 1
+            Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
+            Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe1 = new ArrayList<>();
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(beef, 5));
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(carrot, 5));
+
+            Recipe recipe = RecipeFactory.createCustomRecipeNoId("Boeuf au carottes", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, null, null);
+            recipeService.addRecipe(recipe, account, ingredientsDTORecipe1);
+
+
+            // RECETTE 2
+            Ingredient wheatPasta = ingredientRepository.save(IngredientFactory.createIngredient("Wheat Pasta", Unit.GR, TypeIngredient.PASTA, Allergy.GLUTEN));
+            Ingredient tuna = ingredientRepository.save(IngredientFactory.createIngredient("Canned tuna", Unit.GR, TypeIngredient.FISH, Allergy.FISH));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe2 = new ArrayList<>();
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(wheatPasta, 5));
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(tuna, 5));
+
+            Recipe recipe2 = RecipeFactory.createCustomRecipeNoId("Pâtes au thon", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, Diet.PESCATARIAN, null);
+            recipeService.addRecipe(recipe2, account, ingredientsDTORecipe2);
+
+            List<Recipe> found = recipeService.getRecipesByFilters(null, null, Diet.PESCATARIAN);
+
+            assertEquals(recipe2, found.get(0));
+        }
+
+        @Test
+        public void ShouldHaveRecipe_WithRightAllergenParameter(){
+            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+            // RECETTE 1
+            Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
+            Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe1 = new ArrayList<>();
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(beef, 5));
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(carrot, 5));
+
+            Recipe recipe = RecipeFactory.createCustomRecipeNoId("Boeuf au carottes", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, null, null);
+            recipeService.addRecipe(recipe, account, ingredientsDTORecipe1);
+
+
+            // RECETTE 2
+            Ingredient wheatPasta = ingredientRepository.save(IngredientFactory.createIngredient("Wheat Pasta", Unit.GR, TypeIngredient.PASTA, Allergy.GLUTEN));
+            Ingredient tuna = ingredientRepository.save(IngredientFactory.createIngredient("Canned tuna", Unit.GR, TypeIngredient.FISH, Allergy.FISH));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe2 = new ArrayList<>();
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(wheatPasta, 5));
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(tuna, 5));
+
+            Recipe recipe2 = RecipeFactory.createCustomRecipeNoId("Pâtes au thon", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, Diet.PESCATARIAN, null);
+            recipeService.addRecipe(recipe2, account, ingredientsDTORecipe2);
+
+            //FILTRE
+            List<Allergy> allergens = new ArrayList<>();
+            allergens.add(Allergy.GLUTEN);
+
+            List<Recipe> found = recipeService.getRecipesByFilters(null, allergens, null);
+
+            assertEquals(recipe, found.get(0));
+        }
+
+        @Test
+        public void ShouldHaveRecipe_WithRightDietAndAllergenAndIngredientsParameter(){
+            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+
+            // RECETTE 1
+            Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
+            Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe1 = new ArrayList<>();
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(beef, 5));
+            ingredientsDTORecipe1.add(new IngredientQuantityDTO(carrot, 5));
+
+            Recipe recipe = RecipeFactory.createCustomRecipeNoId("Boeuf au carottes", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, null, null);
+            recipeService.addRecipe(recipe, account, ingredientsDTORecipe1);
+
+            // RECETTE 2
+            Ingredient wheatPasta = ingredientRepository.save(IngredientFactory.createIngredient("Wheat Pasta", Unit.GR, TypeIngredient.PASTA, Allergy.GLUTEN));
+            Ingredient tuna = ingredientRepository.save(IngredientFactory.createIngredient("Canned tuna", Unit.GR, TypeIngredient.FISH, Allergy.FISH));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe2 = new ArrayList<>();
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(wheatPasta, 5));
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(tuna, 5));
+            ingredientsDTORecipe2.add(new IngredientQuantityDTO(carrot, 5));
+
+            Recipe recipe2 = RecipeFactory.createCustomRecipeNoId("Pâtes au thon", "Desc", "Inst", 60, 15, 200, TypeRecipe.MAIN_COURSE, Validation.VALIDATED, Diet.PESCATARIAN, null);
+            recipeService.addRecipe(recipe2, account, ingredientsDTORecipe2);
+
+            // RECETTE3
+            Ingredient cream = ingredientRepository.save(IngredientFactory.createIngredient("Crème fraîche", Unit.CL, TypeIngredient.DAIRY, Allergy.DAIRY));
+            Ingredient egg = ingredientRepository.save(IngredientFactory.createIngredient("Oeuf", null, TypeIngredient.MEAT, Allergy.EGGS));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe3 = new ArrayList<>();
+            ingredientsDTORecipe3.add(new IngredientQuantityDTO(cream, 5));
+            ingredientsDTORecipe3.add(new IngredientQuantityDTO(egg, 5));
+
+            Recipe recipe3 = RecipeFactory.createCustomRecipeNoId("Crème aux oeufs", "Desc", "Inst", 60, 15, 200, TypeRecipe.DESSERT, Validation.VALIDATED, Diet.VEGETARIAN, null);
+            recipeService.addRecipe(recipe3, account, ingredientsDTORecipe3);
+
+            // RECETTE4
+            Ingredient lemon = ingredientRepository.save(IngredientFactory.createIngredient("Citron", null, TypeIngredient.FRUIT, null));
+
+            List<IngredientQuantityDTO> ingredientsDTORecipe4 = new ArrayList<>();
+            ingredientsDTORecipe4.add(new IngredientQuantityDTO(carrot, 5));
+            ingredientsDTORecipe4.add(new IngredientQuantityDTO(lemon, 5));
+
+            Recipe recipe4 = RecipeFactory.createCustomRecipeNoId("Carottes râpées", "Desc", "Inst", 60, 15, 200, TypeRecipe.STARTER, Validation.VALIDATED, Diet.VEGAN, null);
+            recipeService.addRecipe(recipe4, account, ingredientsDTORecipe4);
+
+            // FILTRES
+            List<Ingredient> ingredientsFilter = new ArrayList<>();
+            ingredientsFilter.add(carrot);
+
+            List<Allergy> allergens = new ArrayList<>();
+            allergens.add(Allergy.GLUTEN);
+
+            List<Recipe> found = recipeService.getRecipesByFilters(ingredientsFilter, allergens, Diet.VEGAN);
+
+            assertEquals(recipe4, found.get(0));
         }
     }
 

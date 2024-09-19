@@ -60,6 +60,24 @@ public class RecipeFactory {
         return recipe;
     }
 
+    public static Recipe createCustomRecipeNoId(String title, String description, String instructions, int prepTime, int cookTime, int calories, TypeRecipe typeRecipe, Validation validation, Diet diet, Account account) {
+        Recipe recipe = new Recipe();
+        recipe.setTitle(title);
+        recipe.setDescription(description);
+        recipe.setInstructions(instructions);
+        recipe.setPreparation_time(prepTime);
+        recipe.setCooking_time(cookTime);
+        recipe.setCalories(calories);
+        recipe.setTypeRecipe(typeRecipe);
+        recipe.setValidation(validation);
+        recipe.setDiet(diet);
+        recipe.setAccount(account);
+        recipe.setRecipeIngredientsList(new ArrayList<>());
+        recipe.setRecipeGradesList(new ArrayList<>());
+        recipe.setAccountList(new ArrayList<>());
+        return recipe;
+    }
+
     public static Recipe createRecipeWithId(UUID id){
         return Recipe.builder()
                 .id(id)
