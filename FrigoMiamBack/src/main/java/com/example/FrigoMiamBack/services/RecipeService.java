@@ -122,22 +122,19 @@ public class RecipeService implements IRecipeService {
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
         List<Recipe> finalRecipes = this.recipeRepository.findAll();
 
-        finalRecipes.forEach(recipe -> {
-
-        });
         if (diets != null) {
             finalRecipes = finalRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
         }
-        //TODO AJOUTER UN INGREDIENT A UNE RECETTE POUR POUVOIR FILTRER/INGREDIENt et /ALLERGEN
-//        if(ingredients != null){
-//            for(Ingredient ingredient : ingredients){
-//                for(Recipe recipe : finalRecipes){
-//                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
-//                    System.out.println(recipeIngredients);
-//                }
-//                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
-//            }
-//        }
+
+        if(ingredients != null){
+            for(Ingredient ingredient : ingredients){
+                for(Recipe recipe : finalRecipes){
+                    List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+                    System.out.println(recipeIngredients);
+                }
+                finalRecipes.stream().filter(recipe -> recipe.getRecipeIngredientsList())
+            }
+        }
         return finalRecipes;
     }
 
