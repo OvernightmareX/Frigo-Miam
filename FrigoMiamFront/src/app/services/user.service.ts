@@ -24,6 +24,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   createUser(userToCreate: User): Observable<User>{
+    console.log(`userToCreate: ${JSON.stringify(userToCreate)}`);
     return this.http.post<User>(this.apiUrl, userToCreate).pipe(
       catchError(error => {
         alert(error.message);

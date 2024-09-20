@@ -43,7 +43,7 @@
 
       <div class="allergen">
         <label for="allergies" class="block text-sm font-medium text-[#FCF3F1]">Allergies:</label>
-        <select id="allergies" [(ngModel)]="user.allergies" name="allergies"
+        <select id="allergies" [(ngModel)]="user.allergies" name="allergies" multiple
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289e8d] focus:border-[#289e8d] sm:text-sm text-[#289E8D]">
           @for (allergen of allergenList; track allergen){
             <option [value]="allergen.value">{{allergen.label}}</option>
