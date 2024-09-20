@@ -32,6 +32,7 @@
         <input type="number" id="calories"  formControlName="calories">
       </div>
       <div>
+
         <label for="diet">Régime alimentaire</label>
           <select id="diet" formControlName="diet">
 
@@ -44,7 +45,8 @@
 
 
       <fieldset class="addQt" formArrayName="addQt">
-        <fieldset class="containAdd" formGroupName="ingredientQty">
+        @for (ingredient of  createRecipe.controls.addQt.controls; track ingredient){
+        <fieldset class="containAdd" [formGroupName]="$index">
         <div class="ingredient">
           <label for="ingredient">Ingrédient</label>
           <input type="text" id="ingredient" formControlName="ingredient">
@@ -56,16 +58,17 @@
         </div>
 
 
+        </fieldset>}
         <button type="button" (click)="addIngredient()">Ajouter</button>
-        </fieldset>
-        <div class="ingredientListAdd">
-          @for (ingredient of recipe.ingredients ; track ingredient){
-            <ul>
-              <li>{{ingredient}}</li>
-            </ul>
-          }
 
-        </div>
+        <!--        <div class="ingredientListAdd">-->
+<!--          @for (ingredient of createRecipe.controls.addQt ; track ingredient){-->
+<!--            <ul>-->
+<!--              <li>{{ingredient}}</li>-->
+<!--            </ul>-->
+<!--          }-->
+
+<!--        </div>-->
       </fieldset>
 
 
