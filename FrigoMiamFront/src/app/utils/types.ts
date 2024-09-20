@@ -1,10 +1,4 @@
 export type Recipe = {
-  ingredients: string[],
-  nom: string,
-  description: string
-};
-
-export type RecipeDetails = {
   id: string,
   title: string,
   description: string,
@@ -19,15 +13,13 @@ export type RecipeDetails = {
 }
 
 export type RecipeCard = {
-  id: string,
-  nom: string,
-  description: string,
+  recipe: Recipe,
   enoughQuantity: boolean
 }
 
 export type RecipeMatched = {
   "commonIngredientCount": number,
-  "recepe": Recipe
+  "recipe": Recipe
 }
 
 export class User {
@@ -58,7 +50,7 @@ export class User {
 }
 
 export type IngredientFrigo = {
-  "name": string,
+  "ingredient": IngredientBack,
   "quantity": number
 }
 

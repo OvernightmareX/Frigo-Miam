@@ -24,9 +24,9 @@ export class HomeComponent {
   }
 
   allRecipeCardsData: RecipeCard[] = [];
-  allUserIngredients: string[] = [];
+  allUserIngredients: IngredientBack[] = [];
 
-  addIngredient(addedIngredient: string): void {  // TODO a mettre dans util
+  addIngredient(addedIngredient: IngredientBack): void {  // TODO a mettre dans util
     this.allUserIngredients.push(addedIngredient);
     console.log(`Home allUserIngredients: ${JSON.stringify(this.allUserIngredients)}`);
   }
@@ -34,8 +34,7 @@ export class HomeComponent {
 
   convertToRecipeCards(recipeList: RecipeMatched[]): RecipeCard[] {
     return recipeList.map(recipeMatched => ({
-      nom: recipeMatched.recepe.nom,
-      description: recipeMatched.recepe.description,
+      recipe: recipeMatched.recipe,
       enoughQuantity: true  // field not used in home but in frigo
     }));
   }
@@ -55,7 +54,7 @@ export class HomeComponent {
     const allIngredients: IngredientBack[] = this.getIngredientsFromLocalStorage()
 
     const userSelectedIngredients: IngredientBack[] = this.allUserIngredients
-      .map(ingredientName => allIngredients.find(ingredient => ingredient.name === ingredientName))
+      .map(ingredientName => allIngredients.find(ingredient => ingredient.name === ingredientName.name))
       .filter(ingredient => ingredient !== undefined && ingredient !== null);  // Filtrer les éléments non trouvés
 
     console.log(`userSelectedIngredients: ${JSON.stringify(userSelectedIngredients)}`);

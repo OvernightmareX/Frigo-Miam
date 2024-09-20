@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {IngredientListComponent} from "../../components/ingredient-list-home/ingredient-list.component";
 import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
 import {ActivatedRoute} from "@angular/router";
-import {IngredientBack, Recipe, RecipeDetails} from "../../utils/types";
+import {IngredientBack, Recipe } from "../../utils/types";
 import { RecipeDetailsService } from '../../services/http/recipes/recipe-details.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { RecipeDetailsService } from '../../services/http/recipes/recipe-details
 })
 export class RecetteComponent {
 
-  recipe: RecipeDetails = { id: '', title: '', description: '', instructions: '', preparation_time: 0, cooking_time: 0, calories: 0, typeRecipe: '', diet: '', validation: '', ingredients: [] };
+  recipe: Recipe = { id: '', title: '', description: '', instructions: '', preparation_time: 0, cooking_time: 0, calories: 0, typeRecipe: '', diet: '', validation: '', ingredients: [] };
 
   inputValue?: number = 4;
   ingredientRecipeList?: string[] = [];

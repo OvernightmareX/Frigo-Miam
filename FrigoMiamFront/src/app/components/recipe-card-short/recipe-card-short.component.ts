@@ -18,8 +18,8 @@ export class RecipeCardShortComponent {
 
   navigateToRecipe(): void{
     if (this.recipeCardData) {
-    this.recipeService.recipeId = this.recipeCardData.id;
-      this.router.navigate(['/recipe', this.recipeCardData.nom]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
+    this.recipeService.recipeId = this.recipeCardData.recipe.id;
+      this.router.navigate(['/recipe', this.recipeCardData.recipe.title]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
     }
   }
 
