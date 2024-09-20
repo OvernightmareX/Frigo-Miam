@@ -22,5 +22,4 @@ export class RecipeCardShortComponent {
       this.router.navigate(['/recipe', this.recipeCardData.recipe.title]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
     }
   }
-
 }

@@ -19,7 +19,7 @@ export class RecetteComponent {
   recipe: Recipe = { id: '', title: '', description: '', instructions: '', preparation_time: 0, cooking_time: 0, calories: 0, typeRecipe: '', diet: '', validation: '', ingredients: [] };
 
   inputValue?: number = 4;
-  ingredientRecipeList?: string[] = [];
+  ingredientRecipeList?: IngredientBack[] = [];
   recipeDescription: string = "Ma description n'est pas super longue mais elle habille la page."
   recipeName?: string | null | undefined;
   userNote?: number | null | undefined;

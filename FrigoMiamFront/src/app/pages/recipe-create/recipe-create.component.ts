@@ -20,7 +20,7 @@ export class RecipeCreateComponent {
     cooking_time: new FormControl(''),
     calories: new FormControl(''),
     diet: new FormControl(''),
-    addQt: new FormArray([
+    ingredients: new FormArray([
       new FormGroup({
         ingredient: new FormControl(''),
         quantity: new FormControl('')
@@ -38,7 +38,7 @@ export class RecipeCreateComponent {
 
   addIngredient() {
 
-    const addQtArray = this.createRecipe.get('addQt') as FormArray;
+    const addQtArray = this.createRecipe.get('ingredients') as FormArray;
     addQtArray.push(new FormGroup({
       ingredient: new FormControl(''),
       quantity: new FormControl('')

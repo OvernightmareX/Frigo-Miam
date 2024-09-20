@@ -22,7 +22,21 @@ export class ProfilComponent {
   };
 
   constructor(private userService: UserService) {
-   // this.user = userService.getUser();
+    const email: string | null = localStorage.getItem("email");
+    const password: string | null = localStorage.getItem("password");
+
+    if (email && password){
+      this.userService.getUser(email, password).subscribe({
+        next: user => {
+          console.log(`Profil - constructor - userFromBack: ${JSON.stringify(user)}`);
+          this
+      },
+        error: err => {
+        console.error('Erreur lors de la récupération des ingrédients', err);
+      }
+      })
+    }
+
   }
 //todo: ngoninit appeler une methode sur service user, getUser devient getuserdata
   updateBtn(){

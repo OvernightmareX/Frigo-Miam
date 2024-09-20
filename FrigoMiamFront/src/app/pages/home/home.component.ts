@@ -5,6 +5,7 @@ import {RecipeCardShortComponent} from "../../components/recipe-card-short/recip
 import {IngredientBack, IngredientFrigo, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
 import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
 import {RecipeService} from "../../services/http/recipes/recipe.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,8 @@ import {RecipeService} from "../../services/http/recipes/recipe.service";
   imports: [
     IngredientSearchComponent,
     IngredientListComponent,
-    RecipeCardShortComponent
+    RecipeCardShortComponent,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -32,9 +34,9 @@ export class HomeComponent {
   }
 
 
-  convertToRecipeCards(recipeList: RecipeMatched[]): RecipeCard[] {
+  convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
     return recipeList.map(recipeMatched => ({
-      recipe: recipeMatched.recipe,
+      recipe: recipeMatched,
       enoughQuantity: true  // field not used in home but in frigo
     }));
   }
@@ -57,18 +59,13 @@ export class HomeComponent {
       .map(ingredientName => allIngredients.find(ingredient => ingredient.name === ingredientName.name))
       .filter(ingredient => ingredient !== undefined && ingredient !== null);  // Filtrer les éléments non trouvés
 
-    console.log(`userSelectedIngredients: ${JSON.stringify(userSelectedIngredients)}`);
-
     this.recipeService.getRecipesBasedOnIngredients(userSelectedIngredients).subscribe({
       next: recipes => {
-        console.log(`response: ${JSON.stringify(recipes)}`);
-
-        // localStorage.setItem('allIngredients', JSON.stringify(recipes));
+        this.allRecipeCardsData = this.convertToRecipeCards(recipes);
       },
       error: err => {
         console.error('Erreur lors de la récupération des ingrédients', err);
       }
-
     })
   }
 
@@ -80,5 +77,4 @@ export class HomeComponent {
     }
     return [];
   }
-
 }

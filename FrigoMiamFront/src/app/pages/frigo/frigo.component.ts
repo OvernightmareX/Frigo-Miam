@@ -63,53 +63,25 @@ export class FrigoComponent {
     //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
-  // appelé par le tableau d'ingrédients
   deleteIngredientFromFrigo(ingredientToDelete: IngredientFrigo): void {
     this.allFrigoIngredients = this.allFrigoIngredients.filter((ingInFrigo) => ingInFrigo.ingredient.name !== ingredientToDelete.ingredient.name);
     //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
-  // appelé par le tableau d'ingrédients
   changeQuantity(event: {quantity: number, ingredientChange: IngredientFrigo}): void {
     const { quantity, ingredientChange } = event;
     ingredientChange.quantity = quantity;
     // TODO, appeler fonction dessous quand quantité géré dans recette
     //this.recipeIngredientMatching();
-
   }
 
+  addIngredientsToFrigo(): void {
+    console.log(`addIngredientsToFrigo: ${JSON.stringify(this.allFrigoIngredients)}`);
+  }
 
-  //
-  // recipeIngredientMatching():RecipeCard[]{
-  //   let recipesFiltered: RecipeMatched[] = [];
-  //
-  //   this.recipes.forEach(baseRecepe => {
-  //
-  //     this.allFrigoIngredients.forEach(frigoIngredient => {
-  //       if (baseRecepe.ingredients.includes(frigoIngredient.name)) {
-  //
-  //         const foundRecipe = recipesFiltered.find(recepeFound => recepeFound.recepe === baseRecepe);
-  //         if(foundRecipe) {
-  //           foundRecipe.commonIngredientCount += 1;
-  //         } else {
-  //           recipesFiltered.push({
-  //             "commonIngredientCount": 1,
-  //             "recepe": baseRecepe,
-  //           });
-  //         }
-  //       }
-  //     });
-  //   });
-  //
-  //   recipesFiltered = recipesFiltered.sort((a, b) => b.commonIngredientCount - a.commonIngredientCount);
-  //   recipesFiltered.length = 5;
-  //
-  //   return this.convertToRecipeCards(recipesFiltered);
-  // }
-
-  convertToRecipeCards(recipeList: RecipeMatched[]): RecipeCard[] {
+  convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
     return recipeList.map(recipeMatched => ({
-      recipe : recipeMatched.recipe,
+      recipe : recipeMatched,
       enoughQuantity: true  // field not used in home but in frigo
     }));
 
