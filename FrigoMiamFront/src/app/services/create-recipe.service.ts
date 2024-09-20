@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreateRecipeService {
 
-  constructor() { }
+  private apiUrl: 'http://localhost:8080';
+
+
+  constructor( private http: HttpClient) { }
+
+  createRecipe(recipeData: any): Observable<any>{
+    const url = `${this.apiUrl}/recipe`;
+    return this.http.post(url, recipeData);//send req post
+  }
 }
-//todo: cree service postcreateservice,avec le back qui recuperer sous le format angular l'envoie au back, ensuite reformer objet pour il ressemnle a exemple, dans cett exemple il faut un compte associé
-//todo: account, pour le récuperer il faut faire un post à post/account
+
