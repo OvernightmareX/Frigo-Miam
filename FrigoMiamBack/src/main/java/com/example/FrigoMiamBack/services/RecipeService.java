@@ -154,7 +154,7 @@ public class RecipeService implements IRecipeService {
                 for (Recipe recipe : filteredByDiet) {
                     List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
                     recipeAllIngredients.forEach(ingr -> {
-                        if (ingr.getIngredient() == ing) {
+                        if (ingr.getIngredient().getId() == ing.getId()) {
                             filteredByIngredients.add(recipe);
                         }
                     });
