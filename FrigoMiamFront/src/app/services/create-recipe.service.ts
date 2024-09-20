@@ -7,7 +7,8 @@ import {Observable} from "rxjs";
 })
 export class CreateRecipeService {
 
-  private apiUrl:string = 'http://localhost:8080';
+  apiUrl: string = 'http://localhost:8080';
+
 
   constructor( private http: HttpClient) { }
 
