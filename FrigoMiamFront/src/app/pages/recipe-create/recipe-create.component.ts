@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
@@ -13,7 +14,7 @@ export class RecipeCreateComponent {
 
   createRecipe = new FormGroup({
     titleRecipe: new FormControl(''),
-    descript: new FormControl(''),
+    description: new FormControl(''),
     instructions: new FormControl(''),
     preparation_time: new FormControl (''),
     cooking_time: new FormControl(''),
@@ -27,36 +28,31 @@ export class RecipeCreateComponent {
     ])
     });
 
-  recipe = {
-    title: '',
-    descript: '',
-    instructions:'',
-    preparation_time:'',
-    cooking_time:'',
-    diet:[],
-    ingredients: [] as { ingredient: string, quantity: number, value: number }[],
-
-
-  };
+  dietList=[  { label : 'végétalien', value:' VEGETARIAN'},  { label: 'vegan', value:'VEGAN'},  { label :"pescetarien", value:'PESCATARIAN'}]
 
   isSubmitted = false;
 
-  newIngredient: { ingredient: string; quantity: number, value: number } = { ingredient: '', quantity: 1, value: 2 };
 
   constructor() { }
 
 
   addIngredient() {
-    if (this.newIngredient.ingredient && this.newIngredient.quantity > 0) {
-      this.recipe.ingredients.push({ ...this.newIngredient });
-      //this.newIngredient = { ingredient: '', quantity: 1, value: 2 };
+
+    const addQtArray = this.createRecipe.get('addQt') as FormArray;
+    addQtArray.push(new FormGroup({
+      ingredient: new FormControl(''),
+      quantity: new FormControl('')
+    }));
+
+
+
     }
-  }
+
 
   submitRecipe() {
-    this.isSubmitted = true;
-    console.log('Recette soumise', this.recipe);
-  }
+    console.log(`Recette soumise: ${JSON.stringify(this.createRecipe.value)}`, );
 
+    this.isSubmitted = true;
+  }
 }
 

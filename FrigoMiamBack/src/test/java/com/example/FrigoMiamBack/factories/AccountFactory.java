@@ -17,7 +17,16 @@ public class AccountFactory {
                 .lastname(DEFAULT_LASTNAME)
                 .password(DEFAULT_PASSWORD)
                 .email(DEFAULT_EMAIL)
-                .role(Role.USER)
+                .build();
+    }
+
+    public static Account createAccountWithRole(Role role) {
+        return Account.builder()
+                .firstname(DEFAULT_FIRSTNAME)
+                .lastname(DEFAULT_LASTNAME)
+                .password(DEFAULT_PASSWORD)
+                .email(DEFAULT_EMAIL)
+                .role(role)
                 .build();
     }
 

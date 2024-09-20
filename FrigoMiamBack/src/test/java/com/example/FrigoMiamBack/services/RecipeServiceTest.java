@@ -177,7 +177,7 @@ public class RecipeServiceTest {
         @Test
         public void ShouldReturnCreatedRecipe_WhenRecipeDoesNotExist(){
             Recipe recipe = RecipeFactory.createDefaultRecipe();
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.USER));
             List<IngredientQuantityDTO> ingredients = new ArrayList<>();
             Ingredient ingredient = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
             Ingredient ingredient2 = ingredientRepository.save(IngredientFactory.createDefaultIngredient());
@@ -268,7 +268,7 @@ public class RecipeServiceTest {
     class GetRecipeTest{
         @Test
         public void ShouldHaveRecipe_WithRightIngredientParameter(){
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.ADMIN));
 
             // RECETTE 1
             Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
@@ -305,7 +305,7 @@ public class RecipeServiceTest {
 
         @Test
         public void ShouldHaveRecipe_WithRightDietParameter(){
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.ADMIN));
 
             // RECETTE 1
             Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
@@ -338,7 +338,7 @@ public class RecipeServiceTest {
 
         @Test
         public void ShouldHaveRecipe_WithRightAllergenParameter(){
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.ADMIN));
 
             // RECETTE 1
             Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
@@ -375,7 +375,7 @@ public class RecipeServiceTest {
 
         @Test
         public void ShouldHaveRecipe_WithRightDietAndAllergenAndIngredientsParameter(){
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.ADMIN));
 
             // RECETTE 1
             Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
@@ -436,7 +436,7 @@ public class RecipeServiceTest {
 
         @Test
         public void WhenIngredientDoesNotExist_ThenShouldThrowIngredientNotFoundException(){
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.USER));
 
             Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
             Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));
@@ -729,7 +729,7 @@ public class RecipeServiceTest {
     class GetRecipeCreatedTest{
         @Test
         public void ShouldHaveListOfCreatedRecipe(){
-            Account account = accountRepository.save(AccountFactory.createDefaultAccount());
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.USER));
             Recipe recipe = RecipeFactory.createDefaultRecipe();
 
             List<IngredientQuantityDTO> ingredients = new ArrayList<>();
