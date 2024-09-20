@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-recipe-create',
@@ -18,14 +18,13 @@ export class RecipeCreateComponent {
     cooking_time: new FormControl(''),
     calories: new FormControl(''),
     diet: new FormControl(''),
-    addQt: new FormGroup({
-      ingredient: new FormControl(''),
-      quantity: new FormControl(''),
-
-    })
-    }
-
-  );
+    addQt: new FormArray([
+      new FormGroup({
+        ingredient: new FormControl(''),
+        quantity: new FormControl('')
+      })
+    ])
+    });
 
   recipe = {
     title: '',
@@ -58,6 +57,6 @@ export class RecipeCreateComponent {
     console.log('Recette soumise', this.recipe);
   }
 
-  protected readonly of = of;
+  //protected readonly of = of;
 }
 

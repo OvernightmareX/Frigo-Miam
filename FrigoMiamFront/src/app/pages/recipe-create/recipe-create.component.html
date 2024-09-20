@@ -43,7 +43,8 @@
 
 
 
-      <div class="addQt" formGroupName="addQt">
+      <fieldset class="addQt" formArrayName="addQt">
+        <fieldset class="containAdd" formGroupName="ingredientQty">
         <div class="ingredient">
           <label for="ingredient">Ingrédient</label>
           <input type="text" id="ingredient" formControlName="ingredient">
@@ -54,7 +55,9 @@
           <input type="number" id="quantity" formControlName="quantity" >
         </div>
 
+
         <button type="button" (click)="addIngredient()">Ajouter</button>
+        </fieldset>
         <div class="ingredientListAdd">
           @for (ingredient of recipe.ingredients ; track ingredient){
             <ul>
@@ -63,7 +66,7 @@
           }
 
         </div>
-      </div>
+      </fieldset>
 
 
 
