@@ -1,5 +1,7 @@
 <div class="imgHeader">
+  <a routerLink="/">
   <img src="../miam.png" alt="plate of ingredient"  class="w-full h-auto sm:h-64 md:h-80 lg:h-96 object-cover"/>
+  </a>
 </div>
 <app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
 <app-ingredient-list-home [ingredientList]="allUserIngredients"></app-ingredient-list-home>
@@ -8,6 +10,6 @@
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
   }
 </div>
-<div>
-  <button (click)="getRecipesBasedOnIngredients()">Chercher Recette</button>
+<div class="w-full flex justify-center mt-4">
+  <button class="bg-[#BD4F37] text-white py-2 px-4 rounded-lg shadow-lg hover:bg-[#1f7f6d] transition duration-300 mb-4" (click)="getRecipesBasedOnIngredients()">Chercher Recette</button>
 </div>

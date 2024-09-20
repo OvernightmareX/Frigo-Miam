@@ -5,6 +5,7 @@ import {RecipeCardShortComponent} from "../../components/recipe-card-short/recip
 import {IngredientBack, IngredientFrigo, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
 import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
 import {RecipeService} from "../../services/http/recipes/recipe.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,8 @@ import {RecipeService} from "../../services/http/recipes/recipe.service";
   imports: [
     IngredientSearchComponent,
     IngredientListComponent,
-    RecipeCardShortComponent
+    RecipeCardShortComponent,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
