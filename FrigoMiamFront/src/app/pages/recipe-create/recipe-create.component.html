@@ -1,38 +1,65 @@
-<div class="create-recipe">
-  <h1>Créer ta recette</h1>
-  <div class="registerRecipe">
-    <form  [formGroup]="createRecipe" (ngSubmit)="submitRecipe()">
+<div class="create-recipe min-h-screen flex flex-col justify-center items-center ">
+  <h1 class="text-2xl font-bold mb-8 text-[#289E8D]">Créer ta recette</h1>
+  <div class="registerRecipe bg-[#289E8D] shadow-lg rounded-lg p-8 w-full max-w-lg mb-12">
+    <form  [formGroup]="createRecipe" (ngSubmit)="submitRecipe()" class="space-y-4">
       <div class="title">
-        <label for="titleRecipe">Titre de votre recette</label>
+        <label for="titleRecipe" class="block text-sm font-medium text-[#FCF3F1] ">Titre de votre recette</label>
         <input type="text" id="titleRecipe"  formControlName="titleRecipe" >
       </div>
 
       <div class="description">
-        <label for="descript">Préparation</label>
-        <textarea id="descript" formControlName="description" ></textarea>
+        <label for="descript" class="block text-sm font-medium text-[#FCF3F1]">Préparation</label>
+        <textarea class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289E8D] focus:border-[#289E8D] sm:text-sm" id="descript" formControlName="description" ></textarea>
       </div>
 
       <div class="instructions">
-        <label for="instructions">Instructions</label>
-        <textarea id="instructions" formControlName="instructions" ></textarea>
+        <label for="instructions" class="block text-sm font-medium text-[#FCF3F1]">Instructions</label>
+        <textarea class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#289E8D] focus:border-[#289E8D] sm:text-sm" id="instructions" formControlName="instructions" ></textarea>
       </div>
 
       <div class="preparation_time">
-        <label for="preparation_time">Temps de préparation</label>
+        <label for="preparation_time" class="block text-sm font-medium text-[#FCF3F1]">Temps de préparation</label>
         <input type="number" id="preparation_time"  formControlName="preparation_time">
       </div>
 
       <div class="cooking_time">
-        <label for="cooking_time">Temps de cuisson</label>
+        <label for="cooking_time" class="block text-sm font-medium text-[#FCF3F1]">Temps de cuisson</label>
         <input type="number" id="cooking_time"  formControlName="cooking_time">
       </div>
 
       <div class="calories">
-        <label for="calories">Calories</label>
+        <label for="calories" class="block text-sm font-medium text-[#FCF3F1]">Calories</label>
         <input type="number" id="calories"  formControlName="calories">
       </div>
+
+
+
+
+
+      <fieldset class="ingredients" formArrayName="ingredients">
+        @for (ingredient of  createRecipe.controls.ingredients.controls; track ingredient){
+        <fieldset class="containAdd" [formGroupName]="$index">
+        <div class="ingredient">
+          <label for="ingredient" class="block text-sm font-medium text-[#FCF3F1]">Ingrédient</label>
+          <input type="text" id="ingredient" formControlName="ingredient">
+        </div>
+        <div class="quantity">
+          <label for="quantity" class="block text-sm font-medium text-[#FCF3F1]">Quantité</label>
+
+          <input type="number" id="quantity" formControlName="quantity" >
+        </div>
+
+
+        </fieldset>
+        }
+        <button type="button" (click)="addIngredient()" class="w-full mb-4 mt-4 bg-white text-[#289E8D] py-2 px-4 rounded-lg shadow hover:bg-gray-200 transition duration-300">Ajouter</button>
+
+
+      </fieldset>
+
+
       <div class="diet">
-        <label for="diet" >Régime Alimentaire:</label>
+        <label for="diet" class="block text-sm font-medium text-[#FCF3F1]">Régime Alimentaire:</label>
         <select id="diet"  formControlName="diet">
           @for (d of dietList; track dietList){
             <option [value]="d.value">{{d.label}}</option>
@@ -43,33 +70,7 @@
 
 
 
-      <fieldset class="ingredients" formArrayName="ingredients">
-        @for (ingredient of  createRecipe.controls.ingredients.controls; track ingredient){
-        <fieldset class="containAdd" [formGroupName]="$index">
-        <div class="ingredient">
-          <label for="ingredient">Ingrédient</label>
-          <input type="text" id="ingredient" formControlName="ingredient">
-        </div>
-        <div class="quantity">
-          <label for="quantity">Quantité</label>
-
-          <input type="number" id="quantity" formControlName="quantity" >
-        </div>
-
-
-        </fieldset>}
-        <button type="button" (click)="addIngredient()">Ajouter</button>
-
-
-      </fieldset>
-
-
-
-
-
-
-
-      <button type="submit">Valider</button>
+      <button type="submit" class="w-full mb-4 mt-4 bg-white text-[#289E8D] py-2 px-4 rounded-lg shadow hover:bg-gray-200 transition duration-300">Valider</button>
     </form>
   </div>
 </div>
