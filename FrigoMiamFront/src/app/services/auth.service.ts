@@ -31,6 +31,8 @@ export class AuthService {
     );
   }
 
+
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
@@ -41,14 +43,6 @@ export class AuthService {
 }
 
 
-// register(user: Partial<User>): Observable<User> {
-//   return this.http.post<User>(`${this.apiUrl}/account`, user).pipe(
-//     catchError(error => {
-//       alert(error.message);
-//       return of({} as User);
-//     })
-//   );
-// }
 
 
 
