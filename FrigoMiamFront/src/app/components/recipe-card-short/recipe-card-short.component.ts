@@ -18,8 +18,8 @@ export class RecipeCardShortComponent {
   navigateToRecipe(): void{
     console.log(`RecipeCardShortComponent - navigateToRecipe - IN`)
     if (this.recipeCardData) {
-      console.log(`RecipeCardShortComponent - navigateToRecipe - before redirection`)
-      this.router.navigate(['/recipe', this.recipeCardData.title]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
+      console.log(`RecipeCardShortComponent - navigateToRecipe - recipe title: ${this.recipeCardData.title}`)
+      this.router.navigate(['/recette', this.recipeCardData.title]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
     }
   }
 
