@@ -29,7 +29,8 @@ public class DBInitService {
                          RecipeRepository recipeRepository,
                          RecipeService recipeService,
                          IngredientRepository ingredientRepository,
-                         RecipeIngredientRepository recipeIngredientRepository) throws IOException {
+                         RecipeIngredientRepository recipeIngredientRepository
+                        ) throws IOException {
         this.accountService = accountService;
         this.recipeService = recipeService;
         this.ingredientRepository = ingredientRepository;
@@ -49,7 +50,6 @@ public class DBInitService {
                 .lastname("last")
                 .email("email@test.com")
                 .password("password")
-                .role(Role.builder().name("USER").build())
                 .build();
 
         Account admin = Account.builder()
@@ -57,7 +57,6 @@ public class DBInitService {
                 .lastname("admin")
                 .email("admin@admin.com")
                 .password("myadminpassword")
-                .role(Role.builder().name("ADMIN").build())
                 .build();
 
 

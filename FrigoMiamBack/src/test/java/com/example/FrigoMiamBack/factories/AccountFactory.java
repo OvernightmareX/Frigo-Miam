@@ -1,6 +1,7 @@
 package com.example.FrigoMiamBack.factories;
 
 import com.example.FrigoMiamBack.entities.Account;
+import com.example.FrigoMiamBack.utils.enums.Role;
 
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class AccountFactory {
                 .lastname(DEFAULT_LASTNAME)
                 .password(DEFAULT_PASSWORD)
                 .email(DEFAULT_EMAIL)
+                .role(Role.USER)
                 .build();
     }
 

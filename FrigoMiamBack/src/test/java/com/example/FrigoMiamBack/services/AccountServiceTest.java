@@ -41,14 +41,11 @@ public class AccountServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
-        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository, roleRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
     }
 
     @Nested
@@ -121,9 +118,6 @@ public class AccountServiceTest {
             account.setPassword(password);
 
             accountService.createAccount(account);
-
-            Role role = Role.builder().name("USER").build();
-            roleRepository.save(role);
 
             TokenDTO token = accountService.logIn(email, password);
 

@@ -8,6 +8,7 @@ import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.*;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,11 @@ public class AccountService implements IAccountService {
     private final AccountRepository accountRepository;
     private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
-    private final RoleRepository roleRepository;
 
-    public AccountService(AccountRepository accountRepository, RecipeRepository recipeRepository, IngredientRepository ingredientRepository, RoleRepository roleRepository) {
+    public AccountService(AccountRepository accountRepository, RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
         this.accountRepository = accountRepository;
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -49,7 +48,10 @@ public class AccountService implements IAccountService {
             throw new ConflictException(ExceptionsMessages.EMAIL_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
 
         accountToCreate.setPassword(HashingUtils.hashPassword(accountToCreate.getPassword()));
-        accountToCreate.setRole(this.roleRepository.findByName("USER"));
+
+        if(accountToCreate.getRole() == null)
+            accountToCreate.setRole(Role.USER);
+
         return this.accountRepository.save(accountToCreate);
     }
 
@@ -74,7 +76,7 @@ public class AccountService implements IAccountService {
             throw new NotFoundException(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
 
         if(HashingUtils.verifyPassword(password, accountFound.getPassword()))
-            return new TokenDTO(JwtUtils.generateToken(accountFound, this.roleRepository.findByName("USER")));
+            return new TokenDTO(JwtUtils.generateToken(accountFound, Role.USER));
         else
             throw new RuntimeException();
     }

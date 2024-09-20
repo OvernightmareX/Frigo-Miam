@@ -67,7 +67,7 @@ public class IngredientService implements IIngredientService {
     @Override
     public Ingredient updateIngredient(Ingredient ingredient) {
         if(ingredient.getId() == null)
-            throw new WrongParameterException(ExceptionsMessages.WRONG_PARAMETERS, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+            throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_UPDATE_INGREDIENT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
 
         if(!ingredientRepository.existsById(ingredient.getId()))
             throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());

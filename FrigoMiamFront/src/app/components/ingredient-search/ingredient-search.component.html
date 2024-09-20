@@ -5,8 +5,8 @@
   </p>
 
   <datalist id="ingredientOptions">
-    @for (ingredient of ingredientsStored; track ingredient){
-      <option [label]="ingredient" [value]="ingredient.name"></option>
+    @for (ingredient of filteredPossibilities; track ingredient){
+      <option [value]="ingredient"></option>
     }
   </datalist>
 
