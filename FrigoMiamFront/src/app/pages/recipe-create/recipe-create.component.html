@@ -43,8 +43,8 @@
 
 
 
-      <fieldset class="recipeIngredientsList" formArrayName="recipeIngredientsList">
-        @for (ingredient of  createRecipe.controls.recipeIngredientsList.controls; track ingredient){
+      <fieldset class="ingredients" formArrayName="ingredients">
+        @for (ingredient of  createRecipe.controls.ingredients.controls; track ingredient){
         <fieldset class="containAdd" [formGroupName]="$index">
         <div class="ingredient">
           <label for="ingredient">Ingrédient</label>
