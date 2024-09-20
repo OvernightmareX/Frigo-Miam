@@ -39,9 +39,6 @@ public class IngredientServiceTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     private IngredientService ingredientService;
 
     @BeforeEach

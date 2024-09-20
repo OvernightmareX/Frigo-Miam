@@ -1,9 +1,9 @@
 package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Role;
 import com.example.FrigoMiamBack.exceptions.NullParameterException;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -42,7 +42,7 @@ public class JwtUtils {
                 .issuer(ISSUER)
                 .subject(account.getEmail())
                 .claim("email", account.getEmail())
-                .claim("role", role.getName())
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(LocalDateTime.now().plusDays(EXPIRATION_TIME).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()))
                 .signWith(SignatureAlgorithm.HS256, SECRET)
