@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {IngredientBack, User} from "../utils/types";
 import {HttpClient} from "@angular/common/http";
-import {catchError, Observable, of} from "rxjs";
+import {catchError, Observable, of, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,7 @@ export class UserService {
     "diets": "VEGETARIAN"
   }
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createUser(userToCreate: User): Observable<User>{
     console.log(`userToCreate: ${JSON.stringify(userToCreate)}`);
@@ -33,8 +32,23 @@ export class UserService {
     );
   }
 
-  getUser(){
-    return this.user;
+  getUser(email: string, password: string) : Observable<User>{
+
+    const body: Object = {
+      "email": email,
+      "password": password,
+    }
+
+    return this.http.post<User>(this.apiUrl, body).pipe(
+      tap(res => {
+        console.log(`getUser - userFromBack: ${JSON.stringify(res)}`);
+        this.user = res
+      }),
+      catchError(error => {
+        alert(error.message);
+        return of({} as User);
+      })
+    );
 
   }
   setUser(user: User){

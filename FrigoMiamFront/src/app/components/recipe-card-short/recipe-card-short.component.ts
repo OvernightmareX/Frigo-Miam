@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {RecipeCard} from "../../utils/types";
 import {Router} from "@angular/router";
+import { RecipeDetailsService } from '../../services/http/recipes/recipe-details.service';
 
 @Component({
   selector: 'app-recipe-card-short',
@@ -13,14 +14,12 @@ export class RecipeCardShortComponent {
 
   @Input() recipeCardData ?: RecipeCard;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private recipeService: RecipeDetailsService) {}
 
   navigateToRecipe(): void{
-    console.log(`RecipeCardShortComponent - navigateToRecipe - IN`)
     if (this.recipeCardData) {
-      console.log(`RecipeCardShortComponent - navigateToRecipe - before redirection`)
-      this.router.navigate(['/recipe', this.recipeCardData.title]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
+    this.recipeService.recipeId = this.recipeCardData.recipe.id;
+      this.router.navigate(['/recipe', this.recipeCardData.recipe.title]);   // TODO a tester quand on aura des recettes, faudra remettre le paramètre dans app.routes.ts
     }
   }
-
 }

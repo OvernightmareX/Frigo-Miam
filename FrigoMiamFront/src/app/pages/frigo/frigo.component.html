@@ -15,12 +15,16 @@
   </div>
 </div>
 
+<div class="w-full flex justify-center mt-4">
+  <button class="bg-[#BD4F37] text-white py-2 px-4 rounded-lg shadow-lg hover:bg-[#1f7f6d] transition duration-300 mb-4" (click)="addIngredientsToFrigo()">Ajouter Recette</button>
+</div>
 
 <div class="mt-6">
   @for(recipe of allRecipeCardsData; track recipe){
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
   }
 </div>
+
 
 
 
