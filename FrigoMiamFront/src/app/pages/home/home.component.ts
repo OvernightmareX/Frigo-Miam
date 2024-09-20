@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {IngredientSearchComponent} from "../../components/ingredient-search/ingredient-search.component";
 import {IngredientListComponent} from "../../components/ingredient-list-home/ingredient-list.component";
 import {RecipeCardShortComponent} from "../../components/recipe-card-short/recipe-card-short.component";
-import {IngredientBack, IngredientFrigo, Recipe, RecipeCard, RecipeDetails, RecipeMatched} from "../../utils/types";
+import {IngredientBack, IngredientFrigo, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
 import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
 import {RecipeService} from "../../services/http/recipes/recipe.service";
 import {RouterLink} from "@angular/router";
@@ -26,7 +26,20 @@ export class HomeComponent {
   }
 
   allRecipeCardsData: RecipeCard[] = [];
-  allUserIngredients: string[] = [];
+  allUserIngredients: IngredientBack[] = [];
+
+  addIngredient(addedIngredient: IngredientBack): void {  // TODO a mettre dans util
+    this.allUserIngredients.push(addedIngredient);
+    console.log(`Home allUserIngredients: ${JSON.stringify(this.allUserIngredients)}`);
+  }
+
+
+  convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
+    return recipeList.map(recipeMatched => ({
+      recipe: recipeMatched,
+      enoughQuantity: true  // field not used in home but in frigo
+    }));
+  }
 
   getAllIngredients(): void{
     this.ingredientService.getAllIngredients().subscribe({
@@ -39,16 +52,11 @@ export class HomeComponent {
     })
   }
 
-  addIngredient(addedIngredient: string): void {  // TODO a mettre dans util
-    this.allUserIngredients.push(addedIngredient);
-    console.log(`Home allUserIngredients: ${JSON.stringify(this.allUserIngredients)}`);
-  }
-
   getRecipesBasedOnIngredients(): void{
     const allIngredients: IngredientBack[] = this.getIngredientsFromLocalStorage()
 
     const userSelectedIngredients: IngredientBack[] = this.allUserIngredients
-      .map(ingredientName => allIngredients.find(ingredient => ingredient.name === ingredientName))
+      .map(ingredientName => allIngredients.find(ingredient => ingredient.name === ingredientName.name))
       .filter(ingredient => ingredient !== undefined && ingredient !== null);  // Filtrer les éléments non trouvés
 
     this.recipeService.getRecipesBasedOnIngredients(userSelectedIngredients).subscribe({
@@ -69,16 +77,4 @@ export class HomeComponent {
     }
     return [];
   }
-
-  convertToRecipeCards(recipeList: RecipeDetails[]): RecipeCard[] {
-    return recipeList.map(recipeMatched => ({
-      id: recipeMatched.id,
-      title: recipeMatched.title,
-      description: recipeMatched.description,
-      enoughQuantity: true  // field not used in home but in frigo
-    }));
-  }
-
-
-
 }

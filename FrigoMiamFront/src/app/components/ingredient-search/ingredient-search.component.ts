@@ -15,7 +15,7 @@ import {IngredientBack} from "../../utils/types";
 })
 export class IngredientSearchComponent {
 
-  @Output() clickEvent = new EventEmitter<string>;  // TODO a renommer
+  @Output() clickEvent = new EventEmitter<IngredientBack>;  // TODO a renommer
 
   ingredientsStored: IngredientBack[] = []
   selectedIngredient?: IngredientBack = undefined;
@@ -28,16 +28,23 @@ export class IngredientSearchComponent {
     this.ingredientsStored = this.getIngredientsFromLocalStorage();
   }
 
-  filteredPossibilities: string[] = [];
+  filteredPossibilities: IngredientBack[] = [];
 
   ingredient_control = new FormControl(``, [
     Validators.required,
     Validators.pattern(/^[A-Za-z'].*/)
   ]);
 
+  ingredientSelected: IngredientBack[] = [];
+
   addIngredient() {
-    if (this.selectedIngredient) {
-      this.clickEvent.emit(this.ingredient_control.value ?? '');
+    if (this.selectedIngredient && this.ingredient_control.value != null) {
+
+      this.ingredientSelected = this.ingredientsStored.filter(item =>
+        item.name.toLowerCase() === this.ingredient_control.value?.toLowerCase()
+      );
+      this.clickEvent.emit(this.ingredientSelected[0]);
+
       this.selectedIngredient = undefined
     } else {
       console.log('Aucun ingrédient sélectionné ou ingrédient non trouvé');
@@ -51,11 +58,9 @@ export class IngredientSearchComponent {
 
   filterPossibilities(value: string) {
 
-    const ingredientNames = this.ingredientsStored.map(item => item.name)
-
     if (value) {
-      this.filteredPossibilities = ingredientNames.filter(item =>
-        item.toLowerCase().startsWith(value.toLowerCase())
+      this.filteredPossibilities = this.ingredientsStored.filter(item =>
+        item.name.toLowerCase().startsWith(value.toLowerCase())
       );
     } else {
       this.filteredPossibilities = [];

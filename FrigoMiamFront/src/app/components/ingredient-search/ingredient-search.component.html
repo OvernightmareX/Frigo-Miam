@@ -6,7 +6,7 @@
 
   <datalist id="ingredientOptions">
     @for (ingredient of filteredPossibilities; track ingredient){
-      <option [value]="ingredient"></option>
+      <option [value]="ingredient.name"></option>
     }
   </datalist>
 
@@ -14,7 +14,7 @@
     @if(ingredient_control.hasError('required')) {
       <span class="error text-red-500 text-sm">Champs obligatoire !</span>
     } @else {
-      <span class="error text-red-500 text-sm">Ingédiant invalide !</span>
+      <span class="error text-red-500 text-sm">Ingrédient invalide !</span>
     }
   }
 
