@@ -10,6 +10,6 @@ import {IngredientBack} from "../../utils/types";
 })
 export class IngredientListComponent {
 
-  @Input() ingredientList ?: string[];
+  @Input() ingredientList ?: IngredientBack[];
 
 }
