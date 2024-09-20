@@ -41,14 +41,11 @@ public class AccountServiceTest {
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
-        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository, roleRepository);
+        accountService = new AccountService(accountRepository, recipeRepository, ingredientRepository);
     }
 
     @Nested

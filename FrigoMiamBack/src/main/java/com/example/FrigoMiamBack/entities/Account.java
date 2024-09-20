@@ -2,6 +2,7 @@ package com.example.FrigoMiamBack.entities;
 
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,9 +36,6 @@ public class Account {
     private LocalDate birthdate;
     private List<Allergy> allergies = new ArrayList<>();
     private Diet diet;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "role_id")
     private Role role;
 
     @OneToMany(mappedBy = "account",  cascade = CascadeType.ALL)
@@ -69,7 +67,7 @@ public class Account {
                 ", birthdate=" + birthdate +
                 ", allergies=" + (allergies != null ? allergies : "none") +
                 ", diets=" + (diet != null ? diet : "none") +
-                ", role=" + (role != null ? role.getName() : "none") +
+                ", role=" + (role != null ? role : "none") +
                 ", accountIngredientsListSize=" + (accountIngredientsList != null ? accountIngredientsList.size() : 0) +
                 ", recipeCreatedListSize=" + (recipeCreatedList != null ? recipeCreatedList.size() : 0) +
                 ", accountRecipeListSize=" + (accountRecipeList != null ? accountRecipeList.size() : 0) +

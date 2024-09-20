@@ -4,7 +4,6 @@ import com.example.FrigoMiamBack.DTO.IngredientQuantityDTO;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.entities.Ingredient;
 import com.example.FrigoMiamBack.entities.Recipe;
-import com.example.FrigoMiamBack.entities.Role;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
 import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
@@ -16,7 +15,6 @@ import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.*;
-import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -137,9 +135,7 @@ public class RecipeServiceTest {
         @Test
         public void ShouldSetValidatedStatus_WhenAccountRoleIsAdmin(){
             Recipe recipe = RecipeFactory.createDefaultRecipe();
-            Role admin = Role.builder()
-                    .name("ADMIN")
-                    .build();
+            Role admin = Role.ADMIN;
             Account account = AccountFactory.createDefaultAccount();
             account.setRole(admin);
             accountRepository.save(account);
@@ -160,9 +156,7 @@ public class RecipeServiceTest {
         @Test
         public void ShouldSetPendingStatus_WhenAccountRoleIsUser(){
             Recipe recipe = RecipeFactory.createDefaultRecipe();
-            Role user = Role.builder()
-                    .name("USER")
-                    .build();
+            Role user = Role.USER;
             Account account = AccountFactory.createDefaultAccount();
             account.setRole(user);
             accountRepository.save(account);

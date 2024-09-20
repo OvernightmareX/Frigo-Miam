@@ -1,13 +1,11 @@
 package com.example.FrigoMiamBack.services;
 
 import com.example.FrigoMiamBack.entities.Account;
-import com.example.FrigoMiamBack.entities.Role;
 import com.example.FrigoMiamBack.exceptions.NullParameterException;
 import com.example.FrigoMiamBack.factories.AccountFactory;
-import org.checkerframework.checker.units.qual.N;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -24,26 +22,18 @@ public class JwtUtilsTest {
     class GenerateTokenTest{
         @Test
         public void ShouldHaveToken_WithCorrectEmail_AndPassword_AndValid() throws Exception{
-            String resultExpected_2 = "USER";
-
-            Role role = Role.builder()
-                    .name(resultExpected_2)
-                    .build();
-
             Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
 
-            String token = JwtUtils.generateToken(account, role);
+            String token = JwtUtils.generateToken(account, Role.USER);
 
             assertEquals(account.getEmail(), JwtUtils.extractEmail(token));
-            assertEquals(resultExpected_2, JwtUtils.extractRole(token));
+            assertEquals(Role.USER.toString(), JwtUtils.extractRole(token));
             assertTrue(JwtUtils.validateToken(token, account));
         }
 
         @Test
         public void ShouldThrowNullParameterException_WhenAccountIsNull() throws Exception{
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             assertThrows(NullParameterException.class, () -> {
                 JwtUtils.generateToken(null, role);
@@ -65,9 +55,7 @@ public class JwtUtilsTest {
         @Test
         public void ShouldReturnTrue_WhenTokenIsValid() throws Exception{
             Account account = AccountFactory.createAccountWithId(UUID.randomUUID());
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             String token = JwtUtils.generateToken(account, role);
 
@@ -77,9 +65,7 @@ public class JwtUtilsTest {
         @Test
         public void ShouldReturnFalse_WhenEmailInvalid() throws Exception{
             Account account = AccountFactory.createAccountWithEmail("test@email.com");
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             String token = JwtUtils.generateToken(account, role);
             account.setEmail("autre@gmail.com");
@@ -90,9 +76,7 @@ public class JwtUtilsTest {
         @Test
         public void ShouldThrowNullParameterException_WhenAccountIsNull() throws Exception{
             Account account = AccountFactory.createAccountWithEmail("test@email.com");
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             String token = JwtUtils.generateToken(account, role);
 
@@ -112,9 +96,7 @@ public class JwtUtilsTest {
         @Test
         public void ShouldHaveSameEmail_WhenExtractFromToken() throws Exception{
             Account account = AccountFactory.createAccountWithEmail("test@email.com");
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             String token = JwtUtils.generateToken(account, role);
 
@@ -130,13 +112,11 @@ public class JwtUtilsTest {
         @Test
         public void ShouldHaveSameRole_WhenExtractFromToken() throws Exception{
             Account account = AccountFactory.createDefaultAccount();
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             String token = JwtUtils.generateToken(account, role);
 
-            assertEquals(role.getName() ,JwtUtils.extractRole(token));
+            assertEquals(role.toString() ,JwtUtils.extractRole(token));
         }
 
         @Test
@@ -149,9 +129,7 @@ public class JwtUtilsTest {
         @Test
         public void ShouldReturnExpirationDateOneDayLater_WhenExtractFromToken() throws Exception{
             Account account = AccountFactory.createDefaultAccount();
-            Role role = Role.builder()
-                    .name("USER")
-                    .build();
+            Role role = Role.USER;
 
             String token = JwtUtils.generateToken(account, role);
             Date tokenTime = JwtUtils.extractExpiration(token);

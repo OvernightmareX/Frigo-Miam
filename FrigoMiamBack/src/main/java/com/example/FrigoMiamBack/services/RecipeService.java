@@ -13,6 +13,7 @@ import com.example.FrigoMiamBack.repositories.RecipeRepository;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Allergy;
 import com.example.FrigoMiamBack.utils.enums.Diet;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import com.example.FrigoMiamBack.utils.enums.Validation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,9 @@ public class RecipeService implements IRecipeService {
             throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
 
-        recipe.setValidation(account.getRole().getName().equals("ADMIN") ? Validation.VALIDATED : Validation.PENDING);
+
+
+        recipe.setValidation(account.getRole().equals(Role.ADMIN) ? Validation.VALIDATED : Validation.PENDING);
         Recipe savedRecipe = this.recipeRepository.save(recipe);
 
         ingredients.forEach(ing -> {
