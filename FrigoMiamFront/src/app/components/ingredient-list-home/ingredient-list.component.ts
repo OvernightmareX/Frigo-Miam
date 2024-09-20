@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {IngredientBack} from "../../utils/types";
 
 @Component({
   selector: 'app-ingredient-list-home',

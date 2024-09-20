@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-recipe-user',
@@ -9,4 +10,17 @@ import { Component } from '@angular/core';
 })
 export class RecipeUserComponent {
 
+  constructor(private router: Router) {
+  }
+
+  createRecipe(){
+    this.router.navigate(['/recetteCreate']);
+  }
+  BtnDeleteRecipe(){
+
+  }
+  BtnUpdateRecipe(){
+
+  }
 }
+

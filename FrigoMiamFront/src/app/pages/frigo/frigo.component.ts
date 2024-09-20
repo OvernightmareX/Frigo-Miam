@@ -59,13 +59,13 @@ export class FrigoComponent {
       quantity: 1
     };
     this.allFrigoIngredients.push(addedIngredient);
-    this.allRecipeCardsData = this.recipeIngredientMatching();
+    //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
   // appelé par le tableau d'ingrédients
   deleteIngredientFromFrigo(ingredientToDelete: IngredientFrigo): void {
     this.allFrigoIngredients = this.allFrigoIngredients.filter((ingInFrigo) => ingInFrigo.name !== ingredientToDelete.name);
-    this.allRecipeCardsData = this.recipeIngredientMatching();
+    //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
   // appelé par le tableau d'ingrédients
@@ -78,33 +78,33 @@ export class FrigoComponent {
   }
 
 
-
-  recipeIngredientMatching():RecipeCard[]{
-    let recipesFiltered: RecipeMatched[] = [];
-
-    this.recipes.forEach(baseRecepe => {
-
-      this.allFrigoIngredients.forEach(frigoIngredient => {
-        if (baseRecepe.ingredients.includes(frigoIngredient.name)) {
-
-          const foundRecipe = recipesFiltered.find(recepeFound => recepeFound.recepe === baseRecepe);
-          if(foundRecipe) {
-            foundRecipe.commonIngredientCount += 1;
-          } else {
-            recipesFiltered.push({
-              "commonIngredientCount": 1,
-              "recepe": baseRecepe,
-            });
-          }
-        }
-      });
-    });
-
-    recipesFiltered = recipesFiltered.sort((a, b) => b.commonIngredientCount - a.commonIngredientCount);
-    recipesFiltered.length = 5;
-
-    return this.convertToRecipeCards(recipesFiltered);
-  }
+  //
+  // recipeIngredientMatching():RecipeCard[]{
+  //   let recipesFiltered: RecipeMatched[] = [];
+  //
+  //   this.recipes.forEach(baseRecepe => {
+  //
+  //     this.allFrigoIngredients.forEach(frigoIngredient => {
+  //       if (baseRecepe.ingredients.includes(frigoIngredient.name)) {
+  //
+  //         const foundRecipe = recipesFiltered.find(recepeFound => recepeFound.recepe === baseRecepe);
+  //         if(foundRecipe) {
+  //           foundRecipe.commonIngredientCount += 1;
+  //         } else {
+  //           recipesFiltered.push({
+  //             "commonIngredientCount": 1,
+  //             "recepe": baseRecepe,
+  //           });
+  //         }
+  //       }
+  //     });
+  //   });
+  //
+  //   recipesFiltered = recipesFiltered.sort((a, b) => b.commonIngredientCount - a.commonIngredientCount);
+  //   recipesFiltered.length = 5;
+  //
+  //   return this.convertToRecipeCards(recipesFiltered);
+  // }
 
   convertToRecipeCards(recipeList: RecipeMatched[]): RecipeCard[] {
     return recipeList.map(recipeMatched => ({

@@ -8,4 +8,8 @@ public class ApiUrls {
     public static final String FRIDGE = "/fridge";
     public static final String FAVORITE = "/favorite";
     public static final String RECIPE = "/recipe";
+    public static final String FILTER = "/filter";
+    public static final String GRADE = "/grade";
+    public static final String AVERAGE = "/average";
+    public static final String CREATED = "/created";
 }

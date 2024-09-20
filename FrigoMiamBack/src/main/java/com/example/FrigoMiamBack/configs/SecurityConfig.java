@@ -14,10 +14,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() // Permit access to specific paths
-                        .anyRequest().authenticated()  // All other requests require authentication
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable())  // Disable CSRF protection using the new style
+                .csrf(csrf -> csrf.disable())
                 .build();
     }
 

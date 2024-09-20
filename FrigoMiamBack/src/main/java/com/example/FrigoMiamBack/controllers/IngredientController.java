@@ -23,7 +23,6 @@ public class IngredientController {
 
     @GetMapping
     public ResponseEntity<List<Ingredient>> getAllIngredients() {
-        System.out.println("IN IT !!! ");
         return new ResponseEntity<>(this.iIngredientService.getAllIngredients(), HttpStatus.OK);
     }
 

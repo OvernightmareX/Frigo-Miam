@@ -75,66 +75,66 @@ public class DBInitService {
         allIngredients.add(new IngredientQuantityDTO( ingredients.get(50),5));
         recipeService.addRecipe(recipes.get(0), adminCreated, allIngredients);
 
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(7),200));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(10),100));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),5));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(5),10));
-//        recipeService.addRecipe(recipes.get(1), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(1),300));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(44),1));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(13),20));
-//        recipeService.addRecipe(recipes.get(2), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(6),200));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),10));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(19),5));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(13),20));
-//        recipeService.addRecipe(recipes.get(3), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(37),200));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),5));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(12),10));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(9),20));
-//        recipeService.addRecipe(recipes.get(4), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(16),2));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(22),1));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(4),2));
-//        recipeService.addRecipe(recipes.get(5), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(25),300));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(28),150));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(17),30));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(12),10));
-//        recipeService.addRecipe(recipes.get(6), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(10),150));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(59),100));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(12),10));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(5),5));
-//        recipeService.addRecipe(recipes.get(7), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(35),300));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),5));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(14),20));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(47),5));
-//        recipeService.addRecipe(recipes.get(8), adminCreated, allIngredients);
-//
-//        allIngredients.clear();
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(0),200));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(8),100));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(2),50));
-//        allIngredients.add(new IngredientQuantityDTO( ingredients.get(17),30));
-//        recipeService.addRecipe(recipes.get(9), adminCreated, allIngredients);
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(7),200));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(10),100));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),5));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(5),10));
+        recipeService.addRecipe(recipes.get(1), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(1),300));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(44),1));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(13),20));
+        recipeService.addRecipe(recipes.get(2), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(6),200));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),10));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(19),5));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(13),20));
+        recipeService.addRecipe(recipes.get(3), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(37),200));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),5));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(12),10));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(9),20));
+        recipeService.addRecipe(recipes.get(4), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(16),2));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(22),1));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(4),2));
+        recipeService.addRecipe(recipes.get(5), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(25),300));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(28),150));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(17),30));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(12),10));
+        recipeService.addRecipe(recipes.get(6), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(10),150));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(59),100));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(12),10));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(5),5));
+        recipeService.addRecipe(recipes.get(7), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(35),300));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(11),5));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(14),20));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(47),5));
+        recipeService.addRecipe(recipes.get(8), adminCreated, allIngredients);
+
+        allIngredients.clear();
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(0),200));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(8),100));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(2),50));
+        allIngredients.add(new IngredientQuantityDTO( ingredients.get(17),30));
+        recipeService.addRecipe(recipes.get(9), adminCreated, allIngredients);
 
         accountService.updateAccount(adminCreated);
     }
