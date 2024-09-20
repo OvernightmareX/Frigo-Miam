@@ -26,9 +26,7 @@ export class ConnexionComponent {
               private router: Router) {}
 
   connectSubmit() {
-    console.log(`arrived in connect submit`)
     const credentials = this.formConnect.value as Pick<User, 'email' | 'password'>;
-    console.log(`credentials : ${JSON.stringify(credentials)}`)
 
     this.authService.login(credentials).subscribe({
       next: res => {
