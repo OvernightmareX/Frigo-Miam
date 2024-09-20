@@ -5,6 +5,7 @@ import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.repositories.IngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeIngredientRepository;
 import com.example.FrigoMiamBack.repositories.RecipeRepository;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class DBInitService {
         this.accountService.createAccount(account);
 
         admin.setRecipeCreatedList(new ArrayList<>());
+        admin.setRole(Role.ADMIN);
         Account adminCreated = this.accountService.createAccount(admin);
 
         List<Recipe> recipes = loadJSONRecipe();

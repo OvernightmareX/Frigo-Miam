@@ -135,7 +135,7 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
-        List<Recipe> allRecipes = this.recipeRepository.findAll();
+        List<Recipe> allRecipes = this.findAll();
 
         List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
@@ -157,7 +157,7 @@ public class RecipeService implements IRecipeService {
                 for (Recipe recipe : filteredByDiet) {
                     List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
                     recipeAllIngredients.forEach(ingr -> {
-                        if (ingr.getIngredient().getId() == ing.getId()) {
+                        if (ingr.getIngredient().getId().equals(ing.getId())) {
                             filteredByIngredients.add(recipe);
                         }
                     });
