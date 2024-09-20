@@ -4,10 +4,11 @@
 <app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
 <app-ingredient-list-home [ingredientList]="allUserIngredients"></app-ingredient-list-home>
 <div>
+  <button (click)="getRecipesBasedOnIngredients()">Chercher Recette</button>
+</div>
+<div>
   @for(recipe of allRecipeCardsData; track recipe){
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
   }
 </div>
-<div>
-  <button (click)="getRecipesBasedOnIngredients()">Chercher Recette</button>
-</div>
+
