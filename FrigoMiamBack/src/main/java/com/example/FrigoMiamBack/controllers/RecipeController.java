@@ -40,7 +40,7 @@ public class RecipeController {
         return new ResponseEntity<>(this.iRecipeService.getFavoriteRecipes(UUID.fromString(accountId)), HttpStatus.OK);
     }
 
-    @GetMapping(ApiUrls.FILTER)
+    @PostMapping(ApiUrls.FILTER)
     public ResponseEntity<List<Recipe>> getRecipesByFilters(@Valid @RequestBody RecipeFilterDTO recipeFilterDTO) {
         return new ResponseEntity<>(this.iRecipeService.getRecipesByFilters(recipeFilterDTO.getIngredientList(), recipeFilterDTO.getAllergyList(), recipeFilterDTO.getDiet()), HttpStatus.OK);
     }
