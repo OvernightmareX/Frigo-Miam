@@ -10,16 +10,6 @@ export class UserService {
  private user?: User;
   apiUrl = 'http://localhost:8080/account';
 
-  createUserBody = {
-    "firstname": "string",
-    "lastname": "string",
-    "email": "string@est.com",
-    "password": "string",
-    "birthdate": "2024-09-17",
-    "allergies": "DAIRY",
-    "diets": "VEGETARIAN"
-  }
-
   constructor(private http: HttpClient) {}
 
   createUser(userToCreate: User): Observable<User>{
