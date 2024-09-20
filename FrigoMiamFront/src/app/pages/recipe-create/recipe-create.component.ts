@@ -28,21 +28,10 @@ export class RecipeCreateComponent {
     ])
     });
 
-  // recipe = {
-  //   title: '',
-  //   descript: '',
-  //   instructions:'',
-  //   preparation_time:'',
-  //   cooking_time:'',
-  //   diet:[],
-  //   ingredients: [] as { ingredient: string, quantity: number, value: number }[],
-  //
-  //
-  // };
+  dietList=[  { label : 'végétalien', value:' VEGETARIAN'},  { label: 'vegan', value:'VEGAN'},  { label :"pescetarien", value:'PESCATARIAN'}]
 
   isSubmitted = false;
 
-  //newIngredient: { ingredient: string; quantity: number, value: number } = { ingredient: '', quantity: 1, value: 2 };
 
   constructor() { }
 
@@ -56,18 +45,7 @@ export class RecipeCreateComponent {
     }));
 
 
-    // console.log("In addIngredient")
-    // //if (this.createRecipe && this.newIngredient.quantity > 0) {
-    // //console.log("PROCESS addIngredient - after if")
-    //
-    // //this.recipe.ingredients.push({ ...this.newIngredient });
-    // //this.newIngredient = { ingredient: '', quantity: 1, value: 2 };
-    // this.createRecipe.controls.addQt.push(
-    //   new FormGroup({
-    //     ingredient: new FormControl(''),
-    //     quantity: new FormControl('')
-    //   })
-    // )
+
     }
 
 

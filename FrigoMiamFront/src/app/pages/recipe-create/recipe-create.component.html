@@ -31,14 +31,13 @@
         <label for="calories">Calories</label>
         <input type="number" id="calories"  formControlName="calories">
       </div>
-      <div>
-
-        <label for="diet">Régime alimentaire</label>
-          <select id="diet" formControlName="diet">
-
-            <option ></option>
-
-          </select>
+      <div class="diet">
+        <label for="diet" >Régime Alimentaire:</label>
+        <select id="diet"  formControlName="diet">
+          @for (d of dietList; track dietList){
+            <option [value]="d.value">{{d.label}}</option>
+          }
+        </select>
       </div>
 
 
@@ -61,14 +60,7 @@
         </fieldset>}
         <button type="button" (click)="addIngredient()">Ajouter</button>
 
-        <!--        <div class="ingredientListAdd">-->
-<!--          @for (ingredient of createRecipe.controls.addQt ; track ingredient){-->
-<!--            <ul>-->
-<!--              <li>{{ingredient}}</li>-->
-<!--            </ul>-->
-<!--          }-->
 
-<!--        </div>-->
       </fieldset>
 
 
