@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {IngredientSearchComponent} from "../../components/ingredient-search/ingredient-search.component";
 import {IngredientTabFrigoComponent} from "../../components/ingredient-tab-frigo/ingredient-tab-frigo.component";
-import {IngredientFrigo, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
+import {IngredientFrigo, Recipe, RecipeCard, RecipeDetails, RecipeMatched} from "../../utils/types";
 import {RecipeCardShortComponent} from "../../components/recipe-card-short/recipe-card-short.component";
 
 @Component({
@@ -106,10 +106,11 @@ export class FrigoComponent {
   //   return this.convertToRecipeCards(recipesFiltered);
   // }
 
-  convertToRecipeCards(recipeList: RecipeMatched[]): RecipeCard[] {
+  convertToRecipeCards(recipeList: RecipeDetails[]): RecipeCard[] {
     return recipeList.map(recipeMatched => ({
-      nom: recipeMatched.recepe.nom,
-      description: recipeMatched.recepe.description,
+      id: recipeMatched.id,
+      title: recipeMatched.title,
+      description: recipeMatched.description,
       enoughQuantity: true  // field not used in home but in frigo
     }));
 

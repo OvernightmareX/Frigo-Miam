@@ -4,8 +4,23 @@ export type Recipe = {
   description: string
 };
 
+export type RecipeDetails = {
+  id: string,
+  title: string,
+  description: string,
+  instructions: string,
+  preparation_time: number,
+  cooking_time: number,
+  calories: number,
+  typeRecipe: string,
+  diet: string,
+  validation: string,
+  ingredients: IngredientBack[]
+}
+
 export type RecipeCard = {
-  nom: string,
+  id: string,
+  title: string,
   description: string,
   enoughQuantity: boolean
 }
