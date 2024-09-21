@@ -31,8 +31,8 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable @NotBlank String recipeId) {
-        return new ResponseEntity<>(this.iRecipeService.findByID(UUID.fromString(recipeId)), HttpStatus.OK);
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable @NotBlank String id) {
+        return new ResponseEntity<>(this.iRecipeService.findByID(UUID.fromString(id)), HttpStatus.OK);
     }
 
     @GetMapping(ApiUrls.FAVORITE)
@@ -55,9 +55,9 @@ public class RecipeController {
         return new ResponseEntity<>(this.iRecipeService.getRecipeCreated(UUID.fromString(accountId)), HttpStatus.OK);
     }
 
-    @GetMapping(ApiUrls.AVERAGE)
-    public ResponseEntity<Integer> getAverageGrade(@PathVariable @NotBlank String recipeId) {
-        return new ResponseEntity<>(this.iRecipeService.getAverageGrade(UUID.fromString(recipeId)), HttpStatus.OK);
+    @GetMapping(ApiUrls.AVERAGE + "/{id}")
+    public ResponseEntity<Integer> getAverageGrade(@PathVariable @NotBlank String id) {
+        return new ResponseEntity<>(this.iRecipeService.getAverageGrade(UUID.fromString(id)), HttpStatus.OK);
     }
 
     @PostMapping
