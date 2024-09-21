@@ -6,16 +6,26 @@
     <input type="number" id="peapleNbr" name="peapleNbr" value="{{inputValue}}">
   </div>
   <h2>{{recipe.title}}</h2>
-  <app-ingredient-list-home [ingredientList]="ingredientsList"></app-ingredient-list-home>
+
+  <h3>Ingrédients :</h3>
+
   <div>{{ recipe.description }}</div>
-  <div>Temps de préparation : {{recipe.preparation_time}}</div>
-  <div>Temps de cuisson : {{recipe.cooking_time}}</div>
+  
+  @for(ingredient of ingredientsList; track ingredient){
+    <div>{{ingredient.ingredient.name}}</div>
+  }
+
+  <div>Temps de préparation : {{recipe.preparation_time}} minutes</div>
+  <div>Temps de cuisson : {{recipe.cooking_time}} minutes</div>
   <div>Calories pour 1 portion : {{ recipe.calories }}</div>
+  
   <h3>Instructions : </h3>
   <div>{{ recipe.instructions }}</div>
+  
   <div>
     <label for="userNote">Votre note:</label>
     <input type="number" id="userNote" name="userNote" value="">
   </div>
+  
   <div>La note de tout le monde: MOYENNE</div>
 </div>

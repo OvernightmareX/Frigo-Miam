@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {IngredientBack} from "../../utils/types";
+import {IngredientRecipe} from "../../utils/types";
 
 @Component({
   selector: 'app-ingredient-list-home',
@@ -10,6 +10,6 @@ import {IngredientBack} from "../../utils/types";
 })
 export class IngredientListComponent {
 
-  @Input() ingredientList ?: IngredientBack[];
+  @Input() ingredientList ?: IngredientRecipe[];
 
 }

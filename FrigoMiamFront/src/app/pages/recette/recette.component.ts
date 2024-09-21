@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IngredientListComponent } from '../../components/ingredient-list-home/ingredient-list.component';
 import { IngredientClientService } from '../../services/http/ingredient/ingredient-client.service';
 import { ActivatedRoute } from '@angular/router';
-import { IngredientBack, Recipe } from '../../utils/types';
+import { IngredientBack, IngredientRecipe, Recipe } from '../../utils/types';
 import { RecipeDetailsService } from '../../services/http/recipes/recipe-details.service';
 
 @Component({
@@ -24,10 +24,10 @@ export class RecetteComponent {
     typeRecipe: '',
     diet: '',
     validation: '',
-    ingredients: [],
+    recipeIngredientsList: [],
   };
 
-  ingredientsList: IngredientBack[] = this.recipe.ingredients;
+  ingredientsList: IngredientRecipe[] = [];
 
   inputValue?: number = 4;
 
@@ -42,6 +42,7 @@ export class RecetteComponent {
       this.recipeDetailService.getRecipeInfo(recipeId).subscribe({
         next: (data) => {
           this.recipe = data;
+          this.ingredientsList = data.recipeIngredientsList;
         },
         error: (error) => {
           console.error(error);

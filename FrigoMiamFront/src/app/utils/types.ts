@@ -9,7 +9,13 @@ export type Recipe = {
   typeRecipe: string,
   diet: string,
   validation: string,
-  ingredients: IngredientBack[]
+  recipeIngredientsList: IngredientRecipe[]
+}
+
+export type IngredientRecipe = {
+  id: string,
+  ingredient: IngredientBack,
+  quantity: number
 }
 
 export type RecipeCard = {
