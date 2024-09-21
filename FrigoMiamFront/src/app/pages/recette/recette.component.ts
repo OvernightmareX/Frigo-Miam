@@ -1,39 +1,54 @@
 import { Component } from '@angular/core';
-import {IngredientListComponent} from "../../components/ingredient-list-home/ingredient-list.component";
-import {IngredientClientService} from "../../services/http/ingredient/ingredient-client.service";
-import {ActivatedRoute} from "@angular/router";
-import {IngredientBack, Recipe } from "../../utils/types";
+import { IngredientListComponent } from '../../components/ingredient-list-home/ingredient-list.component';
+import { IngredientClientService } from '../../services/http/ingredient/ingredient-client.service';
+import { ActivatedRoute } from '@angular/router';
+import { IngredientBack, Recipe } from '../../utils/types';
 import { RecipeDetailsService } from '../../services/http/recipes/recipe-details.service';
 
 @Component({
   selector: 'app-recette',
   standalone: true,
-  imports: [
-    IngredientListComponent
-  ],
+  imports: [IngredientListComponent],
   templateUrl: './recette.component.html',
-  styleUrl: './recette.component.css'
+  styleUrl: './recette.component.css',
 })
 export class RecetteComponent {
+  recipe: Recipe = {
+    id: '',
+    title: '',
+    description: '',
+    instructions: '',
+    preparation_time: 0,
+    cooking_time: 0,
+    calories: 0,
+    typeRecipe: '',
+    diet: '',
+    validation: '',
+    ingredients: [],
+  };
 
-  recipe: Recipe = { id: '', title: '', description: '', instructions: '', preparation_time: 0, cooking_time: 0, calories: 0, typeRecipe: '', diet: '', validation: '', ingredients: [] };
+  ingredientsList: IngredientBack[] = this.recipe.ingredients;
 
   inputValue?: number = 4;
-  ingredientRecipeList?: IngredientBack[] = [];
-  recipeDescription: string = "Ma description n'est pas super longue mais elle habille la page."
-  recipeName?: string | null | undefined;
-  userNote?: number | null | undefined;
-  averageNote?: number | null | undefined = 4;
 
   constructor(
     private recipeDetailService: RecipeDetailsService, // TODO change with RecipeService
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.recipeName = this.route.snapshot.paramMap.get('name');
-    console.log(`recipeName: ${this.recipeName}`);
-    this.recipe = this.recipeDetailService.recipe;
-
+    const recipeId = this.route.snapshot.paramMap.get('id');
+    if (recipeId) {
+      this.recipeDetailService.getRecipeInfo(recipeId).subscribe({
+        next: (data) => {
+          this.recipe = data;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+    } else {
+      console.error('No recipeId found');
+    }
   }
-
 }
