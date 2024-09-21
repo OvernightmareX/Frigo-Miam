@@ -20,4 +20,14 @@ export class RecipeDetailsService {
       })
     );
   }
+
+  getAverageGrade(recipeId: string): Observable<number> {
+    const url = `${this.apiUrl}average/${recipeId}`;
+    return this.http.get<number>(url).pipe(
+      catchError((error) => {
+        alert(error.message);
+        return of(0);
+      })
+    );
+  }
 }

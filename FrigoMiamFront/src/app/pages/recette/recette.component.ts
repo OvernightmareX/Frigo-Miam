@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IngredientListComponent } from '../../components/ingredient-list-home/ingredient-list.component';
-import { IngredientClientService } from '../../services/http/ingredient/ingredient-client.service';
 import { ActivatedRoute } from '@angular/router';
-import { IngredientBack, IngredientRecipe, Recipe } from '../../utils/types';
+import { IngredientQuantity, Recipe } from '../../utils/types';
 import { RecipeDetailsService } from '../../services/http/recipes/recipe-details.service';
 
 @Component({
@@ -27,9 +26,10 @@ export class RecetteComponent {
     recipeIngredientsList: [],
   };
 
-  ingredientsList: IngredientRecipe[] = [];
+  ingredientsList: IngredientQuantity[] = [];
+  recipeGrade:number = 0;
 
-  inputValue?: number = 4;
+  inputValue?: number = 1;
 
   constructor(
     private recipeDetailService: RecipeDetailsService, // TODO change with RecipeService
@@ -43,6 +43,14 @@ export class RecetteComponent {
         next: (data) => {
           this.recipe = data;
           this.ingredientsList = data.recipeIngredientsList;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+      this.recipeDetailService.getAverageGrade(recipeId).subscribe({
+        next: (data) => {
+          this.recipeGrade = data;
         },
         error: (error) => {
           console.error(error);

@@ -1,15 +1,13 @@
-import {Component, Input} from '@angular/core';
-import {IngredientBack, IngredientRecipe} from "../../utils/types";
+import { Component, Input } from '@angular/core';
+import { IngredientBack, IngredientQuantity } from '../../utils/types';
 
 @Component({
   selector: 'app-ingredient-list-home',
   standalone: true,
   imports: [],
   templateUrl: './ingredient-list.component.html',
-  styleUrl: './ingredient-list.component.css'
+  styleUrl: './ingredient-list.component.css',
 })
 export class IngredientListComponent {
-
-  @Input() ingredientList ?: IngredientBack[];
-
+  @Input() ingredientList?: IngredientBack[];
 }
