@@ -45,17 +45,12 @@ export class RecipeCreateComponent {
 
 
   addIngredient() {
-
     const addQtArray = this.createRecipe.get('ingredients') as FormArray;
     addQtArray.push(new FormGroup({
       ingredient: new FormControl(''),
       quantity: new FormControl('')
     }));
-
-
-
     }
-
 
   submitRecipe() {
     //console.log(`Recette soumise: ${JSON.stringify(this.createRecipe.value)}`, );
