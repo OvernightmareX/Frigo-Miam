@@ -11,8 +11,10 @@
   <button class="bg-[#BD4F37] text-white py-2 px-4 rounded-lg shadow-lg hover:bg-[#1f7f6d] transition duration-300 mb-4" (click)="getRecipesBasedOnIngredients()">Chercher Recette</button>
 </div> -->
 <hr>
-<div class="flex justify-center">
-  @for(recipe of allRecipeCardsData; track recipe){
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 mt-4 mb-4 max-w-7xl mx-auto">
+  @for(recipe of allRecipeCardsData; track recipe) {
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>
   }
 </div>
+
+

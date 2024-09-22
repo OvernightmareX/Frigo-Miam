@@ -1,12 +1,13 @@
-<div class="card-container cursor-pointer" (click)="navigateToRecipe()">
-
-    <div class="card-text p-4 mx-2 bg-white rounded-b-md w-1/2 h-1/2">
-      <h3 class="title text-lg font-semibold text-gray-900">
-        {{ recipeCardData?.recipe?.title }}
-      </h3>
-      <p class="text text-sm text-gray-600 mt-2">
-        {{ recipeCardData?.recipe?.description }}
-      </p>
-    </div>
-
+<div class="card-container cursor-pointer transition transform hover:scale-105 hover:shadow-lg h-full flex flex-col justify-between" (click)="navigateToRecipe()">
+  <div class="card-text p-6 bg-white rounded-lg shadow-md w-full flex-grow">
+    <h3 class="title text-xl font-bold text-gray-800 text-center">
+      {{ recipeCardData?.recipe?.title }}
+    </h3>
+    
+    <img [src]="recipeCardData?.recipe?.imageUrl" alt="Recipe Image" class="rounded-lg mt-4 w-full object-cover h-48">
+    
+    <p class="text italic text-base text-gray-600 mt-4">
+      {{ recipeCardData?.recipe?.description }}
+    </p>
+  </div>
 </div>

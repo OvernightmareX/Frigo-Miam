@@ -22,6 +22,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String title;
+    private String imageUrl;
     private String description;
     private String instructions;
     private int preparation_time;

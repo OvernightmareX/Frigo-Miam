@@ -1,6 +1,7 @@
 [
   {
     "title": "Grilled Chicken Breast with Herbs",
+    "imageUrl": "https://thenourishinghome.com/wp-content/uploads/2012/04/Grilled-Chicken.jpg",
     "description": "Juicy grilled chicken breast seasoned with fresh herbs.",
     "instructions": "Marinate chicken breast with olive oil, garlic, and herbs. Grill on medium heat for 6-8 minutes per side until fully cooked.",
     "preparation_time": 15,
@@ -11,6 +12,7 @@
   },
   {
     "title": "Spaghetti with Tomato and Basil",
+    "imageUrl": "https://frommybowl.com/wp-content/uploads/2022/07/Spicy_Tomato_Basil_Pasta_Vegan_FromMyBowl-12.jpg",
     "description": "Classic Italian spaghetti with fresh tomatoes and basil.",
     "instructions": "Boil spaghetti according to package instructions. In a pan, sauté garlic, add tomatoes and cook until soft. Toss in cooked spaghetti and fresh basil.",
     "preparation_time": 10,
@@ -22,6 +24,7 @@
   },
   {
     "title": "Salmon with Lemon and Dill",
+    "imageUrl": "https://www.rachelcooks.com/wp-content/uploads/2022/01/lemon-dill-salmon-1500-2-square.jpg",
     "description": "Baked salmon with fresh lemon slices and dill for a refreshing taste.",
     "instructions": "Place salmon on a baking tray, season with salt, pepper, lemon slices, and dill. Bake at 180°C for 20 minutes.",
     "preparation_time": 10,
@@ -33,6 +36,7 @@
   },
   {
     "title": "Stir-fried Shrimp with Garlic and Chili",
+    "imageUrl": "https://www.ohmyfoodrecipes.com/wp-content/uploads/2019/02/garlic-chili-shrimp-stir-fry.jpg",
     "description": "Spicy and flavorful stir-fried shrimp with garlic and chili.",
     "instructions": "Heat oil in a pan, add garlic and chili. Stir-fry shrimp until pink and fully cooked.",
     "preparation_time": 10,
@@ -43,6 +47,7 @@
   },
   {
     "title": "Zucchini Noodles with Parmesan",
+    "imageUrl": "https://wholesomemadeeasy.com/wp-content/uploads/2020/08/Zucchini-Noodles-Garlic-Parmesan-14-FB-.jpg",
     "description": "Healthy zucchini noodles topped with freshly grated Parmesan cheese.",
     "instructions": "Spiralize the zucchini into noodles. Sauté with olive oil, garlic, and top with Parmesan cheese.",
     "preparation_time": 15,
@@ -53,6 +58,7 @@
   },
   {
     "title": "Avocado and Egg Breakfast",
+    "imageUrl": "https://healthyrecipesblogs.com/wp-content/uploads/2014/01/avocado-egg-bake-featured.jpg",
     "description": "Simple and nutritious avocado with boiled eggs.",
     "instructions": "Boil eggs for 10 minutes. Cut avocado in half and serve with boiled eggs, salt, and pepper.",
     "preparation_time": 10,
@@ -63,6 +69,7 @@
   },
   {
     "title": "Beef Stir-fry with Broccoli",
+    "imageUrl": "https://healthyfitnessmeals.com/wp-content/uploads/2022/03/Beef-and-broccoli-stir-fry-7.jpg",
     "description": "Tender beef strips stir-fried with fresh broccoli in a soy sauce glaze.",
     "instructions": "Heat oil in a pan, stir-fry beef until browned, then add broccoli and soy sauce. Cook until tender.",
     "preparation_time": 10,
@@ -73,6 +80,7 @@
   },
   {
     "title": "Tomato and Mozzarella Salad",
+    "imageUrl": "https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2019/07/Caprese-Salad-3-3.jpg",
     "description": "Fresh tomato and mozzarella salad with a drizzle of olive oil and balsamic vinegar.",
     "instructions": "Slice tomatoes and mozzarella. Arrange on a plate, drizzle with olive oil and balsamic vinegar.",
     "preparation_time": 5,
@@ -84,6 +92,7 @@
   },
   {
     "title": "Baked Cod with Garlic Butter",
+    "imageUrl": "https://cookingwithmammac.com/wp-content/uploads/2024/03/1200-Garlic-Butter-Baked-Cod-Photo.jpg",
     "description": "Flaky baked cod with a delicious garlic butter sauce.",
     "instructions": "Place cod in a baking dish, top with garlic butter. Bake at 180°C for 15-20 minutes.",
     "preparation_time": 10,
@@ -94,6 +103,7 @@
   },
   {
     "title": "Chicken and Rice Stir-fry",
+    "imageUrl": "https://minuterice.com/wp-content/uploads/2019/03/Easy-Chicken-Stir-Fry-1-1536x864.jpg",
     "description": "Stir-fried chicken with rice, soy sauce, and fresh vegetables.",
     "instructions": "Cook rice. Stir-fry chicken and vegetables in a pan with soy sauce. Mix with cooked rice.",
     "preparation_time": 15,
