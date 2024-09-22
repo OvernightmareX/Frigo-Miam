@@ -41,6 +41,15 @@ export class HomeComponent {
     this.getAllRecipes(); 
   }
 
+  onIngredientDeleted(index: number){
+    this.allUserIngredients.splice(index, 1); 
+
+    if(this.allUserIngredients.length == 0)
+      this.getAllRecipes(); 
+    else
+      this.getRecipesBasedOnIngredients(); 
+  }
+
   getAllRecipes(): void {
     this.recipeService
     .getAllRecipes()
@@ -64,6 +73,7 @@ export class HomeComponent {
   }
 
   convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
+    this.allRecipeCardsData = []; 
     return recipeList.map((recipeMatched) => ({
       recipe: recipeMatched,
       enoughQuantity: true, // field not used in home but in frigo

@@ -1,6 +1,7 @@
 export type Recipe = {
   id: string;
   title: string;
+  imageUrl: string; 
   description: string;
   instructions: string;
   preparation_time: number;

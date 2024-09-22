@@ -1,6 +1,5 @@
 package com.example.FrigoMiamBack.services;
 
-import com.example.FrigoMiamBack.DTO.IngredientQuantityDTO;
 import com.example.FrigoMiamBack.DTO.TokenDTO;
 import com.example.FrigoMiamBack.entities.*;
 import com.example.FrigoMiamBack.exceptions.ConflictException;
@@ -10,7 +9,10 @@ import com.example.FrigoMiamBack.factories.AccountFactory;
 import com.example.FrigoMiamBack.factories.IngredientFactory;
 import com.example.FrigoMiamBack.factories.RecipeFactory;
 import com.example.FrigoMiamBack.repositories.*;
+import com.example.FrigoMiamBack.utils.HashingUtils;
+import com.example.FrigoMiamBack.utils.JwtUtils;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
+import com.example.FrigoMiamBack.utils.enums.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +43,8 @@ public class AccountServiceTest {
     private RecipeRepository recipeRepository;
 
     private AccountService accountService;
+
+    private JwtUtils jwtUtils;
 
     @BeforeEach
     public void setUp() {
@@ -150,6 +153,81 @@ public class AccountServiceTest {
 
             assertThrows(RuntimeException.class, () -> accountService.logIn(email, wrongPassword));
         }
+    }
+
+    @Nested
+    class GetAccountsTest {
+        @Test
+        public void ShouldReturnListOfMultipleAccounts_WhenAccountsExist() {
+            String expectedMail = "test@email.com";
+            String expectedMail2 = "test2@email.com";
+
+            Account account1 = AccountFactory.createAccountWithEmail(expectedMail);
+            Account account2 = AccountFactory.createAccountWithEmail(expectedMail2);
+            accountRepository.save(account1);
+            accountRepository.save(account2);
+
+            List<Account> accounts = accountService.getAccounts();
+
+            assertEquals(2, accounts.size());
+            assertEquals(expectedMail, accounts.get(0).getEmail());
+            assertEquals(expectedMail2, accounts.get(1).getEmail());
+        }
+
+        @Test
+        public void ShouldReturnEmptyList_WhenNoAccountsExist() {
+            List<Account> accounts = accountService.getAccounts();
+            assertTrue(accounts.isEmpty());
+        }
+
+        @Test
+        public void ShouldReturnAccountsWithCorrectFields() {
+            // Arrange - Create and save an account
+            Account account = AccountFactory.createDefaultAccount();
+            accountRepository.save(account);
+
+            // Act - Fetch all accounts
+            List<Account> accounts = accountService.getAccounts();
+
+            // Assert - Verify that the account has correct fields
+            assertEquals(1, accounts.size());
+            assertEquals(AccountFactory.DEFAULT_FIRSTNAME, accounts.get(0).getFirstname());
+            assertEquals(AccountFactory.DEFAULT_LASTNAME, accounts.get(0).getLastname());
+            assertEquals(AccountFactory.DEFAULT_EMAIL, accounts.get(0).getEmail());
+            assertEquals(AccountFactory.DEFAULT_PASSWORD, accounts.get(0).getPassword());
+        }
+    }
+
+    @Nested
+    class GetAccountByToken {
+        @Test
+        public void ShouldReturnAccount_WhenTokenIsValidAndEmailExists() {
+            String email = "test@example.com";
+            Account account = AccountFactory.createAccountWithEmail(email);
+            accountRepository.save(account);
+
+            String token = JwtUtils.generateToken(account, Role.USER);
+
+            Account accountFound = accountService.getAccountByToken(token);
+
+            assertNotNull(accountFound);
+            assertEquals(email, accountFound.getEmail());
+            assertTrue(JwtUtils.validateToken(token, accountFound));
+        }
+
+        @Test
+        public void ShouldThrowNotFoundException_WhenEmailDoesNotExist() {
+            String email = "nonexistent@example.com";
+            Account account = AccountFactory.createAccountWithEmail(email);
+
+            String token = JwtUtils.generateToken(account, Role.USER);
+
+            NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+                accountService.getAccountByToken(token);
+            });
+            assertEquals(ExceptionsMessages.EMAIL_IN_TOKEN_NOT_VALID, exception.getMessage());
+        }
+
     }
 
     @Nested

@@ -3,11 +3,12 @@ import { IngredientListComponent } from '../../components/ingredient-list-home/i
 import { ActivatedRoute } from '@angular/router';
 import { IngredientQuantity, Recipe } from '../../utils/types';
 import { RecipeDetailsService } from '../../services/http/recipes/recipe-details.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-recette',
   standalone: true,
-  imports: [IngredientListComponent],
+  imports: [IngredientListComponent, FormsModule],
   templateUrl: './recette.component.html',
   styleUrl: './recette.component.css',
 })
@@ -15,6 +16,7 @@ export class RecetteComponent {
   recipe: Recipe = {
     id: '',
     title: '',
+    imageUrl: '', 
     description: '',
     instructions: '',
     preparation_time: 0,
@@ -29,7 +31,7 @@ export class RecetteComponent {
   ingredientsList: IngredientQuantity[] = [];
   recipeGrade:number = 0;
 
-  inputValue?: number = 1;
+  inputValue: number = 1;
 
   constructor(
     private recipeDetailService: RecipeDetailsService, // TODO change with RecipeService

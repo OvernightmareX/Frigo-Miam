@@ -436,7 +436,7 @@ public class RecipeServiceTest {
 
         @Test
         public void WhenIngredientDoesNotExist_ThenShouldThrowIngredientNotFoundException(){
-            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.USER));
+            Account account = accountRepository.save(AccountFactory.createAccountWithRole(Role.ADMIN));
 
             Ingredient beef = ingredientRepository.save(IngredientFactory.createIngredient("Boeuf hâché", Unit.GR, TypeIngredient.MEAT, null));
             Ingredient carrot = ingredientRepository.save(IngredientFactory.createIngredient("Carrot", Unit.GR, TypeIngredient.VEGETABLE, null));

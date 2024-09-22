@@ -6,10 +6,10 @@ import com.example.FrigoMiamBack.utils.enums.Role;
 import java.util.UUID;
 
 public class AccountFactory {
-    private static final String DEFAULT_FIRSTNAME = "firstname";
-    private static final String DEFAULT_LASTNAME = "lastname";
-    private static final String DEFAULT_PASSWORD = "password";
-    private static final String DEFAULT_EMAIL = "email@test.com";
+    public static final String DEFAULT_FIRSTNAME = "firstname";
+    public static final String DEFAULT_LASTNAME = "lastname";
+    public static final String DEFAULT_PASSWORD = "password";
+    public static final String DEFAULT_EMAIL = "email@test.com";
 
     public static Account createDefaultAccount() {
         return Account.builder()
