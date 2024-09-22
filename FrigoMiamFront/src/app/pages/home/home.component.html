@@ -4,10 +4,13 @@
   </a>
 </div>
 <app-ingredient-search (clickEvent)="addIngredient($event)"></app-ingredient-search>
-<app-ingredient-list-home [ingredientList]="allUserIngredients"></app-ingredient-list-home>
-<div class="w-full flex justify-center mt-4">
+@if (allUserIngredients.length != 0) {
+  <app-ingredient-list-home [ingredientList]="allUserIngredients"></app-ingredient-list-home>
+}
+<!-- <div class="w-full flex justify-center mt-4">
   <button class="bg-[#BD4F37] text-white py-2 px-4 rounded-lg shadow-lg hover:bg-[#1f7f6d] transition duration-300 mb-4" (click)="getRecipesBasedOnIngredients()">Chercher Recette</button>
-</div>
+</div> -->
+<hr>
 <div>
   @for(recipe of allRecipeCardsData; track recipe){
     <app-recipe-card-short [recipeCardData]="recipe"></app-recipe-card-short>

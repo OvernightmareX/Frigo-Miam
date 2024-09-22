@@ -78,7 +78,7 @@ public class AccountService implements IAccountService {
         if(HashingUtils.verifyPassword(password, accountFound.getPassword()))
             return new TokenDTO(JwtUtils.generateToken(accountFound, Role.USER));
         else
-            throw new RuntimeException();
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
     }
 
     @Override

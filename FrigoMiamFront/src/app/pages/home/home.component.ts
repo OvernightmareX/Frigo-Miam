@@ -36,12 +36,31 @@ export class HomeComponent {
   allRecipeCardsData: RecipeCard[] = [];
   allUserIngredients: IngredientBack[] = [];
 
+  ngOnInit(){
+    console.log("Yolo")
+    this.getAllRecipes(); 
+  }
+
+  getAllRecipes(): void {
+    this.recipeService
+    .getAllRecipes()
+    .subscribe({
+      next: (recipes) => {
+        this.allRecipeCardsData = this.convertToRecipeCards(recipes);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des ingrédients', err);
+      },
+    });
+  }
+
   addIngredient(addedIngredient: IngredientBack): void {
     // TODO a mettre dans util
     this.allUserIngredients.push(addedIngredient);
     console.log(
       `Home allUserIngredients: ${JSON.stringify(this.allUserIngredients)}`
     );
+    this.getRecipesBasedOnIngredients(); 
   }
 
   convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
