@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../services/http/account/user.service";
 import {User} from "../../utils/types";
 
 @Component({
@@ -27,7 +27,7 @@ export class ProfilComponent {
     if (token){
       this.userService.getUser(token).subscribe({
         next: user => {
-          this.user = user; 
+          this.user = user;
       },
         error: err => {
         console.error('Erreur lors de la récupération des ingrédients', err);

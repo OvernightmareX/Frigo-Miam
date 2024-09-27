@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../services/http/account/user.service";
 import {User} from "../../utils/types";
 import { Router } from '@angular/router';
 import {allergenList, dietList} from "../../utils/enums";

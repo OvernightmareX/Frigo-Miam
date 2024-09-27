@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from "../../services/http/account/auth.service";
 import {User} from "../../utils/types";
 
 
@@ -17,12 +17,13 @@ import {User} from "../../utils/types";
   styleUrls: ['./connexion.component.css']
 })
 export class ConnexionComponent {
+
+  constructor(private authService: AuthService, private router: Router) {}
+
   formConnect = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
   });
-
-  constructor(private authService: AuthService, private router: Router) {}
 
   connectSubmit() {
     const credentials = this.formConnect.value as Pick<User, 'email' | 'password'>;

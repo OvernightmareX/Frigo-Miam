@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {IngredientBack, User} from "../utils/types";
+import {IngredientBack, User} from "../../../utils/types";
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, of, tap} from "rxjs";
 
@@ -39,9 +39,6 @@ export class UserService {
     );
 
   }
-  setUser(user: User){
-    this.user = user;
-    console.log(user)  }
 
   deleteUser(){
     //todo delete;

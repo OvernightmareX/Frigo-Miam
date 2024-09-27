@@ -14,7 +14,7 @@ export class CreateRecipeService {
 
   createRecipe(recipeData: any): Observable<any>{
     const url = `${this.apiUrl}/recipe`;
-    return this.http.post(url, recipeData);//send req post
+    return this.http.post(url, recipeData);
   }
 }
 

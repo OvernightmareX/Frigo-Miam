@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CreateRecipeService} from "../../services/create-recipe.service";
-import {AuthService} from "../../services/auth.service";
+import {CreateRecipeService} from "../../services/http/recipes/create-recipe.service";
+import {AuthService} from "../../services/http/account/auth.service";
 import {dietList} from "../../utils/enums";
 
 
@@ -34,10 +34,7 @@ export class RecipeCreateComponent {
   isSubmitted = false;
 
 
-  constructor(
-    private createRecipeService: CreateRecipeService,
-    private authService: AuthService
-  ) { }
+  constructor(private createRecipeService: CreateRecipeService,) {}
 
 
   addIngredient() {

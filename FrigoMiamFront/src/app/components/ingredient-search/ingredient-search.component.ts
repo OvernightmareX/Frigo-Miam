@@ -18,6 +18,7 @@ export class IngredientSearchComponent {
   @Output() clickEvent = new EventEmitter<IngredientBack>;  // TODO a renommer
 
   ingredientsStored: IngredientBack[] = []
+  filteredPossibilities: IngredientBack[] = [];
   selectedIngredient?: IngredientBack = undefined;
 
   constructor() {
@@ -28,7 +29,6 @@ export class IngredientSearchComponent {
     this.ingredientsStored = this.getIngredientsFromLocalStorage();
   }
 
-  filteredPossibilities: IngredientBack[] = [];
 
   ingredient_control = new FormControl(``, [
     Validators.required,

@@ -27,13 +27,11 @@ export class FrigoComponent {
 
   // appelé par la bar de recherche
   addIngredient(ingredientName: IngredientBack): void {
-    // TODO a mettre dans util. Yaura de la merde aussi avec le type du paramètre d'entrée
     const addedIngredient: IngredientQuantity = {
       ingredient: ingredientName,
       quantity: 1,
     };
     this.allFrigoIngredients.push(addedIngredient);
-    //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
   deleteIngredientFromFrigo(ingredientToDelete: IngredientQuantity): void {
@@ -41,7 +39,6 @@ export class FrigoComponent {
       (ingInFrigo) =>
         ingInFrigo.ingredient.name !== ingredientToDelete.ingredient.name
     );
-    //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
   changeQuantity(event: {
@@ -50,8 +47,6 @@ export class FrigoComponent {
   }): void {
     const { quantity, ingredientChange } = event;
     ingredientChange.quantity = quantity;
-    // TODO, appeler fonction dessous quand quantité géré dans recette
-    //this.recipeIngredientMatching();
   }
 
   addIngredientsToFrigo(): void {
