@@ -36,8 +36,8 @@ export class AccountCreationComponent {
     firstname: '',
     birthdate:'',
     email:'',
-    diet:'',    // 'this.dietList' ,
-    allergies:[],  //[this.allergenList],
+    diet:'',
+    allergies:[],
     password:'',
     confirmPassword:'',
   }
@@ -52,7 +52,6 @@ export class AccountCreationComponent {
 
   get confirmPasswordHasError(){
     return this.isSubmitted && this.user.password !== this.user.confirmPassword;
-
   }
   submitAccount(){
 

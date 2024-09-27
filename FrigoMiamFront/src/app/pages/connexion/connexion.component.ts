@@ -22,8 +22,7 @@ export class ConnexionComponent {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private authService: AuthService,
-              private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   connectSubmit() {
     const credentials = this.formConnect.value as Pick<User, 'email' | 'password'>;
