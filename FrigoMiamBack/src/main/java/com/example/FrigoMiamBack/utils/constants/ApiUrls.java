@@ -12,4 +12,5 @@ public class ApiUrls {
     public static final String GRADE = "/grade";
     public static final String AVERAGE = "/average";
     public static final String CREATED = "/created";
+    public static final String PROFIL = "/profil";
 }

@@ -59,6 +59,11 @@ public class AccountController {
         return new ResponseEntity<>(this.iAccountService.logIn(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()), HttpStatus.OK);
     }
 
+    @PostMapping(ApiUrls.PROFIL)
+    public ResponseEntity<Account> getAccountByToken(@Valid @RequestBody TokenDTO tokenDTO) {
+        return new ResponseEntity<>(this.iAccountService.getAccountByToken(tokenDTO.getToken()), HttpStatus.OK);
+    }
+
     @PostMapping(ApiUrls.FRIDGE)
     public ResponseEntity<Boolean> addIngredientToFridge(@Valid @RequestBody AddToFridgeDTO addToFridgeDTO) {
         return new ResponseEntity<>(this.iAccountService.addIngredientToFridge(

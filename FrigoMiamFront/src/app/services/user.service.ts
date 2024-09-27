@@ -22,14 +22,12 @@ export class UserService {
     );
   }
 
-  getUser(email: string, password: string) : Observable<User>{
-
+  getUser(token: string) : Observable<User>{
     const body: Object = {
-      "email": email,
-      "password": password,
+      "token": token,
     }
 
-    return this.http.post<User>(this.apiUrl, body).pipe(
+    return this.http.post<User>(this.apiUrl+"/profil", body).pipe(
       tap(res => {
         console.log(`getUser - userFromBack: ${JSON.stringify(res)}`);
         this.user = res

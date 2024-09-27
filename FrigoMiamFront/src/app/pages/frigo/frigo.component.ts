@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
-import {IngredientSearchComponent} from "../../components/ingredient-search/ingredient-search.component";
-import {IngredientTabFrigoComponent} from "../../components/ingredient-tab-frigo/ingredient-tab-frigo.component";
-import {IngredientBack, IngredientFrigo, Recipe, RecipeCard, RecipeMatched} from "../../utils/types";
-import {RecipeCardShortComponent} from "../../components/recipe-card-short/recipe-card-short.component";
+import { IngredientSearchComponent } from '../../components/ingredient-search/ingredient-search.component';
+import { IngredientTabFrigoComponent } from '../../components/ingredient-tab-frigo/ingredient-tab-frigo.component';
+import {
+  IngredientBack,
+  IngredientQuantity,
+  Recipe,
+  RecipeCard,
+  RecipeMatched,
+} from '../../utils/types';
+import { RecipeCardShortComponent } from '../../components/recipe-card-short/recipe-card-short.component';
 
 @Component({
   selector: 'app-frigo',
@@ -10,16 +16,16 @@ import {RecipeCardShortComponent} from "../../components/recipe-card-short/recip
   imports: [
     IngredientSearchComponent,
     IngredientTabFrigoComponent,
-    RecipeCardShortComponent
+    RecipeCardShortComponent,
   ],
   templateUrl: './frigo.component.html',
-  styleUrl: './frigo.component.css'
+  styleUrl: './frigo.component.css',
 })
 export class FrigoComponent {
-
   allRecipeCardsData: RecipeCard[] = [];
-  allFrigoIngredients: IngredientFrigo[] = [];
-  recipes: Recipe[] = [ // TODO: will be replaced by values in service or localStorage
+  allFrigoIngredients: IngredientQuantity[] = [];
+  recipes: Recipe[] = [
+    // TODO: will be replaced by values in service or localStorage
     // {
     //   "ingredients": ["a", "aa", "aaa"],
     //   "nom": "Recette 1",
@@ -50,25 +56,31 @@ export class FrigoComponent {
     //   "nom": "Recette 6",
     //   "description": "6eme recette..."
     // }
-  ]
+  ];
 
   // appelé par la bar de recherche
   addIngredient(ingredientName: IngredientBack): void {
-      // TODO a mettre dans util. Yaura de la merde aussi avec le type du paramètre d'entrée
-    const addedIngredient: IngredientFrigo = {
+    // TODO a mettre dans util. Yaura de la merde aussi avec le type du paramètre d'entrée
+    const addedIngredient: IngredientQuantity = {
       ingredient: ingredientName,
-      quantity: 1
+      quantity: 1,
     };
     this.allFrigoIngredients.push(addedIngredient);
     //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
-  deleteIngredientFromFrigo(ingredientToDelete: IngredientFrigo): void {
-    this.allFrigoIngredients = this.allFrigoIngredients.filter((ingInFrigo) => ingInFrigo.ingredient.name !== ingredientToDelete.ingredient.name);
+  deleteIngredientFromFrigo(ingredientToDelete: IngredientQuantity): void {
+    this.allFrigoIngredients = this.allFrigoIngredients.filter(
+      (ingInFrigo) =>
+        ingInFrigo.ingredient.name !== ingredientToDelete.ingredient.name
+    );
     //this.allRecipeCardsData = this.recipeIngredientMatching();
   }
 
-  changeQuantity(event: {quantity: number, ingredientChange: IngredientFrigo}): void {
+  changeQuantity(event: {
+    quantity: number;
+    ingredientChange: IngredientQuantity;
+  }): void {
     const { quantity, ingredientChange } = event;
     ingredientChange.quantity = quantity;
     // TODO, appeler fonction dessous quand quantité géré dans recette
@@ -76,14 +88,15 @@ export class FrigoComponent {
   }
 
   addIngredientsToFrigo(): void {
-    console.log(`addIngredientsToFrigo: ${JSON.stringify(this.allFrigoIngredients)}`);
+    console.log(
+      `addIngredientsToFrigo: ${JSON.stringify(this.allFrigoIngredients)}`
+    );
   }
 
   convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
-    return recipeList.map(recipeMatched => ({
-      recipe : recipeMatched,
-      enoughQuantity: true  // field not used in home but in frigo
+    return recipeList.map((recipeMatched) => ({
+      recipe: recipeMatched,
+      enoughQuantity: true, // field not used in home but in frigo
     }));
-
   }
 }

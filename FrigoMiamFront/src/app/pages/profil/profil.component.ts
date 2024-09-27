@@ -22,14 +22,12 @@ export class ProfilComponent {
   };
 
   constructor(private userService: UserService) {
-    const email: string | null = localStorage.getItem("email");
-    const password: string | null = localStorage.getItem("password");
+    const token: string | null = localStorage.getItem("token");
 
-    if (email && password){
-      this.userService.getUser(email, password).subscribe({
+    if (token){
+      this.userService.getUser(token).subscribe({
         next: user => {
-          console.log(`Profil - constructor - userFromBack: ${JSON.stringify(user)}`);
-          this
+          this.user = user; 
       },
         error: err => {
         console.error('Erreur lors de la récupération des ingrédients', err);

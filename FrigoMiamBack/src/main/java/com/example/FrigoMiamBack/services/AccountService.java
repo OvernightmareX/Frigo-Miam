@@ -7,10 +7,11 @@ import com.example.FrigoMiamBack.exceptions.NotFoundException;
 import com.example.FrigoMiamBack.exceptions.WrongParameterException;
 import com.example.FrigoMiamBack.interfaces.IAccountService;
 import com.example.FrigoMiamBack.repositories.*;
+import com.example.FrigoMiamBack.utils.HashingUtils;
+import com.example.FrigoMiamBack.utils.JwtUtils;
 import com.example.FrigoMiamBack.utils.constants.ExceptionsMessages;
 import com.example.FrigoMiamBack.utils.enums.Role;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,19 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public Account getAccountByToken(String token) {
+        Account accountFound = this.accountRepository.findByEmail(JwtUtils.extractEmail(token));
+        if(accountFound == null)
+            throw new NotFoundException(ExceptionsMessages.EMAIL_IN_TOKEN_NOT_VALID, HttpStatus.NOT_FOUND, LocalDateTime.now());
+
+        if(JwtUtils.validateToken(token, accountFound))
+            return accountFound;
+        else
+            throw new NotFoundException(ExceptionsMessages.TOKEN_NULL_CANNOT_VALIDATE_TOKEN, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+
+    }
+
+    @Override
     public Account getAccountById(UUID accountId) {
         if (accountId == null) {
             throw new WrongParameterException(ExceptionsMessages.EMPTY_ID_CANNOT_FIND_ACCOUNT, HttpStatus.BAD_REQUEST, LocalDateTime.now());
@@ -78,8 +92,10 @@ public class AccountService implements IAccountService {
         if(HashingUtils.verifyPassword(password, accountFound.getPassword()))
             return new TokenDTO(JwtUtils.generateToken(accountFound, Role.USER));
         else
-            throw new RuntimeException();
+            throw new NotFoundException(ExceptionsMessages.ACCOUNT_TO_LOGIN_DOES_NOT_EXIST, HttpStatus.NOT_FOUND, LocalDateTime.now());
     }
+
+
 
     @Override
     public Account updateAccount(Account accountToUpdate) {

@@ -1,4 +1,4 @@
-package com.example.FrigoMiamBack.services;
+package com.example.FrigoMiamBack.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

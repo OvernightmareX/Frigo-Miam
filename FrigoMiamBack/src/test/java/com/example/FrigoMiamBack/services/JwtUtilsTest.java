@@ -3,6 +3,7 @@ package com.example.FrigoMiamBack.services;
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.exceptions.NullParameterException;
 import com.example.FrigoMiamBack.factories.AccountFactory;
+import com.example.FrigoMiamBack.utils.JwtUtils;
 import com.example.FrigoMiamBack.utils.enums.Role;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

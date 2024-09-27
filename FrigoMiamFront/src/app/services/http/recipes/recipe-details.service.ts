@@ -8,22 +8,8 @@ import { Recipe } from '../../../utils/types';
 })
 export class RecipeDetailsService {
   apiUrl = 'http://localhost:8080/recipe/';
-  recipeId: string = '';
-
-  recipe: Recipe = { id: '', title: '', description: '', instructions: '', preparation_time: 0, cooking_time: 0, calories: 0, typeRecipe: '', diet: '', validation: '', ingredients: [] };
 
   constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-     this.getRecipeInfo(this.recipeId).subscribe({
-      next: (data) => {
-        this.recipe = data;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
 
   getRecipeInfo(recipeId: string): Observable<Recipe> {
     const url = `${this.apiUrl}${recipeId}`;
@@ -31,6 +17,16 @@ export class RecipeDetailsService {
       catchError((error) => {
         alert(error.message);
         return of({} as Recipe);
+      })
+    );
+  }
+
+  getAverageGrade(recipeId: string): Observable<number> {
+    const url = `${this.apiUrl}average/${recipeId}`;
+    return this.http.get<number>(url).pipe(
+      catchError((error) => {
+        alert(error.message);
+        return of(0);
       })
     );
   }

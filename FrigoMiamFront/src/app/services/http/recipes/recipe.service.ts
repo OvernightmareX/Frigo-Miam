@@ -7,7 +7,7 @@ import {catchError, Observable, of, tap} from "rxjs";
   providedIn: 'root'
 })
 export class RecipeService {
-  apiUrl = 'http://localhost:8080/recipe/filter';
+  apiUrl = 'http://localhost:8080/recipe';
   recipes: Recipe[] = [];
 
   constructor(private http: HttpClient) { }
@@ -15,7 +15,20 @@ export class RecipeService {
   getRecipesBasedOnIngredients(ingredientList: IngredientBack[]): Observable<Recipe[]>{
     const body = {"ingredientList": ingredientList}
     console.log(`body: ${JSON.stringify(body)}`);
-    return this.http.post<Recipe[]>(this.apiUrl, body).pipe(
+    return this.http.post<Recipe[]>(this.apiUrl+"/filter", body).pipe(
+      tap(res => {
+        console.log(`recipes response = ${JSON.stringify(res)}`);
+        this.recipes = res;
+      }),
+      catchError(error => {
+        alert(error.message);
+        return of([] as Recipe[]);
+      })
+    );
+  }
+
+  getAllRecipes(): Observable<Recipe[]>{
+    return this.http.get<Recipe[]>(this.apiUrl).pipe(
       tap(res => {
         console.log(`recipes response = ${JSON.stringify(res)}`);
         this.recipes = res;

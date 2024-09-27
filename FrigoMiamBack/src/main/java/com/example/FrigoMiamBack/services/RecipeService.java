@@ -19,12 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -61,8 +63,6 @@ public class RecipeService implements IRecipeService {
         if (recipe.getId() != null) {
             throw new ConflictException(ExceptionsMessages.RECIPE_ALREADY_EXIST, HttpStatus.CONFLICT, LocalDateTime.now());
         }
-
-
 
         recipe.setValidation(account.getRole().equals(Role.ADMIN) ? Validation.VALIDATED : Validation.PENDING);
         Recipe savedRecipe = this.recipeRepository.save(recipe);
@@ -135,39 +135,16 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public List<Recipe> getRecipesByFilters(List<Ingredient> ingredients, List<Allergy> allergies, Diet diets) {
-        List<Recipe> allRecipes = this.findAll();
+        List<Recipe> recipeFiltered = this.findAll();
+        List<Recipe> recipeTemp = new ArrayList<>();
 
-        List<Recipe> filteredByDiet = new ArrayList<>();
         if (diets != null) {
             if(!EnumSet.allOf(Diet.class).contains(diets)) {
                 throw new NotFoundException(ExceptionsMessages.DIET_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
             }
-            filteredByDiet = allRecipes.stream().filter(recipe -> recipe.getDiet() == diets).toList();
-        } else {
-            filteredByDiet = allRecipes;
+            recipeFiltered = recipeFiltered.stream().filter(recipe -> recipe.getDiet() == diets).toList();
         }
 
-        List<Recipe> filteredByIngredients;
-        if (ingredients != null) {
-            filteredByIngredients = new ArrayList<>();
-            for (Ingredient ing : ingredients) {
-                if(!ingredientRepository.existsById(ing.getId())){
-                    throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
-                }
-                for (Recipe recipe : filteredByDiet) {
-                    List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
-                    recipeAllIngredients.forEach(ingr -> {
-                        if (ingr.getIngredient().getId().equals(ing.getId())) {
-                            filteredByIngredients.add(recipe);
-                        }
-                    });
-                }
-            }
-        } else {
-            filteredByIngredients = filteredByDiet;
-        }
-
-        List<Recipe> filteredByAllergens = new ArrayList<>();
         if (allergies != null) {
             for(Allergy all : allergies) {
                 if(!EnumSet.allOf(Allergy.class).contains(all)) {
@@ -175,12 +152,11 @@ public class RecipeService implements IRecipeService {
                 }
             }
 
-            for (Recipe recipe : filteredByIngredients) {
-                List<Recipe_Ingredient> recipeIngredients = recipe.getRecipeIngredientsList();
+            for (Recipe recipe : recipeFiltered) {
+                List<Recipe_Ingredient> recipeAllIngredients = recipe.getRecipeIngredientsList();
                 boolean hasAllergen = false;
-                for (Recipe_Ingredient recipeIngredient : recipeIngredients) {
-                    Ingredient ingredient = recipeIngredient.getIngredient();
-                    Allergy ingrAllergen = ingredient.getAllergy();
+                for (Recipe_Ingredient recipeIngredient : recipeAllIngredients) {
+                    Allergy ingrAllergen = recipeIngredient.getIngredient().getAllergy();
 
                     if (allergies.contains(ingrAllergen)) {
                         hasAllergen = true;
@@ -188,14 +164,37 @@ public class RecipeService implements IRecipeService {
                     }
                 }
                 if (!hasAllergen) {
-                    filteredByAllergens.add(recipe);
+                    recipeTemp.add(recipe);
                 }
             }
-        } else {
-            filteredByAllergens = filteredByIngredients;
+            recipeFiltered = new ArrayList<>(recipeTemp);
+            recipeTemp.clear();
         }
 
-        return filteredByAllergens;
+        if (ingredients != null) {
+            for (Recipe recipe : recipeFiltered) {
+                List<Recipe_Ingredient> allIngredientInRecipe = recipe.getRecipeIngredientsList();
+
+                int nbIngredientFound = 0;
+                for(Ingredient ingredientInFilter : ingredients){
+                    if(!ingredientRepository.existsById(ingredientInFilter.getId())){
+                        throw new NotFoundException(ExceptionsMessages.INGREDIENT_DOES_NOT_EXIST_CANNOT_FILTER, HttpStatus.NOT_FOUND, LocalDateTime.now());
+                    }
+
+                    for(Recipe_Ingredient ing: allIngredientInRecipe){
+                        if(ing.getIngredient().getId().equals(ingredientInFilter.getId()))
+                            nbIngredientFound++;
+                    }
+                }
+                if(nbIngredientFound == ingredients.size())
+                    recipeTemp.add(recipe);
+
+            }
+            recipeFiltered = new ArrayList<>(recipeTemp);
+            recipeTemp.clear();
+        }
+
+        return recipeFiltered;
     }
 
     @Override

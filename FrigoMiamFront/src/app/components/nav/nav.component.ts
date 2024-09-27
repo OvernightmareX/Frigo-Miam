@@ -13,12 +13,18 @@ import {AuthService} from "../../services/auth.service";
 })
 export class NavComponent {
   isAuthentified: boolean = false;
+  isHovered: boolean = false;
 
 
   constructor(private authService: AuthService, private router: Router) {
     this.authService.authentified$.subscribe(isAuth => {
       this.isAuthentified = isAuth;
     });
+  }
+
+
+  toggleHover() {
+    this.isHovered = !this.isHovered;
   }
 
   toggleMenu() {
@@ -31,7 +37,6 @@ export class NavComponent {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/']);
   }
 
 

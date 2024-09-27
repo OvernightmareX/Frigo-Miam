@@ -1,4 +1,4 @@
-package com.example.FrigoMiamBack.services;
+package com.example.FrigoMiamBack.utils;
 
 import com.example.FrigoMiamBack.entities.Account;
 import com.example.FrigoMiamBack.exceptions.NullParameterException;

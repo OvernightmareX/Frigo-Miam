@@ -15,6 +15,8 @@ public interface IAccountService {
 
     TokenDTO logIn(String email, String password);
 
+    Account getAccountByToken(String token);
+
     Account createAccount(Account accountToCreate);
 
     List<Account> getAccounts();

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {User} from "../../utils/types";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-creation',
@@ -44,7 +45,7 @@ export class AccountCreationComponent {
 
   isSubmitted = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   get passwordHasError(){
     return this.isSubmitted && this.user.password.length <5;
@@ -74,7 +75,8 @@ export class AccountCreationComponent {
 
       this.userService.createUser(userInstance).subscribe({
         next: userFromBack => {
-          console.log(`userFromBack: ${JSON.stringify(userFromBack)}`)
+          console.log(`userFromBack: ${JSON.stringify(userFromBack)}`);
+          this.router.navigate(['/connexion'])
         },
         error: err => {
           console.error("Erreur lors de la création de l'utilisateur", err);
