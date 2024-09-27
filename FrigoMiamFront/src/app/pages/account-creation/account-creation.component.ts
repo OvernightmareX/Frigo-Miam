@@ -3,6 +3,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {User} from "../../utils/types";
 import { Router } from '@angular/router';
+import {allergenList, dietList} from "../../utils/enums";
 
 @Component({
   selector: 'app-account-creation',
@@ -15,22 +16,6 @@ import { Router } from '@angular/router';
   styleUrl: './account-creation.component.css'
 })
 export class AccountCreationComponent {
-
-  dietList=[
-    { label : 'végétalien', value:' VEGETARIAN'},
-    { label: 'vegan', value:'VEGAN'},
-    { label :"pescetarien", value:'PESCATARIAN'}
-  ]
-
-  allergenList=[
-    { label :'sans lactose' ,value:'DAIRY'},
-    { label :'sans noisette', value:'NUTS'},
-    { label:'sans gluten', value:'GLUTEN'},
-    { label:'sans oeufs', value:'EGGS'},
-    { label:'sans poisson', value:'FISH'},
-    { label:'sans fruit de mer', value:'SEAFOOD'},
-    { label:'sans soja', value:'SOY'},
-  ]
 
   user = {
     lastname:'',
@@ -86,4 +71,6 @@ export class AccountCreationComponent {
     this.isSubmitted = false;
   }
 
+  protected readonly allergenList = allergenList;
+  protected readonly dietList = dietList;
 }

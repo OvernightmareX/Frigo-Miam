@@ -24,39 +24,6 @@ import { RecipeCardShortComponent } from '../../components/recipe-card-short/rec
 export class FrigoComponent {
   allRecipeCardsData: RecipeCard[] = [];
   allFrigoIngredients: IngredientQuantity[] = [];
-  recipes: Recipe[] = [
-    // TODO: will be replaced by values in service or localStorage
-    // {
-    //   "ingredients": ["a", "aa", "aaa"],
-    //   "nom": "Recette 1",
-    //   "description": "1ere recette..."
-    // },
-    // {
-    //   "ingredients": ["a", "aaa"],
-    //   "nom": "Recette 2",
-    //   "description": "2eme recette..."
-    // },
-    // {
-    //   "ingredients": ["a", "aa"],
-    //   "nom": "Recette 3",
-    //   "description": "3eme recette..."
-    // },
-    // {
-    //   "ingredients": ["aa", "aaa"],
-    //   "nom": "Recette 4",
-    //   "description": "4eme recette..."
-    // },
-    // {
-    //   "ingredients": ["aaa", "aaaa"],
-    //   "nom": "Recette 5",
-    //   "description": "15eme recette..."
-    // },
-    // {
-    //   "ingredients": ["aa"],
-    //   "nom": "Recette 6",
-    //   "description": "6eme recette..."
-    // }
-  ];
 
   // appelé par la bar de recherche
   addIngredient(ingredientName: IngredientBack): void {

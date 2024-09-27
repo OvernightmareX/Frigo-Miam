@@ -37,17 +37,16 @@ export class HomeComponent {
   allUserIngredients: IngredientBack[] = [];
 
   ngOnInit(){
-    console.log("Yolo")
-    this.getAllRecipes(); 
+    this.getAllRecipes();
   }
 
   onIngredientDeleted(index: number){
-    this.allUserIngredients.splice(index, 1); 
+    this.allUserIngredients.splice(index, 1);
 
     if(this.allUserIngredients.length == 0)
-      this.getAllRecipes(); 
+      this.getAllRecipes();
     else
-      this.getRecipesBasedOnIngredients(); 
+      this.getRecipesBasedOnIngredients();
   }
 
   getAllRecipes(): void {
@@ -69,11 +68,11 @@ export class HomeComponent {
     console.log(
       `Home allUserIngredients: ${JSON.stringify(this.allUserIngredients)}`
     );
-    this.getRecipesBasedOnIngredients(); 
+    this.getRecipesBasedOnIngredients();
   }
 
   convertToRecipeCards(recipeList: Recipe[]): RecipeCard[] {
-    this.allRecipeCardsData = []; 
+    this.allRecipeCardsData = [];
     return recipeList.map((recipeMatched) => ({
       recipe: recipeMatched,
       enoughQuantity: true, // field not used in home but in frigo

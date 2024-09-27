@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CreateRecipeService} from "../../services/create-recipe.service";
 import {AuthService} from "../../services/auth.service";
+import {dietList} from "../../utils/enums";
 
 
 @Component({
@@ -29,11 +30,6 @@ export class RecipeCreateComponent {
       })
     ])
     });
-
-  dietList=[
-    { label : 'végétalien', value:' VEGETARIAN'},
-    { label: 'vegan', value:'VEGAN'},
-    { label :"pescetarien", value:'PESCATARIAN'}]
 
   isSubmitted = false;
 
@@ -102,5 +98,7 @@ export class RecipeCreateComponent {
 
 
   }
+
+  protected readonly dietList = dietList;
 }
 
